@@ -10,7 +10,12 @@ const CARS=[
   {n:'Todoterreno',L:4.7,W:1.96,vmax:58,acc:8.0,grip:7.2,mass:1.35,off:1,lift:.12,
    prof:[[-2.33,.44],[-2.36,.82],[-2.3,1.12],[-2.15,1.72],[.5,1.78],[1.25,1.2],[2.25,1.05],[2.37,.76],[2.33,.44]],glass:[[-2.12,1.15],[-2.02,1.69],[.46,1.74],[1.19,1.18]],wb:[-1.45,1.45]},
   {n:'Superdeportivo',L:4.5,W:2.0,vmax:92,acc:12.5,grip:9.4,mass:1.2,wing:1,
-   prof:[[-2.22,.28],[-2.26,.7],[-1.9,.95],[-.9,1.0],[-.3,1.17],[.4,1.17],[1.25,.82],[2.2,.55],[2.27,.4],[2.2,.28]],glass:[[-.86,1.0],[-.3,1.14],[.38,1.14],[1.19,.84]],wb:[-1.35,1.4]}];
+   prof:[[-2.22,.28],[-2.26,.7],[-1.9,.95],[-.9,1.0],[-.3,1.17],[.4,1.17],[1.25,.82],[2.2,.55],[2.27,.4],[2.2,.28]],glass:[[-.86,1.0],[-.3,1.14],[.38,1.14],[1.19,.84]],wb:[-1.35,1.4]},
+  // motos (modelos genéricos, sin marcas): scooter deportivo de 50 cc, trail, naked y superbike
+  {n:'Scooter 50 R',bike:'scooter',L:1.82,W:.72,vmax:13.6,acc:3.4,grip:7.4,mass:.4,wb:[-.62,.66],r:.27,moped:1},
+  {n:'Trail 300',bike:'trail',L:2.15,W:.86,vmax:42,acc:7.6,grip:7.4,mass:.5,off:1,wb:[-.72,.78],r:.34},
+  {n:'Naked 700',bike:'naked',L:2.1,W:.8,vmax:60,acc:11.8,grip:8.4,mass:.5,wb:[-.7,.72],r:.31},
+  {n:'Superbike 1000',bike:'sport',L:2.06,W:.74,vmax:83,acc:14.2,grip:9.2,mass:.5,wb:[-.69,.71],r:.31}];
 const PAINT=['#c1121f','#f5f5f5','#111318','#1d4ed8','#f4c20d','#ff6a00','#2e7d32','#7c3aed','#9aa5ab','#0f766e','#e11d74','#6b4f2a'];
 const CARGEO={};
 function profShape(pts){const s=new THREE.Shape();s.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)s.lineTo(pts[i][0],pts[i][1]);s.closePath();return s}
@@ -41,12 +46,22 @@ function stepCar(c,dt,inp){const T=CARS[c.t],g=28;
     // cuesta: la gravedad frena al subir y empuja al bajar
     const hF=GH(c.x+fx*3,c.z+fz*3,c.y),hB=GH(c.x-fx*3,c.z-fz*3,c.y);if(vf!==0||inp.thr)vf-=9.81*((hF-hB)/6)*dt;
     if(inp.hb)vf-=Math.sign(vf)*Math.min(Math.abs(vf),5*dt)}
-  const ms=.62/(1+Math.abs(vf)*.055);c.steer+=(inp.str*ms-c.steer)*Math.min(1,dt*(inp.str?6:9));
+  /* asistencia a la conducción (solo el jugador): casi no se nota, pero endereza derrapes, suaviza la dirección a alta velocidad,
+     acompaña la trazada de la calle si no tocas el volante y aparta un poco el coche de las paredes que tienes delante */
+  const AS=c===ME?assistLevel():0,spd=Math.abs(vf);
+  const ms=.62/(1+Math.abs(vf)*.055);c.steer+=(inp.str*ms-c.steer)*Math.min(1,dt*(inp.str?6:9)*(1-.35*AS*Math.min(1,spd/40)));
   let yr=vf*Math.tan(c.steer)/(T.L*.62);
   const drift=inp.hb&&Math.abs(vf)>8;if(drift)yr+=inp.str*1.4*Math.sign(vf)*Math.min(1,Math.abs(vf)/20);
-  if(Math.abs(vl)>2.5&&c.onGround)yr+=-Math.sign(vl)*inp.str*.0+vl*.012;
+  if(Math.abs(vl)>2.5&&c.onGround)yr+=vl*.012*(1-.8*AS);
+  if(AS&&c.onGround&&!drift&&spd>8&&vf>0){
+    c.asT=(c.asT||0)-dt;if(c.asT<=0){c.asT=.12;c.asRoad=null;c.asWall=0;
+      if(!inp.str){const rn=roadNear(c.x,c.z,0,5,false);if(rn&&rn.d<1.2){const s0=rn.s;let a=Math.atan2(s0.bx-s0.ax,s0.bz-s0.az);let d=angDiff(a,c.yaw);if(Math.abs(d)>Math.PI/2){a+=Math.PI;d=angDiff(a,c.yaw)}if(Math.abs(d)<.22)c.asRoad=a}}
+      const L=6+spd*.45,pr=(da)=>{const yy=c.yaw+da;return blockedAt(c.x+Math.sin(yy)*L,c.z+Math.cos(yy)*L,.6)};if(pr(0)){const l=pr(.28),r=pr(-.28);if(!l&&r)c.asWall=1;else if(l&&!r)c.asWall=-1}}
+    if(c.asRoad!==null&&c.asRoad!==undefined)yr+=clamp(angDiff(c.asRoad,c.yaw),-.25,.25)*1.4*AS;
+    if(c.asWall)yr+=c.asWall*.28*AS}
   c.yaw+=yr*dt*(c.onGround?1:.25);
-  const grip=c.onGround?(drift?1.1:(Math.abs(vl)>6?3.5:T.grip))*(off?.75:1):.05;vl-=vl*Math.min(1,grip*dt);
+  const grip=c.onGround?(drift?1.1:(Math.abs(vl)>6?3.5:T.grip))*(off?.75:1):.05;vl-=vl*Math.min(1,grip*dt);if(AS&&c.onGround&&!drift)vl-=vl*Math.min(1,1.6*AS*dt);
+  if(T.bike){const lt=c.onGround?clamp(Math.atan2(vf*yr,9.81),-.85,.85):c.lean||0;c.lean=(c.lean||0)+(lt-(c.lean||0))*Math.min(1,dt*6)}
   c.slip=Math.abs(vl);if(c.slip>3&&c.onGround&&Math.abs(vf)>10){c.nos=Math.min(1,c.nos+dt*.05);vf-=Math.sign(vf)*c.slip*.05*dt}
   // nitro
   c.nosOn=!!inp.nos&&c.nos>0&&vf>3;if(c.nosOn)c.nos=Math.max(0,c.nos-dt*.22);else c.nos=Math.min(1,c.nos+dt*.012);
@@ -77,8 +92,10 @@ function stepCar(c,dt,inp){const T=CARS[c.t],g=28;
   // marchas y rpm (para el sonido y el HUD)
   const sp=Math.abs(vf),gears=[0,9,17,26,36,48,62,99];let gi=1;while(gi<7&&sp>gears[gi]*(T.vmax/66))gi++;c.gear=vf<-.5?-1:gi;const lo=gears[gi-1]*(T.vmax/66),hi=gears[gi]*(T.vmax/66);c.rpm=clamp(.18+.8*(sp-lo)/Math.max(1,hi-lo),.15,1);
   return hit}
-function poseCar(c,dt){const m=c.m;m.position.set(c.x,c.y,c.z);m.rotation.set(0,c.yaw,0);const b=m.userData.body;if(dt>0){const ac=((c.vf||0)-(c.pvf===undefined?c.vf||0:c.pvf))/dt;c.pvf=c.vf;c.sacc=(c.sacc||0)+(clamp(ac,-25,15)-(c.sacc||0))*Math.min(1,dt*6)}b.rotation.x=-c.pitch+clamp(-(c.sacc||0)*.0035,-.055,.045);b.rotation.z=c.roll-clamp(c.vl*.01+c.steer*c.vf*.0025,-.06,.06);
-  for(const w of m.userData.wheels){w.spin.rotation.x+=c.vf*dt/.34;if(w.front)w.piv.rotation.y=c.steer}carInterior(c,dt,c===ME&&camMode===2&&!FOOT.on)}
+function assistLevel(){const v=S.set&&S.set.assist;return v===undefined?.5:v}
+function angDiff(a,b){let d=a-b;while(d>Math.PI)d-=TAU;while(d<-Math.PI)d+=TAU;return d}
+function poseCar(c,dt){const m=c.m;m.position.set(c.x,c.y,c.z);m.rotation.set(0,c.yaw,0);const b=m.userData.body;if(dt>0){const ac=((c.vf||0)-(c.pvf===undefined?c.vf||0:c.pvf))/dt;c.pvf=c.vf;c.sacc=(c.sacc||0)+(clamp(ac,-25,15)-(c.sacc||0))*Math.min(1,dt*6)}b.rotation.x=-c.pitch+clamp(-(c.sacc||0)*.0035,-.055,.045);b.rotation.z=CARS[c.t].bike?c.roll*.3-(c.lean||0):c.roll-clamp(c.vl*.01+c.steer*c.vf*.0025,-.06,.06);
+  const wr=CARS[c.t].r||.34;for(const w of m.userData.wheels){w.spin.rotation.x+=c.vf*dt/wr;if(w.front)w.piv.rotation.y=c.steer}carInterior(c,dt,c===ME&&camMode===2&&!FOOT.on)}
 
 /* ============ EFECTOS: humo, marcas de frenada, nitro ============ */
 let FX=[];

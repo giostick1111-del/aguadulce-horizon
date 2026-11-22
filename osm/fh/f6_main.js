@@ -92,7 +92,7 @@ let nearEv=null;
 let menuTab='car';
 function drawMenu(){const T=[['car','GARAJE'],['ev','EVENTOS'],['rank','RANKING'],['set','AJUSTES'],['help','CONTROLES']];$('tabs').innerHTML=T.map(t=>`<button class="tab${menuTab===t[0]?' on':''}" data-t="${t[0]}" type="button">${t[1]}</button>`).join('');
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{menuTab=b.dataset.t;drawMenu()});let h='';
-  if(menuTab==='car'){h='<div class="grid">'+CARS.map((c,i)=>`<div class="card${S.car===i?' on':''}" data-c="${i}"><h4>${c.n}</h4><small>Punta ${Math.round(c.vmax*3.6)} km/h</small><div class="bar"><i style="width:${c.vmax/92*100}%"></i></div><small>Aceleración</small><div class="bar"><i style="width:${c.acc/12.5*100}%"></i></div><small>Agarre</small><div class="bar"><i style="width:${c.grip/9.4*100}%"></i></div></div>`).join('')+'</div>';
+  if(menuTab==='car'){h='<div class="grid">'+CARS.map((c,i)=>`<div class="card${S.car===i?' on':''}" data-c="${i}"><h4>${c.bike?'🏍️ ':'🚗 '}${c.n}</h4><small>Punta ${Math.round(c.vmax*3.6)} km/h${c.moped?' · ciclomotor':''}</small><div class="bar"><i style="width:${c.vmax/92*100}%"></i></div><small>Aceleración</small><div class="bar"><i style="width:${Math.min(100,c.acc/14.2*100)}%"></i></div><small>Agarre</small><div class="bar"><i style="width:${c.grip/9.4*100}%"></i></div></div>`).join('')+'</div>';
     h+='<div class="row"><small>Color</small><div class="sw">'+PAINT.map((p,i)=>`<button type="button" data-p="${i}" class="${S.col===i?'on':''}" style="background:${p}" aria-label="Color ${i+1}"></button>`).join('')+'</div></div>'}
   else if(menuTab==='ev')h=fbMenuHTML()+EVENTS.map(e=>`<div class="row"><div><h4>🏁 ${e.name}</h4><small>${e.desc} ${(e.path.len/1000).toFixed(1)} km · desnivel ${Math.round(Math.abs(H(e.path.P[e.path.P.length-2],e.path.P[e.path.P.length-1])-H(e.path.P[0],e.path.P[1])))} m${e.laps>1?' · '+e.laps+' vueltas':''} · Récord: ${S['best_'+e.id]?fmtT(S['best_'+e.id]):'—'}</small></div><button class="btn" data-e="${e.id}" type="button">IR</button></div>`).join('');
   else if(menuTab==='rank')h=lb.length?lb.map((p,i)=>`<div class="row"><h4>${i+1}. ${esc(p.nick)}</h4><small>${(p.xp||0).toLocaleString('es-ES')} XP</small></div>`).join(''):'<div class="row"><small>Aún no hay datos (hace falta conexión).</small></div>';
@@ -133,20 +133,30 @@ function initInput(){
 
 /* ============ CÁMARA ============ */
 const camP=new THREE.Vector3(),camL=new THREE.Vector3();let camInit=false,camYaw=0;
+/* mirar alrededor en la vista interior: arrastrar con el ratón (o el dedo sobre la imagen); al soltar, la vista vuelve sola al frente */
+const LOOK={yaw:0,pitch:0,drag:false,t:0,px:0,py:0};
+function initLook(){const el=renderer.domElement;el.addEventListener('pointerdown',ev=>{if(!started||camMode!==2||FOOT.on)return;LOOK.drag=true;LOOK.px=ev.clientX;LOOK.py=ev.clientY;try{el.setPointerCapture(ev.pointerId)}catch(e){}});
+  el.addEventListener('pointermove',ev=>{if(!LOOK.drag)return;LOOK.yaw=clamp(LOOK.yaw-(ev.clientX-LOOK.px)*.006,-2.4,2.4);LOOK.pitch=clamp(LOOK.pitch-(ev.clientY-LOOK.py)*.004,-.5,.45);LOOK.px=ev.clientX;LOOK.py=ev.clientY});
+  const end=()=>{LOOK.drag=false;LOOK.t=0};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);el.addEventListener('contextmenu',ev=>{if(camMode===2)ev.preventDefault()})}
 function updateCamera(dt){const c=ME,T=CARS[c.t],sp=Math.hypot(c.vx,c.vz);
   const mvYaw=sp>3?Math.atan2(c.vx,c.vz):c.yaw;let tgtYaw=c.vf<-1?c.yaw:lerpA(c.yaw,mvYaw,.35);if(keys.KeyB)tgtYaw+=Math.PI;camYaw=lerpA(camYaw,tgtYaw,Math.min(1,dt*(camInit?4.5:99)));
   let dist,hgt,look;if(camMode===0){dist=T.L+3.6+sp*.02;hgt=1.75+(T.lift?.3:0);look=1.1}else if(camMode===1){dist=T.L+7;hgt=3.2;look=1.2}else{dist=-.3;hgt=1.32+(T.lift||0);look=1.2}
   const fx=Math.sin(camYaw),fz=Math.cos(camYaw);const tx=c.x-fx*dist,tz=c.z-fz*dist;let ty=Math.max(c.y+hgt,GH(tx,tz,c.y)+1.2);ty=Math.min(ty,strCeil(c.x,c.z,c.y)-.3);
   const inside=camMode===2&&c.m.userData.int;
   if(inside){// vista desde el asiento del conductor: la cámara va pegada a la carrocería (cabeceo y balanceo incluidos)
-    const I=c.m.userData.int,b=c.m.userData.body;c.m.updateMatrixWorld(true);const e=I.eye.clone(),fw=new THREE.Vector3(I.eye.x,I.eye.y-.55,I.eye.z+12);if(keys.KeyB){fw.set(I.eye.x,I.eye.y-.1,I.eye.z-12)}
+    const I=c.m.userData.int,b=c.m.userData.body;c.m.updateMatrixWorld(true);
+    // la cabeza acompaña: se va hacia atrás al acelerar, hacia fuera en las curvas, y la mirada se adelanta a la curva
+    const latA=(c.vf||0)*(c.vf||0)*Math.tan(c.steer||0)/(T.L*.62);c.hLat=(c.hLat||0)+(clamp(latA,-14,14)-(c.hLat||0))*Math.min(1,dt*5);
+    if(!LOOK.drag&&(LOOK.t+=dt)>.5){const k=Math.exp(-dt*3);LOOK.yaw*=k;LOOK.pitch*=k}
+    const e=I.eye.clone();e.x+=clamp(-c.hLat*.003,-.045,.045);e.z+=clamp(-(c.sacc||0)*.0025,-.035,.035);e.y+=c.onGround?Math.sin(time*31)*Math.min(.004,Math.abs(c.vf||0)*.00008):0;
+    const ly=LOOK.yaw+(keys.KeyB?Math.PI:0),tx=(c.steer||0)*3.2;const fw=new THREE.Vector3(e.x+Math.sin(ly)*12+tx*Math.cos(ly),e.y-(I.down||.55)+LOOK.pitch*12,e.z+Math.cos(ly)*12);
     b.localToWorld(e);b.localToWorld(fw);camP.copy(e);camL.copy(fw);const up=new THREE.Vector3(0,1,0).applyQuaternion(b.getWorldQuaternion(new THREE.Quaternion()));camera.up.copy(up)}
   else if(camMode===2){camP.set(c.x+Math.sin(c.yaw)*.35,c.y+hgt,c.z+Math.cos(c.yaw)*.35);camL.set(c.x+Math.sin(c.yaw)*20,c.y+hgt-.6+Math.sin(-c.pitch)*-20,c.z+Math.cos(c.yaw)*20)}
   else{const tgt=new THREE.Vector3(tx,ty,tz);if(!camInit)camP.copy(tgt);const kx=Math.min(1,dt*10),ky=Math.min(1,dt*5);camP.x+=(tgt.x-camP.x)*kx;camP.z+=(tgt.z-camP.z)*kx;camP.y+=(tgt.y-camP.y)*ky;const h2=GH(camP.x,camP.z,c.y)+.8;if(camP.y<h2)camP.y=h2;const hc=strCeil(c.x,c.z,c.y)-.3;if(camP.y>hc)camP.y=hc;camL.set(c.x+fx*4,c.y+look,c.z+fz*4)}
   if(!inside&&camera.up.y!==1)camera.up.set(0,1,0);
   {const nr=inside?.12:.45;if(camera.near!==nr){camera.near=nr;camera.updateProjectionMatrix()}const gm=c.m.userData.glass;if(gm){const op=inside?.1:.4;if(gm.opacity!==op)gm.opacity=op}}
   camera.position.copy(camP);if(shakeT>0){shakeT-=dt;camera.position.x+=rnd(-.12,.12)*shakeT*3;camera.position.y+=rnd(-.12,.12)*shakeT*3}camera.lookAt(camL);camInit=true;
-  const f=(camMode===2?(inside?66:70):62)+clamp(sp-15,0,70)*.28+(c.nosOn?6:0);if(Math.abs(camera.fov-f)>.1){camera.fov+=(f-camera.fov)*Math.min(1,dt*3);camera.updateProjectionMatrix()}
+  const f=(camMode===2?(inside?(T.bike?74:66):70):62)+clamp(sp-15,0,70)*.28+(c.nosOn?6:0);if(Math.abs(camera.fov-f)>.1){camera.fov+=(f-camera.fov)*Math.min(1,dt*3);camera.updateProjectionMatrix()}
   $('flash').style.background=c.nosOn?'radial-gradient(ellipse at center,transparent 50%,rgba(60,150,255,.28))':'radial-gradient(ellipse at center,transparent 55%,rgba(60,150,255,0))';
   sunFollow(c.x,c.y,c.z);skyMesh.position.copy(camera.position)}
 
@@ -177,7 +187,7 @@ function boot(){
       for(let k=0;k<6&&terr();k++){}}],['TEXTURAS',()=>{makeTextures();makeTextures2();TX.atlas=paintAtlas();initScene()}],['ORTOFOTO PNOA',()=>ORTHO_P],['TERRENO',buildGround],['CALLES',buildRoads],
     ['EDIFICIOS',()=>buildBuildings(renderer.capabilities.isWebGL2)],['RÓTULOS',()=>{console.log('env pub',JSON.stringify(buildPublic()));buildSigns()}],['PALMERAS Y FAROLAS',buildDecor],['RUTAS',()=>{buildGraph();defineEvents();buildEventMarkers();buildTraps();buildTraffic()}],['CALLES Y JARDINES',()=>{const a=buildStreetLife(),b=buildNature(),pl=buildPools(),sd=buildStreetDetail();console.log('env detail',JSON.stringify(sd),JSON.stringify(buildMapillary()));console.log('pools',pl);console.log('env',JSON.stringify(a),JSON.stringify(b))}],['PARQUES',()=>console.log('env parques',JSON.stringify(buildParks()),JSON.stringify(buildPK()))],['PUERTO',()=>console.log('env puerto',JSON.stringify(buildPort()))],['CAMPOS DE FÚTBOL',()=>console.log('env futbol',JSON.stringify(buildFutbol()))],
     ['AJUSTE DEL TERRENO',()=>{console.log('env carve',JSON.stringify(carveGround()));console.log('env frozen',freezeStatic())}],
-    ['COCHE',()=>{initSkids();ME=newCar(S.car||0,S.col||0);const s=spawnPoint();Object.assign(ME,{x:s.x,z:s.z,yaw:s.yaw,y:surfaceY(s.x,s.z)});camYaw=s.yaw;initInput()}]];
+    ['COCHE',()=>{initSkids();initLook();ME=newCar(S.car||0,S.col||0);const s=spawnPoint();Object.assign(ME,{x:s.x,z:s.z,yaw:s.yaw,y:surfaceY(s.x,s.z)});camYaw=s.yaw;initInput()}]];
   let i=0;const next=()=>{if(i>=tasks.length){$('load').hidden=true;requestAnimationFrame(frame);if(S.nick&&location.hash!=='#show')startGame();else if(location.hash!=='#show')$('login').hidden=false;return}const t=tasks[i++];step(t[0]+'…');
     setTimeout(()=>{try{const t0=performance.now();Promise.resolve(t[1]()).then(()=>{(window.__bt=window.__bt||{})[t[0]]=Math.round(performance.now()-t0);next()})}catch(e){$('loadT').textContent='Error ('+t[0]+'): '+e.message;console.error(e)}},20)};next()}
 function startGame(){$('login').hidden=true;$('hud').hidden=false;if(IS_TOUCH){$('touch').hidden=false;document.body.classList.add('touchUI','playing')}started=true;audio();initSocial();initSettings();initFootInput();initFutbol();initPost();initFull();goFull();netInit();bigMsg('¡A RODAR!','#ff2d95');devHash()}

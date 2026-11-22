@@ -1,0 +1,13 @@
+pg.set_viewport_size({'width':1280,'height':720})
+pg.wait_for_timeout(1500)
+for ti in [5,6,7,8]:
+    pg.evaluate(f"(()=>{{setCarType(__g.ME,{ti},{[1,2,0,3][ti-5]});const c=__g.ME;c.x=2805;c.z=2140;c.yaw=1.2;c.vx=c.vz=c.vf=0;c.y=__g.H(c.x,c.z);camMode=0}})()")
+    pg.wait_for_timeout(400)
+    pg.evaluate("(()=>{const c=__g.ME;window.__cam=[c.x+Math.sin(c.yaw+1.35)*3.4,c.y+1.1,c.z+Math.cos(c.yaw+1.35)*3.4,c.x,c.y+.6,c.z]})()")
+    pg.wait_for_timeout(700);pg.screenshot(path=f'/tmp/fhtest/bk{ti}a.png',timeout=120000,clip={'x':240,'y':120,'width':800,'height':450})
+    pg.evaluate("(()=>{const c=__g.ME;window.__cam=[c.x+Math.sin(c.yaw+2.6)*3.6,c.y+1.4,c.z+Math.cos(c.yaw+2.6)*3.6,c.x,c.y+.6,c.z]})()")
+    pg.wait_for_timeout(700);pg.screenshot(path=f'/tmp/fhtest/bk{ti}b.png',timeout=120000,clip={'x':240,'y':120,'width':800,'height':450})
+    pg.evaluate("window.__cam=null;camMode=2")
+    pg.keyboard.down('ArrowUp');pg.keyboard.down('ArrowLeft');pg.wait_for_timeout(1800);pg.screenshot(path=f'/tmp/fhtest/bk{ti}c.png',timeout=120000);pg.keyboard.up('ArrowLeft');pg.keyboard.up('ArrowUp')
+    print('env bike',ti,pg.evaluate("JSON.stringify({v:Math.round(__g.ME.vf*3.6),lean:+(__g.ME.lean||0).toFixed(2)})"))
+pg.evaluate("camMode=0")

@@ -47,7 +47,7 @@ function wheelGeos(){if(CARGEO.wheel)return CARGEO.wheel;
   const barrel=new THREE.CylinderGeometry(.215,.215,.22,18,1,true);barrel.rotateZ(Math.PI/2);
   const disc=new THREE.CylinderGeometry(.18,.18,.025,18);disc.rotateZ(Math.PI/2);
   return CARGEO.wheel={tire,rimFace,barrel,disc}}
-function mkCarModel(ti,ci){const T=CARS[ti],G=carGeos(ti),g=new THREE.Group(),lift=T.lift||0,W=T.W;
+function mkCarModel(ti,ci){if(CARS[ti].bike)return mkBikeModel(ti,ci);const T=CARS[ti],G=carGeos(ti),g=new THREE.Group(),lift=T.lift||0,W=T.W;
   const paint=new THREE.MeshPhysicalMaterial?new THREE.MeshPhysicalMaterial({color:new THREE.Color(PAINT[ci%PAINT.length]),metalness:.6,roughness:.2,clearcoat:1,clearcoatRoughness:.1,envMap,envMapIntensity:1.35}):new THREE.MeshStandardMaterial({color:new THREE.Color(PAINT[ci%PAINT.length]),metalness:.6,roughness:.3,envMap});
   const glassM=new THREE.MeshStandardMaterial({envMap,color:0x1a2730,metalness:.4,roughness:.03,envMapIntensity:2.2,transparent:true,opacity:.4,side:THREE.DoubleSide,depthWrite:false});
   const under=stdMat('under',{color:0x0e0f11,metalness:.1,roughness:.9,side:THREE.DoubleSide});

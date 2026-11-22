@@ -73,7 +73,7 @@ function carDetail(g,T,G,ti,ci,mt){const lift=T.lift||0,W=T.W,gl=T.glass.map(p=>
     P.push([rboxG(.07,.05,.42,.02),x-s*.04,cushY+.2,seatZ-.2,0,0,0,1,1,1,INTC.seat]);P.push([boxG(.015,.03,.09),x-s*.03,cushY+.33,seatZ-.02,0,0,0,1,1,1,INTC.chrome]);
     P.push([cylG(.07,.07,.012,14),x-s*.018,floorY+.2,seatZ+.05,0,0,Math.PI/2,1,1,1,'#2c2e32']);P.push([boxG(.04,.012,.1),x-s*.07,cushY+.226,seatZ-.08,0,0,0,1,1,1,'#0c0d0f'])}
   // retrovisor interior y parasoles
-  const ry0=roof(frZ-.05);P.push([cylG(.008,.008,.06,6),0,ry0-.04,frZ-.06,0,0,0,1,1,1,'#202124'],[rboxG(.25,.065,.03,.02),0,ry0-.1,frZ-.08,.1,0,0,1,1,1,'#18191b'],[boxG(.23,.05,.004),0,ry0-.1,frZ-.097,.1,0,0,1,1,1,'#9fb6c8']);
+  const ry0=roof(frZ-.05);P.push([cylG(.008,.008,.06,6),0,ry0-.04,frZ-.06,0,0,0,1,1,1,'#202124'],[rboxG(.25,.065,.03,.02),0,ry0-.1,frZ-.08,.1,0,0,1,1,1,'#18191b']);const mirY=ry0-.1,mirZ=frZ-.097;
   for(const s of [-1,1])P.push([rboxG(.3,.012,.14,.005),s*dx,roof(frZ-.14)-.022,frZ-.14,.05,0,0,1,1,1,'#3e3f43']);
   // cinturones (del pilar B al anclaje junto a la banqueta)
   for(const s of [-1,1]){const bx=s*(inX(backZ)-.02);P.push(stripPart([bx,eyeY-.05,backZ-.08],[s*(dx-.28),cushY+.06,seatZ-.38],.045,.006,'#141518'));P.push(stripPart([s*(dx-.28),cushY+.06,seatZ-.38],[s*(dx+.26),cushY+.04,seatZ-.3],.045,.006,'#141518'))}
@@ -95,7 +95,11 @@ function carDetail(g,T,G,ti,ci,mt){const lift=T.lift||0,W=T.W,gl=T.glass.map(p=>
   const R=lcg(ci*131+ti*17+3),shirt=['#2b4c7e','#a33a3a','#e7e7e2','#2f6b45','#3a3a3d','#c58b2b'][Math.floor(R()*6)],skin=['#e0b796','#c99a7a','#8d5f43'][Math.floor(R()*3)],hair=['#24170f','#5a3b22','#b9a68a','#121212'][Math.floor(R()*4)];
   const hx=dx,tz=backZ+.06,D=[[rboxG(.38,.5,.22,.08),hx,cushY+.3,tz,-.18,0,0,1,1,1,shirt],[cylG(.05,.055,.08,8),hx,cushY+.58,tz+.04,0,0,0,1,1,1,skin],[sphG(.1,12,10),hx,eyeY+.01,eyeZ-.02,0,0,0,.95,1.1,1.05,skin],[sphG(.104,12,10),hx,eyeY+.05,eyeZ-.045,0,0,0,.97,.95,1.05,hair],
     [rboxG(.16,.14,.44,.06),hx-.1,cushY+.07,seatZ-.22,0,0,0,1,1,1,'#2b3445'],[rboxG(.16,.14,.44,.06),hx+.1,cushY+.07,seatZ-.22,0,0,0,1,1,1,'#2b3445']];
-  for(const e of [-1,1]){const sh=[hx+e*.2,cushY+.48,tz+.04],hd=[hx+e*.17,swY+.02,swZ-.03];D.push(stripPart(sh,hd,.09,.09,shirt));D.push([sphG(.045,8,6),hd[0],hd[1],hd[2],0,0,0,1,1,1,skin])}
+  // brazos: el hombro es fijo y la mano va agarrada al aro del volante (gira con él); el codo se calcula cada fotograma
+  const armM=stdMat('arm'+shirt,{color:new THREE.Color(shirt).convertSRGBToLinear(),roughness:.85,envMapIntensity:.3}),skinM=stdMat('skin'+skin,{color:new THREE.Color(skin).convertSRGBToLinear(),roughness:.7,envMapIntensity:.3});
+  const arms=[];for(const e of [-1,1]){const hand=new THREE.Mesh(hcG('handG',()=>{const k=new THREE.SphereGeometry(.042,10,8);k.scale(1,.8,1.25);return k}),skinM);const a=e>0?.38:Math.PI-.38;hand.position.set(Math.cos(a)*.185,Math.sin(a)*.185,-.03);sw.add(hand);
+    const up=new THREE.Mesh(hcG('armG',()=>new THREE.CylinderGeometry(.05,.045,1,8)),armM),fo=new THREE.Mesh(hcG('foreG',()=>new THREE.CylinderGeometry(.043,.036,1,8)),armM);g.add(up);g.add(fo);
+    arms.push({sh:new THREE.Vector3(hx+e*.2,cushY+.48,tz+.04),e,hand,up,fo})}
   const drv=new THREE.Mesh(linVC(mergeParts(D)),stdMat('drvVC',{vertexColors:true,roughness:.8,envMapIntensity:.3}));drv.receiveShadow=HQ;g.add(drv);
   // ---- exterior: líneas de puertas, capó y maletero, limpiaparabrisas, antena
   const fz=G.fz,rz=G.rz;
@@ -112,12 +116,25 @@ function carDetail(g,T,G,ti,ci,mt){const lift=T.lift||0,W=T.W,gl=T.glass.map(p=>
   if(C.length)g.add(new THREE.Mesh(linVC(mergeParts(C)),stdMat('chrVC',{vertexColors:true,roughness:.15,metalness:1})));
   // matrículas españolas (número propio por coche)
   const pm=plateTex(plateNum(ti*1000+ci*37+(g.id||0)));for(const [z,y,r] of [[fz+.028,.47+lift,0],[rz-.024,.5+lift,Math.PI]]){const p=new THREE.Mesh(hcG('plateG',()=>new THREE.PlaneGeometry(.52,.112)),pm);p.position.set(0,y,z);p.rotation.y=r;g.add(p)}
-  return{sw,col,cl,clCv,clT,sc,scM,drv,lm,eye:new THREE.Vector3(dx,eyeY,eyeZ),swZ}}
+  // retrovisor interior: espejo de verdad en el coche del jugador (textura en directo), plateado en los demás
+  const mir=new THREE.Mesh(hcG('mirP',()=>new THREE.PlaneGeometry(.23,.05)),stdMat('mirI',{color:0x9fb6c8,metalness:1,roughness:.08}));mir.position.set(0,mirY,mirZ-.003);mir.rotation.set(.1,Math.PI,0);g.add(mir);
+  return{sw,col,cl,clCv,clT,sc,scM,drv,lm,arms,mir,mirPos:new THREE.Vector3(0,mirY,mirZ-.05),eye:new THREE.Vector3(dx,eyeY,eyeZ),swZ}}
 /* mergeParts guarda los colores tal cual (sRGB); para que los oscuros se vean oscuros se pasan a lineal */
 function linVC(g){const c=g.attributes.color.array;for(let i=0;i<c.length;i++)c[i]=Math.pow(c[i],2.2);return g}
 function hcG(k,f){return GCACHE[k]||(GCACHE[k]=f())}
 /* cada fotograma: volante y (sólo en la vista interior del jugador) agujas y GPS */
 let _clT=0,_scTex=null;
-function carInterior(c,dt,inside){const u=c.m.userData;if(!u.int)return;const I=u.int;I.sw.rotation.z=-c.steer*4.2;I.drv.visible=!inside;
-  if(!inside)return;_clT-=dt;if(_clT>0)return;_clT=1/15;const kmh=Math.abs(c.vf||0)*3.6;drawCluster(I.clCv,kmh,c.rpm||.15,c.gear||1,CARS[c.t].vmax);I.clT.needsUpdate=true;
+const _yA=new THREE.Vector3(0,1,0),_va=new THREE.Vector3(),_vb=new THREE.Vector3(),_vc=new THREE.Vector3();
+function limb(m,a,b){_vc.subVectors(b,a);const L=_vc.length()||1e-3;m.position.copy(a).addScaledVector(_vc,.5);m.quaternion.setFromUnitVectors(_yA,_vc.multiplyScalar(1/L));m.scale.set(1,L,1)}
+/* espejo retrovisor en directo: una cámara mirando hacia atrás pinta una textura pequeña cada 3 fotogramas (no en móvil) */
+const MIRR={rt:null,cam:null,n:0,mat:null};
+function mirrorUpdate(c,I){if(!HQ||IS_TOUCH)return;if(!MIRR.rt){MIRR.rt=new THREE.WebGLRenderTarget(320,70);MIRR.rt.texture.wrapS=THREE.RepeatWrapping;MIRR.rt.texture.repeat.x=-1;MIRR.rt.texture.offset.x=1;
+    MIRR.cam=new THREE.PerspectiveCamera(24,320/70,.3,260);MIRR.mat=new THREE.MeshBasicMaterial({map:MIRR.rt.texture,toneMapped:true})}
+  if(I.mir.material!==MIRR.mat)I.mir.material=MIRR.mat;if((MIRR.n++%3)!==0)return;const b=c.m.userData.body;const p=I.mirPos.clone();b.localToWorld(p);const t=I.mirPos.clone().add(new THREE.Vector3(0,-.3,-20));b.localToWorld(t);
+  MIRR.cam.position.copy(p);MIRR.cam.up.set(0,1,0);MIRR.cam.lookAt(t);I.mir.visible=false;const old=renderer.getRenderTarget();renderer.setRenderTarget(MIRR.rt);renderer.render(scene,MIRR.cam);renderer.setRenderTarget(old);I.mir.visible=true}
+function carInterior(c,dt,inside){const u=c.m.userData;if(!u.int)return;const I=u.int;if(I.bike)return bikeInterior(c,dt,inside);I.sw.rotation.z=-c.steer*2.6;I.drv.visible=!inside;
+  // brazos: solo si el coche está cerca de la cámara
+  if(I.arms&&(inside||camera.position.distanceToSquared(c.m.position)<3600)){const b=u.body;c.m.updateMatrixWorld(true);for(const A of I.arms){A.hand.getWorldPosition(_va);b.worldToLocal(_va);const el=_vb.copy(A.sh).add(_va).multiplyScalar(.5);el.x+=A.e*.09;el.y-=.12;limb(A.up,A.sh,el);limb(A.fo,el,_va)}}
+  if(!inside){if(I.mir.material===MIRR.mat&&MIRR.mat)I.mir.material=stdMat('mirI',{});return}mirrorUpdate(c,I);
+  _clT-=dt;if(_clT>0)return;_clT=1/15;const kmh=Math.abs(c.vf||0)*3.6;drawCluster(I.clCv,kmh,c.rpm||.15,c.gear||1,CARS[c.t].vmax);I.clT.needsUpdate=true;
   const mini=$('mini');if(mini){if(!_scTex||_scTex.image!==mini){_scTex=new THREE.CanvasTexture(mini);_scTex.encoding=THREE.sRGBEncoding}if(I.scM.map!==_scTex){I.scM.map=_scTex;I.scM.color.set(0xffffff);I.scM.needsUpdate=true}_scTex.needsUpdate=true}}

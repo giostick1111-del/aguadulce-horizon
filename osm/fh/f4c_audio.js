@@ -9,7 +9,9 @@ const ENGPROF=[// por tipo de coche: grabación, vueltas de referencia, corte
   {k:'berlina',ref:3700,red:7000,turbo:0,lp:7500,vol:1.0},
   {k:'gt',ref:3600,red:6800,turbo:0,lp:7000,vol:1.05},
   {k:'suv',ref:3000,red:5600,turbo:1,lp:5200,vol:1.0},
-  {k:'super',ref:4300,red:8600,turbo:0,lp:9000,vol:1.05}];
+  {k:'super',ref:4300,red:8600,turbo:0,lp:9000,vol:1.05},
+  // motos: las mismas grabaciones, más agudas (más vueltas)
+  {k:'compact',ref:1700,red:9500,turbo:0,lp:9000,vol:.8},{k:'compact',ref:2500,red:9000,turbo:0,lp:8000,vol:.9},{k:'super',ref:2900,red:10500,turbo:0,lp:10000,vol:.95},{k:'super',ref:2500,red:13000,turbo:0,lp:11000,vol:1.0}];
 function sndBuf(k){if(SNDB[k])return SNDB[k];if(!SNDP[k]&&window.AG_SND&&AG_SND[k]&&AC){const bin=atob(AG_SND[k]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
     SNDP[k]=new Promise((res,rej)=>{const p=AC.decodeAudioData(u.buffer,res,rej);if(p&&p.then)p.then(res,rej)}).then(b=>{SNDB[k]=b;return b}).catch(e=>console.warn('snd',k,e))}return null}
 function noiseSrc(){const s=AC.createBufferSource();s.buffer=NB;s.loop=true;s.start(0,Math.random());return s}
