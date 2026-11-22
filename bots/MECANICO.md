@@ -1,6 +1,6 @@
 # Bot MECÁNICO — instrucciones de cada turno
 
-Objetivo: arreglar los fallos de `bots/cola.json`, comprobar que nada se rompe y publicar (Netlify publica `site/` al hacer push).
+Objetivo: arreglar los fallos de `bots/cola.json`, comprobar que nada se rompe y publicar (GitHub Pages publica `site/` al hacer push).
 
 1. Preparación: `bash bots/setup.sh`. Lee `bots/PREFERENCIAS.md` (obligatorio) y `bots/cola.json`.
    Si la cola está vacía, apúntalo en el historial y termina sin publicar.
@@ -18,7 +18,7 @@ Objetivo: arreglar los fallos de `bots/cola.json`, comprobar que nada se rompe y
    - `run.py paseo-auto-nr steps.py` y `run.py autovia-auto-nr steps.py` con `"done":true`.
    - `python3 mobfb.py` termina con `ok []`; `run.py "" fb2.py` muestra partidos de 11, 7 y 5.
    - `run.py nr perf2.py`: `calls` y `tris` no más de un 10 % por encima de lo apuntado en el último HISTORIAL.
-4. Publicar (el dueño pidió publicación directa en Netlify):
+4. Publicar (el dueño pidió publicación directa; la web está en GitHub Pages: https://giostick1111-del.github.io/aguadulce-horizon/ y se publica sola al subir site/ con el workflow .github/workflows/pages.yml):
    - `cp /home/claude/osm/aguadulce-horizon.html site/index.html`
    - Pasa los ids arreglados (y sus `reporte`) a `bots/procesados.json` y quítalos de `bots/cola.json`.
    - Entrada en `bots/HISTORIAL.md`: qué fallos, causa, cómo se arregló, resultado de pruebas, rendimiento.
