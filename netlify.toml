@@ -1,0 +1,4 @@
+# Netlify publica la carpeta site/ tal cual (no hay paso de compilación en Netlify)
+[build]
+  publish = "site"
+  command = ""

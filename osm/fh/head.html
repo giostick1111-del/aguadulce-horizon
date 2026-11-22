@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0a0c12"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-512.png">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Aguadulce Horizon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff2d95;--cyan:#3cb4ff;--yel:#ffdf3d;--bg:#0a0c12;--disp:'Barlow Condensed',Impact,'Arial Narrow',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:#f4f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+#hud{position:fixed;inset:0;pointer-events:none}
+.panel{background:linear-gradient(135deg,rgba(10,12,18,.78),rgba(10,12,18,.55));border-left:3px solid var(--pink);padding:6px 12px;border-radius:4px}
+#tl{position:absolute;left:max(14px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));display:grid;gap:6px}
+#zone{font:800 italic 18px/1 var(--disp);letter-spacing:1px;text-transform:uppercase}
+#lvl{font:600 13px var(--disp);color:#c9d3e6;letter-spacing:.5px}
+#raceBox{border-left-color:var(--cyan)}
+#rPos{font:800 italic 46px/0.9 var(--disp)}#rPos small{font-size:22px;color:#9fb3cf}
+#rInfo{font:600 15px var(--disp);letter-spacing:.5px;color:#d9e6ff}
+#tr{position:absolute;right:max(14px,env(safe-area-inset-right,0px));top:max(12px,env(safe-area-inset-top,0px));display:grid;gap:6px;justify-items:end}
+#mini{width:170px;height:170px;border-radius:50%;border:3px solid rgba(255,255,255,.85);box-shadow:0 4px 18px rgba(0,0,0,.5)}
+#net{font:600 12px system-ui;padding:3px 10px;background:rgba(10,12,18,.7);border-radius:20px}
+.chip{pointer-events:auto;font:800 15px var(--disp);letter-spacing:1px;color:#fff;background:rgba(10,12,18,.75);border:1px solid rgba(255,255,255,.25);border-radius:6px;min-height:36px;padding:0 14px;cursor:pointer}
+#speedo{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));width:210px;height:210px}
+#big{position:absolute;left:0;right:0;top:26%;text-align:center;font:800 italic clamp(48px,12vw,110px)/1 var(--disp);letter-spacing:2px;opacity:0;transition:opacity .2s;text-shadow:0 4px 0 rgba(0,0,0,.5),0 0 30px currentColor}
+#big.show{opacity:1}
+#xp{position:absolute;left:50%;top:16%;transform:translateX(-50%);font:800 italic 26px var(--disp);color:var(--yel);opacity:0;transition:opacity .2s;text-shadow:0 2px 0 #000}
+#xp.show{opacity:1}
+#evPrompt,#invite{position:absolute;left:50%;transform:translateX(-50%);background:rgba(10,12,18,.88);border:2px solid var(--pink);border-radius:8px;padding:10px 18px;font:800 20px var(--disp);letter-spacing:.5px;text-align:center;pointer-events:auto}
+#evPrompt{bottom:24%}#invite{top:14%;border-color:var(--cyan)}
+#evPrompt small,#invite small{display:block;font:500 13px system-ui;color:#c9d3e6;margin-top:2px}
+#feed{position:absolute;left:max(14px,env(safe-area-inset-left,0px));top:46%;display:grid;gap:4px;font:700 14px var(--disp);letter-spacing:.4px;text-shadow:0 1px 3px #000}
+#flash{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(60,150,255,.0));transition:background .2s}
+/* menús */
+.screen{position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,45,149,.18),transparent 55%),rgba(8,10,16,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px max(18px,env(safe-area-inset-right,0px)) 24px max(18px,env(safe-area-inset-left,0px));overflow:auto;touch-action:pan-y;z-index:5}
+.logo{font:800 italic clamp(54px,13vw,120px)/.85 var(--disp);letter-spacing:1px;text-align:center;background:linear-gradient(180deg,#fff 30%,#ffb3d6);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(255,45,149,.6))}
+.sub{font:800 italic 26px var(--disp);letter-spacing:8px;color:var(--cyan);text-align:center}
+.screen p{color:#aab4c8;font-size:13px;max-width:520px;text-align:center;line-height:1.5}.screen b{color:#fff}
+.screen input{font:700 20px var(--disp);letter-spacing:1px;padding:12px 16px;border-radius:6px;border:1px solid #2c3346;background:#121624;color:#fff;width:min(320px,100%);user-select:text;-webkit-user-select:text;text-align:center}
+.go{font:800 italic 28px var(--disp);letter-spacing:2px;padding:10px 34px;border-radius:6px;border:0;background:var(--pink);color:#fff;cursor:pointer;box-shadow:0 0 24px rgba(255,45,149,.55);transform:skewX(-8deg)}
+#menu .inner{width:min(760px,100%);display:grid;gap:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:800 18px var(--disp);letter-spacing:1px;padding:8px 16px;border-radius:4px;border:1px solid #2c3346;background:#121624;color:#9fb0cc;cursor:pointer}
+.tab.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.card{background:#121624;border:1px solid #2c3346;border-radius:6px;padding:10px;cursor:pointer;display:grid;gap:4px}
+.card.on{border-color:var(--pink);box-shadow:0 0 0 2px rgba(255,45,149,.35)}
+.card h4{font:800 italic 20px var(--disp);letter-spacing:.5px}.card small{color:#9fb0cc;font-size:12px}
+.bar{height:5px;background:#252b3c;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--cyan)}
+.sw{display:flex;gap:6px;flex-wrap:wrap}.sw button{width:34px;height:34px;border-radius:50%;border:2px solid #2c3346;cursor:pointer}.sw button.on{border-color:#fff;box-shadow:0 0 0 2px var(--pink)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#121624;border:1px solid #2c3346;border-radius:6px;padding:10px 12px}
+.row h4{font:800 italic 20px var(--disp)}.row small{color:#9fb0cc}
+.btn{font:800 16px var(--disp);letter-spacing:1px;padding:8px 14px;border-radius:4px;border:0;background:var(--cyan);color:#001326;cursor:pointer}
+#results .inner{width:min(460px,100%);display:grid;gap:8px}
+/* táctil */
+#touch{position:fixed;inset:0;pointer-events:none;z-index:3}
+#steerZone{position:absolute;left:0;bottom:0;width:42%;height:62%;pointer-events:auto;touch-action:none}
+#steerBar{position:absolute;left:max(22px,env(safe-area-inset-left,0px));bottom:max(30px,env(safe-area-inset-bottom,0px));width:210px;height:64px;border-radius:32px;border:2px solid rgba(255,255,255,.35);background:rgba(10,12,18,.35)}
+#steerKnob{position:absolute;left:73px;top:0;width:64px;height:60px;border-radius:30px;background:rgba(255,255,255,.55)}
+#steerBar span{position:absolute;top:-20px;left:0;right:0;text-align:center;font:800 12px var(--disp);letter-spacing:2px;color:rgba(255,255,255,.7)}
+.tb{position:absolute;pointer-events:auto;border-radius:14px;border:2px solid;background:rgba(10,12,18,.45);color:#fff;font:800 13px var(--disp);letter-spacing:1px;display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;text-shadow:0 1px 2px #000}
+.tb.down{filter:brightness(1.8);box-shadow:0 0 0 3px rgba(255,255,255,.5) inset}.tb,#steerBar{opacity:var(--btnop,1)}
+#bGas{right:max(24px,env(safe-area-inset-right,0px));bottom:max(24px,env(safe-area-inset-bottom,0px));width:96px;height:116px;border-color:#5dffb0;background:rgba(93,255,176,.16);font-size:16px}
+#bBrk{right:max(132px,calc(env(safe-area-inset-right,0px) + 132px));bottom:max(24px,env(safe-area-inset-bottom,0px));width:80px;height:92px;border-color:#ff6b6b;background:rgba(255,107,107,.16)}
+#bHb{right:max(132px,calc(env(safe-area-inset-right,0px) + 132px));bottom:max(126px,calc(env(safe-area-inset-bottom,0px) + 126px));width:80px;height:56px;border-color:var(--yel)}
+#bNos{right:max(30px,calc(env(safe-area-inset-right,0px) + 30px));bottom:max(150px,calc(env(safe-area-inset-bottom,0px) + 150px));width:84px;height:50px;border-color:var(--cyan);background:rgba(60,180,255,.18)}
+#bCam{left:max(22px,env(safe-area-inset-left,0px));bottom:max(150px,calc(env(safe-area-inset-bottom,0px) + 150px));width:70px;height:44px;border-color:#aaa;font-size:11px}
+#bRst{left:max(102px,calc(env(safe-area-inset-left,0px) + 102px));bottom:max(150px,calc(env(safe-area-inset-bottom,0px) + 150px));width:84px;height:44px;border-color:#aaa;font-size:11px}
+.touchUI #speedo{right:auto;left:50%;transform:translateX(-50%);bottom:max(6px,env(safe-area-inset-bottom,0px));width:150px;height:150px}
+.touchUI #mini{width:100px;height:100px}.touchUI #net{display:none}.touchUI .chip{min-height:30px;font-size:13px}.touchUI #tl{max-width:46vw}.touchUI #rInfo{font-size:12px}
+@media (max-height:520px){#rPos{font-size:34px}#zone{font-size:15px}.touchUI #speedo{width:124px;height:124px}#big{top:18%}}
+#rot{position:fixed;left:50%;top:40%;transform:translateX(-50%);z-index:6;background:rgba(10,12,18,.9);border:2px solid var(--cyan);border-radius:8px;padding:10px 16px;font:800 18px var(--disp);display:none;pointer-events:auto;text-align:center}
+@media (orientation:portrait){.touchUI.playing #rot{display:block}}
+#load{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:9}
+#load .logo{font-size:clamp(44px,10vw,90px)}#loadT{font:600 16px var(--disp);letter-spacing:2px;color:var(--cyan)}
+#trBtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:340px}
+.chip.live{border-color:#5dffb0;color:#5dffb0}
+#gpsBox{border-left-color:#b44dff;font:800 italic 18px var(--disp);letter-spacing:.5px}#gpsBox small{display:block;font:500 12px system-ui;color:#d9c2ff}
+#talk{font:800 15px var(--disp);letter-spacing:.5px;color:#5dffb0;text-shadow:0 1px 3px #000}
+#chat{position:absolute;left:max(14px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));width:min(380px,44vw);display:grid;gap:6px;pointer-events:none}
+#chatLog{max-height:30vh;overflow:hidden;display:flex;flex-direction:column;gap:3px;font:600 14px system-ui;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.6)}
+#chatLog div{background:rgba(10,12,18,.45);padding:3px 8px;border-radius:4px;transition:opacity .6s;word-wrap:break-word}
+#chat.open #chatLog{touch-action:pan-y}#chatLog div.old{opacity:0}#chat.open #chatLog div.old{opacity:.85}#chat.open #chatLog{overflow:auto;pointer-events:auto;background:rgba(10,12,18,.55);border-radius:6px;padding:4px}
+#chatIn{pointer-events:auto;width:100%;font:600 15px system-ui;padding:10px 12px;border-radius:6px;border:2px solid var(--pink);background:rgba(10,12,18,.92);color:#fff;user-select:text;-webkit-user-select:text}
+.touchUI #chatLog{max-height:74px;font-size:12px}.touchUI #chatLog div{padding:2px 6px}
+#bTalk{left:max(196px,calc(env(safe-area-inset-left,0px) + 196px));bottom:max(150px,calc(env(safe-area-inset-bottom,0px) + 150px));width:84px;height:56px;border-color:#5dffb0;background:rgba(93,255,176,.18)}
+#bigmap{position:fixed;inset:0;z-index:4;background:#0a0c12}
+#mapC{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#mapBar{position:absolute;left:max(12px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 24px)}
+#mapPl{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:max(60px,env(safe-area-inset-top,0px));display:grid;gap:4px;max-height:60vh;overflow:auto;width:min(230px,40vw);font:700 14px var(--disp);color:#fff}
+#mapPl b{font:800 italic 17px var(--disp);text-shadow:0 1px 3px #000}#mapPl button{text-align:left;font:700 14px var(--disp);color:#fff;background:rgba(10,12,18,.8);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}#mapPl small{color:#9fb0cc}
+#mapHelp{position:absolute;left:50%;bottom:max(12px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:rgba(10,12,18,.82);border:1px solid #b44dff;border-radius:6px;padding:8px 14px;font:500 13px system-ui;color:#e6d6ff;text-align:center;width:min(560px,calc(100% - 24px));pointer-events:none}
+.touchUI #trBtns .chip{min-height:30px;padding:0 9px}
+#chatF{display:flex;gap:6px;pointer-events:auto}#chatF[hidden]{display:none!important}
+#chatSend,#chatX{pointer-events:auto;font:800 15px var(--disp);letter-spacing:1px;border:0;border-radius:6px;padding:0 14px;min-height:42px;background:var(--pink);color:#fff;cursor:pointer}#chatX{background:#2c3346}
+#chatIn{flex:1;min-width:0;font-size:16px}
+.touchUI #chatF{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(560px,94vw);z-index:8;background:rgba(10,12,18,.92);padding:6px;border-radius:8px;border:2px solid var(--pink)}
+.touchUI #chatF #chatIn{border:0}
+.touchUI #chat.open #chatLog{position:fixed;left:50%;top:calc(max(8px,env(safe-area-inset-top,0px)) + 62px);transform:translateX(-50%);width:min(560px,94vw);max-height:38vh;z-index:8;font-size:14px}
+.chatting #touch{display:none!important}.touchUI.chatting #speedo{opacity:.25}
+#edit{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.28);touch-action:none}
+#edBar{position:absolute;left:50%;top:max(6px,env(safe-area-inset-top,0px));transform:translateX(-50%);background:rgba(10,12,18,.94);border:2px solid var(--yel);border-radius:8px;padding:8px 12px;display:grid;gap:8px;justify-items:center;width:min(560px,94vw);font:600 13px system-ui;text-align:center}
+#edBar.low{top:auto;bottom:max(6px,env(safe-area-inset-bottom,0px))}#edBar .go{font-size:20px;padding:6px 22px}.edBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}#edSize{width:180px;vertical-align:middle}
+.editing .tb,.editing #steerBar,.editing #chat,.editing #speedo{outline:2px dashed rgba(255,255,255,.7);outline-offset:3px}.editing .edsel{outline:3px solid var(--yel)!important}
+.editing #chat{min-height:54px;min-width:160px;background:rgba(255,255,255,.08)}.editing #chat:empty::before,.editing #chatLog:empty::before{content:'CHAT';font:800 16px var(--disp);color:#fff;padding:6px}
+.rng{width:100%;margin-top:6px;accent-color:var(--pink)}
+.touchUI #chat{position:fixed;z-index:7;left:46vw;top:max(6px,env(safe-area-inset-top,0px));width:min(330px,calc(54vw - 140px));bottom:auto}
+#reticle{position:fixed;left:50%;top:50%;width:0;height:0;z-index:2;pointer-events:none;--sp:10px}
+#reticle i{position:absolute;background:#fff;box-shadow:0 0 2px #000}#reticle i:nth-child(1){width:2px;height:10px;left:-1px;top:calc(-1 * var(--sp) - 10px)}#reticle i:nth-child(2){width:2px;height:10px;left:-1px;top:var(--sp)}
+#reticle i:nth-child(3){height:2px;width:10px;top:-1px;left:calc(-1 * var(--sp) - 10px)}#reticle i:nth-child(4){height:2px;width:10px;top:-1px;left:var(--sp)}#reticle b{position:absolute;width:3px;height:3px;left:-1.5px;top:-1.5px;background:#fff;border-radius:50%}
+#reticle.enemy i,#reticle.enemy b{background:#ff3b3b}#reticle.hm i{background:#ffd54a}#reticle.hs i{background:#ff2d95}
+#opsHud{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:grid;gap:4px;justify-items:center;pointer-events:none;font:800 18px var(--disp);text-shadow:0 1px 3px #000;z-index:2}
+.hpw{width:220px;height:9px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.4);border-radius:5px;overflow:hidden}#opsHp{height:100%;width:100%;background:#7dffa0;transition:width .2s}
+#opsAmmo b{font-size:28px}#opsAmmo small{font:600 13px system-ui;color:#cfd8e6;margin-left:6px}#opsSt{font:800 12px var(--disp);letter-spacing:2px;color:#9fb0cc}
+#opsObj{position:fixed;left:50%;top:max(54px,env(safe-area-inset-top,0px));transform:translateX(-50%);border-left-color:#4cff7a;font:600 14px system-ui;text-align:center;max-width:min(520px,90vw);z-index:2}#opsObj b{display:block;font:800 italic 17px var(--disp);color:#7dffa0}#opsObj small{display:block;color:#9fb0cc;margin-top:2px}
+#opPrompt{position:fixed;left:50%;bottom:25%;transform:translateX(-50%);background:rgba(10,30,16,.92);border:2px solid #4cff7a;border-radius:8px;padding:10px 16px;max-width:min(460px,90vw);font:500 13px system-ui;text-align:center;z-index:3;cursor:pointer}#opPrompt b{display:block;font:800 italic 20px var(--disp);color:#7dffa0}#opPrompt span{display:block;margin-top:6px;font-weight:700}
+body.onfoot #speedo,body.onfoot #evPrompt{display:none!important}.hideCar .tb{display:none!important}
+#bExit{left:max(244px,calc(env(safe-area-inset-left,0px) + 244px));bottom:max(22px,env(safe-area-inset-bottom,0px));width:100px;height:48px;border-color:#4cff7a}
+#footUI{position:fixed;inset:0;z-index:3;pointer-events:none}#footUI>*{pointer-events:auto}
+#fJoy{position:absolute;left:max(24px,env(safe-area-inset-left,0px));bottom:max(24px,env(safe-area-inset-bottom,0px));width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.35)}
+#fKnob{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px;border-radius:50%;background:rgba(255,255,255,.35)}
+#fLook{position:absolute;left:38%;right:0;top:0;bottom:0;pointer-events:auto;background:transparent;z-index:-1}
+.fb{position:absolute;width:70px;height:46px;border-radius:10px;background:rgba(10,12,18,.45);border:2px solid rgba(255,255,255,.4);color:#fff;font:800 13px var(--disp);letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;user-select:none;-webkit-user-select:none;opacity:var(--btnop,1)}
+.fb.down,.fb.on{background:rgba(255,45,149,.45)}
+#fFire{right:max(30px,env(safe-area-inset-right,0px));bottom:max(40px,env(safe-area-inset-bottom,0px));width:96px;height:96px;border-radius:50%;border-color:#ff4d4d;font-size:16px}
+#fAim{right:max(140px,env(safe-area-inset-right,0px));bottom:max(60px,env(safe-area-inset-bottom,0px))}#fCrouch{right:max(140px,env(safe-area-inset-right,0px));bottom:max(116px,env(safe-area-inset-bottom,0px))}
+#fProne{right:max(220px,env(safe-area-inset-right,0px));bottom:max(116px,env(safe-area-inset-bottom,0px))}#fReload{right:max(30px,env(safe-area-inset-right,0px));bottom:max(150px,env(safe-area-inset-bottom,0px))}
+#fSwap{right:max(110px,env(safe-area-inset-right,0px));bottom:max(172px,env(safe-area-inset-bottom,0px));width:60px}#fGren{right:max(180px,env(safe-area-inset-right,0px));bottom:max(172px,env(safe-area-inset-bottom,0px));width:50px}
+#fUse{left:max(190px,env(safe-area-inset-left,0px));bottom:max(40px,env(safe-area-inset-bottom,0px))}#fCar{left:max(24px,env(safe-area-inset-left,0px));bottom:max(190px,env(safe-area-inset-bottom,0px));width:96px;border-color:#4cff7a}
+/* ---- fútbol ---- */
+#fbHud{position:fixed;left:50%;top:max(10px,env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:4;pointer-events:none;display:grid;justify-items:center;gap:6px}
+#fbScore{display:flex;align-items:stretch;background:rgba(8,12,20,.9);border-radius:6px;overflow:hidden;font:800 15px var(--disp);letter-spacing:.04em;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#fbScore .fbt{padding:7px 12px;border-left:6px solid var(--c);white-space:nowrap}#fbScore .fbt:last-of-type{border-left:0;border-right:6px solid var(--c)}
+#fbScore b{background:#ffe14d;color:#0b0f17;padding:7px 12px;font-size:17px}#fbScore i{font-style:normal;background:#1d2533;padding:7px 10px;color:#9fe3ff}
+#fbBars{display:grid;gap:3px;width:160px}#fbBars i{display:block}#fbBars div{height:6px;border-radius:3px;background:rgba(0,0,0,.5);overflow:hidden}#fbPow{height:100%;width:0;background:linear-gradient(90deg,#4cff7a,#ffe14d,#ff4d4d)}#fbStam{height:100%;background:#4fc3ff}
+#fbUI{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:5;display:grid;grid-template-columns:auto auto;gap:12px;align-items:end}
+#fbUI button{border:2px solid rgba(255,255,255,.5);background:rgba(10,16,26,.55);color:#fff;font:800 13px var(--disp);border-radius:50%;width:70px;height:70px;touch-action:none;user-select:none;-webkit-user-select:none}
+#fbUI button.big{width:92px;height:92px;font-size:16px;background:rgba(200,40,40,.6)}#fbUI button.on{background:rgba(255,225,77,.85);color:#111}
+#fbUI .sm{width:52px;height:52px;font-size:11px}#fbTop{position:fixed;left:max(14px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));z-index:5;display:flex;gap:8px}
+#fbTop button{border:2px solid rgba(255,255,255,.45);background:rgba(10,16,26,.6);color:#fff;font:800 12px var(--disp);border-radius:8px;padding:8px 12px}
+#fbPrompt{position:fixed;left:50%;bottom:22%;transform:translateX(-50%);background:rgba(8,30,16,.94);border:2px solid #4cff7a;border-radius:10px;padding:12px 16px;z-index:6;text-align:center;max-width:min(460px,92vw)}
+#fbPrompt b{display:block;font:800 italic 20px var(--disp);color:#7dffa0}#fbPrompt small{display:block;margin:4px 0 10px;opacity:.85}#fbPrompt div{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#fbPrompt button{background:#4cff7a;color:#062;border:0;border-radius:6px;padding:10px 14px;font:800 14px var(--disp);cursor:pointer}
+body.futbol #footUI>*:not(#fJoy),body.futbol #opsHud,body.futbol #reticle,body.futbol #speedo,body.futbol #touch,body.futbol #bExit,body.futbol #raceBox{display:none!important}
+body:not(.futbol) #fbTop{display:none}body.futbol #tl{display:none!important}@media(max-width:900px){#fbScore{font-size:12px}#fbScore .fbt{padding:6px 8px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud" hidden>
+  <div id="tl"><div class="panel"><div id="zone">Aguadulce</div><div id="lvl"></div></div>
+    <div class="panel" id="gpsBox" hidden></div><div id="talk"></div><div class="panel" id="raceBox" hidden><div id="rPos">1<small>/1</small></div><div id="rInfo"></div></div></div>
+  <div id="tr"><canvas id="mini" width="340" height="340"></canvas><div id="net">⚪ Sin conexión</div><div id="trBtns"><button class="chip" id="mapBtn" type="button">🗺 MAPA</button><button class="chip" id="chatBtn" type="button" aria-label="Chat">💬</button><button class="chip" id="bugBtn" type="button" aria-label="Reportar fallo" title="Reportar un fallo del mapa aquí">⚠</button><button class="chip" id="voiceBtn" type="button">🎙 VOZ: NO</button><button class="chip" id="fullBtn" type="button" aria-label="Pantalla completa">⛶</button><button class="chip" id="menuBtn" type="button">☰ MENÚ</button></div></div>
+  <canvas id="speedo" width="420" height="420"></canvas>
+  <div id="big"></div><div id="xp"></div><div id="feed"></div>
+  <div id="evPrompt" hidden></div><div id="opPrompt" hidden></div><div class="panel" id="opsObj" hidden></div>
+  <div id="reticle" hidden><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="opsHud" hidden><div class="hpw"><div id="opsHp"></div></div><div id="opsAmmo"></div><div id="opsSt"></div></div><div id="invite" hidden></div>
+  <div id="chat"><div id="chatLog"></div><form id="chatF" hidden autocomplete="off"><input id="chatIn" maxlength="140" placeholder="Escribe un mensaje…" enterkeyhint="send" autocomplete="off" autocorrect="on"><button type="submit" id="chatSend">ENVIAR</button><button type="button" id="chatX" aria-label="Cerrar chat">✖</button></form></div>
+</div>
+<div id="flash"></div>
+<div id="touch" hidden><div id="steerZone"></div><div id="steerBar"><span>DIRECCIÓN</span><div id="steerKnob"></div></div>
+  <div class="tb" id="bGas">▲<br>GAS</div><div class="tb" id="bBrk">▼<br>FRENO</div><div class="tb" id="bHb">DERRAPE</div><div class="tb" id="bNos">NITRO</div>
+  <div class="tb" id="bCam">CÁMARA</div><div class="tb" id="bRst">RECOLOCAR</div><div class="tb" id="bExit">🚶 BAJAR</div><div class="tb" id="bTalk" hidden>🎙<br>HABLAR</div></div>
+<div id="rot">📱↻ Gira el móvil en horizontal</div>
+<div class="screen" id="login" hidden>
+  <div class="logo">AGUADULCE</div><div class="sub">HORIZON</div>
+  <p>El pueblo real de Aguadulce con sus cuestas reales, del paseo marítimo a las lomas. Conduce libre, bate radares y echa carreras online con tus amigos.</p>
+  <form id="lf" autocomplete="off" style="display:grid;gap:12px;justify-items:center"><input id="nick" maxlength="14" placeholder="TU NOMBRE DE PILOTO" required><button class="go" type="submit">AL VOLANTE</button></form>
+  <p><b>Teclado:</b> W/↑ gas · S/↓ freno y marcha atrás · A/D/←/→ girar · Espacio derrape · Mayús nitro · C cámara · R recolocar · Enter empezar carrera · J unirse · M menú<br><b>Mando:</b> RT gas · LT freno · stick izq. · A derrape · X nitro<br><b>Móvil:</b> dirección abajo a la izquierda, pedales abajo a la derecha.</p>
+</div>
+<div class="screen" id="menu" hidden><div class="inner">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div class="logo" style="font-size:48px">MENÚ</div><button class="chip" id="closeMenu" type="button">VOLVER ✕</button></div>
+  <div class="tabs" id="tabs"></div><div id="mbody"></div></div></div>
+<div id="bugDlg" class="panel" hidden style="position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:60;width:min(92vw,440px);pointer-events:auto"><h4 style="margin:4px 0 6px;font:800 16px var(--disp);color:#fff">⚠ Reportar fallo aquí</h4><small style="color:#cfd3da">Se guarda tu posición exacta y una foto de la pantalla. Escribe qué está mal (opcional).</small><input id="bugIn" maxlength="300" placeholder="p. ej. el bordillo flota, la casa está hundida…" style="width:100%;box-sizing:border-box;margin:8px 0;padding:8px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font:15px sans-serif"><div style="display:flex;gap:8px;justify-content:flex-end"><button class="chip" id="bugNo" type="button">CANCELAR</button><button class="chip live" id="bugOk" type="button">ENVIAR</button></div></div><div id="bugToast" class="panel" hidden style="position:fixed;left:50%;bottom:18%;transform:translateX(-50%);z-index:60;color:#fff;font:700 14px sans-serif"></div>
+<div id="bigmap" hidden><canvas id="mapC"></canvas><div id="mapBar"><button class="chip" id="mapClose" type="button">✖ CERRAR</button><button class="chip" id="mapUndo" type="button">↩ QUITAR ÚLTIMA</button><button class="chip" id="mapClear" type="button">🧹 BORRAR RUTA</button><button class="chip" id="mapMe" type="button">◎ YO</button><button class="chip" id="mapZin" type="button">＋</button><button class="chip" id="mapZout" type="button">－</button></div><div id="mapPl"></div><div id="mapHelp">Toca o haz clic en el mapa para poner marcas: el GPS traza la ruta por calles reales pasando por todas en orden. Toca una marca para quitarla.</div></div>
+<div id="fbHud" hidden><div id="fbScore"></div><div id="fbBars"><div><i id="fbPow"></i></div><div><i id="fbStam"></i></div></div></div>
+<div id="fbPrompt" hidden></div>
+<div id="fbTop"><button id="fbCam" type="button">🎥 CÁMARA</button><button id="fbQuit" type="button">✖ SALIR</button></div>
+<div id="fbUI" hidden><button id="fbLob" class="sm" type="button">CENTRO</button><button id="fbPass" type="button">PASE</button><button id="fbSpr" class="sm" type="button">SPRINT</button><button id="fbShoot" class="big" type="button">TIRO</button></div>
+<div id="footUI" hidden><div id="fJoy"><div id="fKnob"></div></div><div id="fLook"></div>
+  <div class="fb big" id="fFire">FUEGO</div><div class="fb" id="fAim">APUNTAR</div><div class="fb" id="fCrouch">AGACHAR</div><div class="fb" id="fProne">TUMBAR</div>
+  <div class="fb" id="fReload">RECARGAR</div><div class="fb" id="fSwap">ARMA</div><div class="fb" id="fGren">💣</div><div class="fb" id="fUse">USAR</div><div class="fb" id="fCar">🚗 SUBIR</div></div>
+<div id="edit" hidden><div id="edBar"><div id="edSel"></div><div class="edBtns"><button class="chip" id="edMove" type="button" aria-label="Mover esta barra">⇅</button><button class="chip" id="edReset" type="button">RESTABLECER</button><button class="chip" id="edCancel" type="button">CANCELAR</button><button class="go" id="edOk" type="button">GUARDAR</button></div></div></div>
+<div class="screen" id="results" hidden><div class="inner" id="resBody"></div></div>
+<div id="load"><div class="logo">AGUADULCE</div><div id="loadT">CARGANDO…</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.AGW=__WORLD__;window.AG_FIREBASE=__FBCFG__;window.AG_DEM=__DEM__;window.AG_POI=__POI__;window.AG_SND=__SND__;</script>

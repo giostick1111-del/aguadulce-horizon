@@ -1,0 +1,6 @@
+osm/aguadulce-horizon.html
+fhtest/index.html
+fhtest/bots_out/
+fhtest/*.png
+__pycache__/
+*.pyc
