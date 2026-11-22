@@ -1,1 +1,246 @@
-[]
+[
+ {
+  "id": "20261122-1",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3349,
+  "z": 1261,
+  "cam": [
+   3374.0,
+   163.5,
+   1261.4
+  ],
+  "detalle": "Autovía (cls 0) cerca del Paseo Marítimo: escalón de ~7 m en 5 m (161.4→154.4). A ras de suelo la calzada se corta en el horizonte como un precipicio; el coche saltaría.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-2",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3801,
+  "z": 1342,
+  "cam": [
+   3776.1,
+   150.0,
+   1344.0
+  ],
+  "detalle": "Calle de subida dentro de un cañón de paredes verticales (¿antigua trinchera de túnel r.wasT?): escalón de ~4.3 m (148.3→152.6→157.0) con un reborde negro visible al fondo.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-3",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3833,
+  "z": 1761,
+  "cam": [
+   3832.9,
+   37.5,
+   1736.0
+  ],
+  "detalle": "Calle del Mare Nostrum bajando al puerto: escalón de ~4 m en 5 m (33.4→29.4→25.5) y la acera izquierda queda a distinta altura que la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-4",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 2004,
+  "z": 733,
+  "cam": [
+   1984.1,
+   144,
+   717.9
+  ],
+  "detalle": "Zona de Calle Carmen Pinteño (cls 2): cambio de rasante con caída de ~5 m en 5 m (141.6→136.6); la calzada desaparece tras el borde.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-5",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 4316,
+  "z": 1277,
+  "cam": [
+   4341.0,
+   164.7,
+   1277.4
+  ],
+  "detalle": "Vía cls 0 dentro de cañón de paredes verticales: escalón de ~3.6 m (162.8→166.4) con línea de corte visible en la calzada; terreno atraviesa los arcenes a la izquierda.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-6",
+  "origen": "visual",
+  "tipo": "suelo_vacio",
+  "x": 341,
+  "z": 3579,
+  "cam": null,
+  "detalle": "Calle de Bristol (y alrededores al oeste, z≈3550): la calzada está sobre un suelo blanco liso sin terreno, ortofoto ni edificios; el minimapa también sale gris. Parece que falta el terreno/ortofoto en esta zona del mapa.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-7",
+  "origen": "auto",
+  "tipo": "coche_en_edificio",
+  "x": 920,
+  "z": 3545,
+  "cam": [
+   929.3,
+   35.9,
+   3568.2
+  ],
+  "detalle": "Calle aislada sobre suelo blanco vacío (misma zona sin terreno que Calle de Bristol): blockedAt devuelve bloqueado aunque no hay ningún edificio a la vista → colisión fantasma.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-8",
+  "origen": "auto",
+  "tipo": "coche_en_el_aire",
+  "x": null,
+  "z": null,
+  "cam": null,
+  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-9",
+  "origen": "auto",
+  "tipo": "prueba_rota",
+  "x": null,
+  "z": null,
+  "cam": null,
+  "detalle": "fhtest/mobfb.py falla: FileNotFoundError /tmp/fhtest/mockfb.js (el archivo no está en el repositorio). La prueba de móvil+fútbol no se pudo ejecutar.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-10",
+  "origen": "visual",
+  "tipo": "objeto_cielo",
+  "x": 3961,
+  "z": 1819,
+  "cam": null,
+  "detalle": "Paseo Marítimo: un rectángulo grande y claro, semitransparente, tapa media pantalla con un corte vertical en el cielo (visto también desde 3349,1261). Parece un plano/caja suelto o un fallo de niebla/cielo.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-11",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 3327,
+  "z": 1957,
+  "cam": null,
+  "detalle": "Rotonda de Calle del Rosal: el borde de la acera es irregular (dientes de sierra) y el terreno verde de la ortofoto atraviesa la acera junto a los comercios «Estetic»/«Cambio Energ…».",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-12",
+  "origen": "visual",
+  "tipo": "calzada_cortada",
+  "x": 133,
+  "z": 2808,
+  "cam": null,
+  "detalle": "Junto a la rotonda de la autovía (oeste): la calzada termina de golpe en el terreno y los ramales del fondo se ven flotando como cintas con bordes blancos.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-13",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 4744,
+  "z": 1690,
+  "cam": null,
+  "detalle": "curvatura 2.69 m en Carretera de Málaga (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-14",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 2686,
+  "z": 3138,
+  "cam": null,
+  "detalle": "curvatura 2.64 m en Calle del Naranjo (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-15",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 944,
+  "z": 1143,
+  "cam": null,
+  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-16",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 3451,
+  "z": 1507,
+  "cam": null,
+  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-17",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 3402,
+  "z": 1518,
+  "cam": null,
+  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-18",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 223,
+  "z": 2755,
+  "cam": null,
+  "detalle": "curvatura 2.51 m en calle (sin captura a ras de suelo este turno)",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-19",
+  "origen": "visual",
+  "tipo": "edificio_en_acera",
+  "x": 2092,
+  "z": 3294,
+  "cam": null,
+  "detalle": "Calle Hermanos Álvarez Quintero: la esquina de un edificio invade la acera junto al paso de peatones y su planta alta vuela sobre la calle.",
+  "reporte": null,
+  "prioridad": 3
+ },
+ {
+  "id": "20261122-20",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 787,
+  "z": 3017,
+  "cam": null,
+  "detalle": "Calle Génova: un montículo de arena del terreno sobresale por encima de la acera junto a las casas (lado derecho).",
+  "reporte": null,
+  "prioridad": 3
+ }
+]
