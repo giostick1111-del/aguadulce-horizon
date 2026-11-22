@@ -78,7 +78,7 @@ function stepCar(c,dt,inp){const T=CARS[c.t],g=28;
   const sp=Math.abs(vf),gears=[0,9,17,26,36,48,62,99];let gi=1;while(gi<7&&sp>gears[gi]*(T.vmax/66))gi++;c.gear=vf<-.5?-1:gi;const lo=gears[gi-1]*(T.vmax/66),hi=gears[gi]*(T.vmax/66);c.rpm=clamp(.18+.8*(sp-lo)/Math.max(1,hi-lo),.15,1);
   return hit}
 function poseCar(c,dt){const m=c.m;m.position.set(c.x,c.y,c.z);m.rotation.set(0,c.yaw,0);const b=m.userData.body;if(dt>0){const ac=((c.vf||0)-(c.pvf===undefined?c.vf||0:c.pvf))/dt;c.pvf=c.vf;c.sacc=(c.sacc||0)+(clamp(ac,-25,15)-(c.sacc||0))*Math.min(1,dt*6)}b.rotation.x=-c.pitch+clamp(-(c.sacc||0)*.0035,-.055,.045);b.rotation.z=c.roll-clamp(c.vl*.01+c.steer*c.vf*.0025,-.06,.06);
-  for(const w of m.userData.wheels){w.spin.rotation.x+=c.vf*dt/.34;if(w.front)w.piv.rotation.y=c.steer}}
+  for(const w of m.userData.wheels){w.spin.rotation.x+=c.vf*dt/.34;if(w.front)w.piv.rotation.y=c.steer}carInterior(c,dt,c===ME&&camMode===2&&!FOOT.on)}
 
 /* ============ EFECTOS: humo, marcas de frenada, nitro ============ */
 let FX=[];
