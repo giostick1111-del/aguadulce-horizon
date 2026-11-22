@@ -86,6 +86,96 @@
   "prioridad": 1
  },
  {
+  "id": "20261122-13",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 4744,
+  "z": 1690,
+  "cam": [
+   4719,
+   19.6,
+   1690
+  ],
+  "detalle": "curvatura 2.69 m en Carretera de Málaga. Confirmado a ras de suelo: salto de 3.0 m en 5 m (perfil cada 5 m: 17.6, 17.6, 17.6, 17.7, 17.7, 17.7, 20.6, 22.1, 22.1, 22.1, 22.0, 22.0, 21.9); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-14",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 2686,
+  "z": 3138,
+  "cam": [
+   2664.7,
+   11.3,
+   3124.9
+  ],
+  "detalle": "curvatura 2.64 m en Calle del Naranjo. Confirmado a ras de suelo: salto de 2.8 m en 5 m (perfil cada 5 m: 9.4, 9.3, 9.0, 8.8, 8.6, 8.5, 5.7, 4.4, 4.4, 4.1, 3.7, 3.7, 3.9); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-15",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 944,
+  "z": 1143,
+  "cam": [
+   962.0,
+   116.9,
+   1125.7
+  ],
+  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo. Confirmado a ras de suelo: salto de 3.1 m en 5 m (perfil cada 5 m: 115.1, 114.9, 114.8, 114.7, 114.6, 114.5, 111.4, 108.4, 108.4, 108.3, 108.3, 108.2, 108.2); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-16",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 3451,
+  "z": 1507,
+  "cam": [
+   3447.5,
+   81.6,
+   1531.8
+  ],
+  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-17",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 3402,
+  "z": 1518,
+  "cam": [
+   3426.7,
+   82.1,
+   1522.0
+  ],
+  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261122-18",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 223,
+  "z": 2755,
+  "cam": [
+   247.3,
+   50.6,
+   2760.8
+  ],
+  "detalle": "curvatura 2.51 m en calle. Confirmado a ras de suelo: salto de 2.9 m en 5 m (perfil cada 5 m: 48.1, 48.6, 50.5, 51.7, 51.7, 51.6, 51.8, 54.7, 53.6, 51.1, 51.1, 50.9, 50.8); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
   "id": "20261122-7",
   "origen": "auto",
   "tipo": "coche_en_edificio",
@@ -152,72 +242,6 @@
   "z": 2808,
   "cam": null,
   "detalle": "Junto a la rotonda de la autovía (oeste): la calzada termina de golpe en el terreno y los ramales del fondo se ven flotando como cintas con bordes blancos.",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-13",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 4744,
-  "z": 1690,
-  "cam": null,
-  "detalle": "curvatura 2.69 m en Carretera de Málaga (sin captura a ras de suelo este turno)",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-14",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 2686,
-  "z": 3138,
-  "cam": null,
-  "detalle": "curvatura 2.64 m en Calle del Naranjo (sin captura a ras de suelo este turno)",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-15",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 944,
-  "z": 1143,
-  "cam": null,
-  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo (sin captura a ras de suelo este turno)",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-16",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 3451,
-  "z": 1507,
-  "cam": null,
-  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama (sin captura a ras de suelo este turno)",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-17",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 3402,
-  "z": 1518,
-  "cam": null,
-  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada (sin captura a ras de suelo este turno)",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-18",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 223,
-  "z": 2755,
-  "cam": null,
-  "detalle": "curvatura 2.51 m en calle (sin captura a ras de suelo este turno)",
   "reporte": null,
   "prioridad": 2
  },
