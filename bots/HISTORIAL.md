@@ -52,3 +52,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Pruebas: dbgload sin errores (solo fallos de red de fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 437 calls, 518 502 tris (antes 437 / 520 248).
 - Herramientas nuevas en `fhtest/`: `diag.py` (calles cercanas a un punto con perfil cy/H; PTS por entorno), `top.py` (lista de puntos con curvatura >2 m), `shots.py` (capturas a ras de suelo; usar con `run.py ""`), `drop.py` (suelta el coche en puntos de la cola).
+- Publicado: commit 5635fe4; workflow «Publicar juego» terminó en success.
