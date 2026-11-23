@@ -62,3 +62,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Pruebas: dbgload sin errores (solo fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 589, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 con goles; motos (car1.py) sin errores.
 - Rendimiento (perf2, nr): 437 calls, 519 002 tris.
 - Nuevo: `fhtest/motos_casco.py` (capturas de la vista desde el casco de las 4 motos).
+- Publicado: commit c10e8eb; workflow «Publicar juego» terminó en success.
