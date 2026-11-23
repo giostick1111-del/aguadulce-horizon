@@ -1,1 +1,116 @@
-[]
+[
+ {
+  "id": "20261122-1",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3349,
+  "z": 1261,
+  "cam": [
+   3374.0,
+   163.5,
+   1261.4
+  ],
+  "detalle": "Autovía (cls 0) cerca del Paseo Marítimo: escalón de ~7 m en 5 m (161.4→154.4). A ras de suelo la calzada se corta en el horizonte como un precipicio; el coche saltaría.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Escalón en la boca oeste del antiguo túnel: el perfil del túnel (wasT) y el de la calzada que llega se calculaban por separado (161,6 vs 153,2 m).",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-2",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3801,
+  "z": 1342,
+  "cam": [
+   3776.1,
+   150.0,
+   1344.0
+  ],
+  "detalle": "Calle de subida dentro de un cañón de paredes verticales (¿antigua trinchera de túnel r.wasT?): escalón de ~4.3 m (148.3→152.6→157.0) con un reborde negro visible al fondo.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Escalón en la boca del otro tubo del antiguo túnel: perfiles separados que no coincidían en el nodo común.",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-3",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 3833,
+  "z": 1761,
+  "cam": [
+   3832.9,
+   37.5,
+   1736.0
+  ],
+  "detalle": "Calle del Mare Nostrum bajando al puerto: escalón de ~4 m en 5 m (33.4→29.4→25.5) y la acera izquierda queda a distinta altura que la calzada.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Calle del Mare Nostrum llegaba a Av. Carlos III 6-7 m más alta (perfil suavizado propio sin igualar en el cruce).",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-4",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 2004,
+  "z": 733,
+  "cam": [
+   1984.1,
+   144,
+   717.9
+  ],
+  "detalle": "Zona de Calle Carmen Pinteño (cls 2): cambio de rasante con caída de ~5 m en 5 m (141.6→136.6); la calzada desaparece tras el borde.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Calle cls 2 cuyo perfil no coincidía con el de la calle con la que se une (141,8 vs 136,8 m).",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-5",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 4316,
+  "z": 1277,
+  "cam": [
+   4341.0,
+   164.7,
+   1277.4
+  ],
+  "detalle": "Vía cls 0 dentro de cañón de paredes verticales: escalón de ~3.6 m (162.8→166.4) con línea de corte visible en la calzada; terreno atraviesa los arcenes a la izquierda.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Boca este del antiguo túnel: alturas de los extremos distintas a la Autovía que conecta.",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-13",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 4744,
+  "z": 1690,
+  "cam": [
+   4719,
+   19.6,
+   1690
+  ],
+  "detalle": "curvatura 2.69 m en Carretera de Málaga. Confirmado a ras de suelo: salto de 3.0 m en 5 m (perfil cada 5 m: 17.6, 17.6, 17.6, 17.7, 17.7, 17.7, 20.6, 22.1, 22.1, 22.1, 22.0, 22.0, 21.9); se ve un reborde/corte en la calzada.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Carretera de Málaga junto al puente (4614,1692)-(4697,1689): perfiles de los tramos del cruce sin igualar.",
+  "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ }
+]

@@ -1,102 +1,12 @@
 [
  {
-  "id": "20261122-1",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 3349,
-  "z": 1261,
-  "cam": [
-   3374.0,
-   163.5,
-   1261.4
-  ],
-  "detalle": "Autovía (cls 0) cerca del Paseo Marítimo: escalón de ~7 m en 5 m (161.4→154.4). A ras de suelo la calzada se corta en el horizonte como un precipicio; el coche saltaría.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-2",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 3801,
-  "z": 1342,
-  "cam": [
-   3776.1,
-   150.0,
-   1344.0
-  ],
-  "detalle": "Calle de subida dentro de un cañón de paredes verticales (¿antigua trinchera de túnel r.wasT?): escalón de ~4.3 m (148.3→152.6→157.0) con un reborde negro visible al fondo.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-3",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 3833,
-  "z": 1761,
-  "cam": [
-   3832.9,
-   37.5,
-   1736.0
-  ],
-  "detalle": "Calle del Mare Nostrum bajando al puerto: escalón de ~4 m en 5 m (33.4→29.4→25.5) y la acera izquierda queda a distinta altura que la calzada.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-4",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 2004,
-  "z": 733,
-  "cam": [
-   1984.1,
-   144,
-   717.9
-  ],
-  "detalle": "Zona de Calle Carmen Pinteño (cls 2): cambio de rasante con caída de ~5 m en 5 m (141.6→136.6); la calzada desaparece tras el borde.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-5",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 4316,
-  "z": 1277,
-  "cam": [
-   4341.0,
-   164.7,
-   1277.4
-  ],
-  "detalle": "Vía cls 0 dentro de cañón de paredes verticales: escalón de ~3.6 m (162.8→166.4) con línea de corte visible en la calzada; terreno atraviesa los arcenes a la izquierda.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
   "id": "20261122-6",
   "origen": "visual",
   "tipo": "suelo_vacio",
   "x": 341,
   "z": 3579,
   "cam": null,
-  "detalle": "Calle de Bristol (y alrededores al oeste, z≈3550): la calzada está sobre un suelo blanco liso sin terreno, ortofoto ni edificios; el minimapa también sale gris. Parece que falta el terreno/ortofoto en esta zona del mapa.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-13",
-  "origen": "visual",
-  "tipo": "bache",
-  "x": 4744,
-  "z": 1690,
-  "cam": [
-   4719,
-   19.6,
-   1690
-  ],
-  "detalle": "curvatura 2.69 m en Carretera de Málaga. Confirmado a ras de suelo: salto de 3.0 m en 5 m (perfil cada 5 m: 17.6, 17.6, 17.6, 17.7, 17.7, 17.7, 20.6, 22.1, 22.1, 22.1, 22.0, 22.0, 21.9); se ve un reborde/corte en la calzada.",
+  "detalle": "Calle de Bristol (y alrededores al oeste, z≈3550): la calzada está sobre un suelo blanco liso sin terreno, ortofoto ni edificios; el minimapa también sale gris. Parece que falta el terreno/ortofoto en esta zona del mapa. | 2026-11-23 Mecánico: no arreglado: z=3579 queda fuera del mapa (HM=3445); el MDT y la ortofoto acaban ahí. Habría que ampliar los datos del terreno o recortar las calles que salen del mapa.",
   "reporte": null,
   "prioridad": 1
  },
@@ -111,7 +21,7 @@
    11.3,
    3124.9
   ],
-  "detalle": "curvatura 2.64 m en Calle del Naranjo. Confirmado a ras de suelo: salto de 2.8 m en 5 m (perfil cada 5 m: 9.4, 9.3, 9.0, 8.8, 8.6, 8.5, 5.7, 4.4, 4.4, 4.1, 3.7, 3.7, 3.9); se ve un reborde/corte en la calzada.",
+  "detalle": "curvatura 2.64 m en Calle del Naranjo. Confirmado a ras de suelo: salto de 2.8 m en 5 m (perfil cada 5 m: 9.4, 9.3, 9.0, 8.8, 8.6, 8.5, 5.7, 4.4, 4.4, 4.1, 3.7, 3.7, 3.9); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.33 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -126,7 +36,7 @@
    116.9,
    1125.7
   ],
-  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo. Confirmado a ras de suelo: salto de 3.1 m en 5 m (perfil cada 5 m: 115.1, 114.9, 114.8, 114.7, 114.6, 114.5, 111.4, 108.4, 108.4, 108.3, 108.3, 108.2, 108.2); se ve un reborde/corte en la calzada.",
+  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo. Confirmado a ras de suelo: salto de 3.1 m en 5 m (perfil cada 5 m: 115.1, 114.9, 114.8, 114.7, 114.6, 114.5, 111.4, 108.4, 108.4, 108.3, 108.3, 108.2, 108.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.13 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -141,7 +51,7 @@
    81.6,
    1531.8
   ],
-  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada.",
+  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 1.03 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -182,7 +92,7 @@
   "x": 2139,
   "z": 650,
   "cam": null,
-  "detalle": "curvatura 2.40 m en calle cls 2 (zona Carmen Pinteño/Julio Visconti). A ras de suelo: la calzada sube de golpe 3.4 m en 5 m (133.8→137.2) pegada a un muro blanco; rampa brusca, el coche salta.",
+  "detalle": "curvatura 2.40 m en calle cls 2 (zona Carmen Pinteño/Julio Visconti). A ras de suelo: la calzada sube de golpe 3.4 m en 5 m (133.8→137.2) pegada a un muro blanco; rampa brusca, el coche salta. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.23 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -193,7 +103,7 @@
   "x": 983,
   "z": 1158,
   "cam": null,
-  "detalle": "curvatura 2.37 m en calle cls 2 junto a la Autovía del Mediterráneo. A ras de suelo: escalón de 3.4 m en 5 m (108.9→112.3) y la calle se mete en una ranura oscura entre dos paredes de terreno.",
+  "detalle": "curvatura 2.37 m en calle cls 2 junto a la Autovía del Mediterráneo. A ras de suelo: escalón de 3.4 m en 5 m (108.9→112.3) y la calle se mete en una ranura oscura entre dos paredes de terreno. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.43 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -204,7 +114,7 @@
   "x": 3506,
   "z": 1496,
   "cam": null,
-  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular.",
+  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.94 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
   "reporte": null,
   "prioridad": 1
  },
@@ -230,7 +140,7 @@
   "x": null,
   "z": null,
   "cam": null,
-  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3).",
+  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3). | 2026-11-23 Mecánico: tras junctionFix airFr 585, take 1 (antes 626, take 3).",
   "reporte": null,
   "prioridad": 2
  },

@@ -23,7 +23,8 @@ function strPrep(){if(STR.prepped)return;STR.prepped=true;const conn=new Map();
   const keep=new Set(STR.list);for(const r of WD.roads)if(r.under)r.under=r.under.filter(u=>keep.has(u.st));}
 function strFinish(){// tras ajustar el terreno: alturas definitivas de los extremos y rejilla para la física
   // con el terreno ya definitivo, fuera los puentes cuyo tablero quedaría enterrado en algún punto
-  const n0=STR.list.length;STR.list=STR.list.filter(st=>{if(st.kind!=='b')return true;const P=st.P,n=P.length/2,hA=H(P[0],P[1]),hB=H(P[n*2-2],P[n*2-1]);for(let i=0;i<n;i++){const y=hA+(hB-hA)*st.S[i]/st.L;if(y-H(P[i*2],P[i*2+1])<-.6){st.r[4]=0;return false}}return true});
+  const n0=STR.list.length;STR.list=STR.list.filter(st=>{if(st.kind!=='b')return true;const P=st.P,n=P.length/2,hA=H(P[0],P[1]),hB=H(P[n*2-2],P[n*2-1]);for(let i=0;i<n;i++){const y=hA+(hB-hA)*st.S[i]/st.L;const ab=Math.min(st.S[i],st.L-st.S[i])<8;// junto a los estribos el tablero ya va pegado al suelo: se tolera más
+        if(y-H(P[i*2],P[i*2+1])<(ab?-1.5:-.6)){st.r[4]=0;return false}}return true});
   const removed=n0-STR.list.length;if(removed){const keep=new Set(STR.list);for(const r of WD.roads)if(r.under)r.under=r.under.filter(u=>keep.has(u.st));return removed}
   for(const st of STR.list){const P=st.P,n=P.length/2;if(st.kind!=='p'){st.hA=H(P[0],P[1]);st.hB=H(P[n*2-2],P[n*2-1])}else st.hA=H(P[0],P[1]);
     for(let i=0;i<n-1;i++){const x0=Math.min(P[i*2],P[i*2+2])-st.hw-2,x1=Math.max(P[i*2],P[i*2+2])+st.hw+2,z0=Math.min(P[i*2+1],P[i*2+3])-st.hw-2,z1=Math.max(P[i*2+1],P[i*2+3])+st.hw+2;

@@ -14,13 +14,34 @@ function H(x,z){if(PMASK&&pmAt(x,z)===1)return PDECK;const fx=clamp(x/GS,0,TG.nx
   // misma partición en triángulos que la malla del suelo
   const a=h[j*n+i],b=h[j*n+i+1],c=h[(j+1)*n+i],d=h[(j+1)*n+i+1];return u+w<=1?a+(b-a)*u+(c-a)*w:d+(c-d)*(1-u)+(b-d)*(1-w)}
 
+/* las calles que se tocan (mismo nodo de OSM) tienen que llegar a la misma altura: cada perfil se calculaba por separado y en los cruces
+   y en las bocas de los antiguos túneles quedaban escalones de 3-8 m. Se busca la altura común en cada extremo y se reparte la corrección
+   en rampa suave (hasta 80 m) a lo largo de la calle. Las calles de más categoría pesan más; un extremo que cae en mitad de otra calle se
+   ajusta a ella. */
+function junctionFix(CR){const C=8,G=new Map(),key=(x,z)=>Math.floor(z/C)*100000+Math.floor(x/C),W=[8,6,5,4,3,2,1.5,1];
+  CR.forEach((r,ri)=>{const P=r.dp,N=P.length/2;for(let j=0;j<N;j++){const k=key(P[j*2],P[j*2+1]);let b=G.get(k);if(!b)G.set(k,b=[]);b.push(ri,j)}});
+  // los extremos que tocan un puente o una rampa no se mueven (el tablero ya está calculado con esa altura)
+  const PIN=[];for(const st of STR.list){const P=st.P,n=P.length/2;PIN.push(P[0],P[1],P[n*2-2],P[n*2-1])}const pinned=(x,z)=>{for(let t=0;t<PIN.length;t+=2)if(Math.abs(PIN[t]-x)<1.5&&Math.abs(PIN[t+1]-z)<1.5)return true;return false};
+  const ends=[];CR.forEach((r,ri)=>{const P=r.dp,N=P.length/2;for(const e of [0,N-1]){const x=P[e*2],z=P[e*2+1],M=[];if(pinned(x,z)){r._pin=r._pin||[];r._pin.push(e);continue}const gx=Math.floor(x/C),gz=Math.floor(z/C);
+    for(let b=-1;b<=1;b++)for(let a=-1;a<=1;a++){const B=G.get((gz+b)*100000+gx+a);if(!B)continue;for(let t=0;t<B.length;t+=2){const qi=B[t],j=B[t+1];if(qi===ri)continue;const Q=CR[qi].dp;if(Math.hypot(Q[j*2]-x,Q[j*2+1]-z)<1)M.push(qi,j)}}
+    if(M.length)ends.push({ri,e,M})}});
+  let maxd=0;for(let it=0;it<5;it++){const D=CR.map(()=>[0,0]);
+    for(const E of ends){const r=CR[E.ri],N=r.dp.length/2;let mid=null,ms=0,mw=0,s=r.cy[E.e]*W[r[0]],w=W[r[0]];const pw=(q,j)=>q._pin&&q._pin.includes(j)?1e4:W[q[0]];
+      for(let t=0;t<E.M.length;t+=2){const q=CR[E.M[t]],j=E.M[t+1],Nq=q.dp.length/2;if(j>0&&j<Nq-1){if(mid===null||q[0]<mid){mid=q[0];ms=0;mw=0}if(q[0]===mid){ms+=q.cy[j];mw++}}else{s+=q.cy[j]*pw(q,j);w+=pw(q,j)}}
+      const tgt=mid!==null?ms/mw:s/w;D[E.ri][E.e===0?0:1]=tgt-r.cy[E.e]}
+    CR.forEach((r,ri)=>{const [d0,d1]=D[ri];if(!d0&&!d1)return;const P=r.dp,N=P.length/2,cum=new Float32Array(N);for(let i=1;i<N;i++)cum[i]=cum[i-1]+Math.hypot(P[i*2]-P[i*2-2],P[i*2+1]-P[i*2-1]);const L=cum[N-1]||1,F=Math.min(80,L);
+      const cy=Float32Array.from(r.cy);for(let i=0;i<N;i++){const a=Math.max(0,1-cum[i]/F),b=Math.max(0,1-(L-cum[i])/F);cy[i]+=d0*(F<L?a:1-cum[i]/L)+d1*(F<L?b:cum[i]/L)}
+      if(r._lim)for(let i=0;i<N;i++)cy[i]=Math.min(cy[i],r._lim(i));r.cy=cy;maxd=Math.max(maxd,Math.abs(d0),Math.abs(d1))})}
+  console.log('env juntas',ends.length,'max',maxd.toFixed(2));return ends.length}
 /* las calles reales son planas de lado a lado: se adapta el terreno a su perfil longitudinal suavizado */
-function conformTerrain(){strPrep();const n=TG.nx,m=TG.nz,h=TG.h,acc=new Float32Array(n*m),wsum=new Float32Array(n*m),mx=new Float32Array(n*m),cap=new Float32Array(n*m).fill(1e9),flo=new Float32Array(n*m).fill(-1e9),pc=new Uint8Array(n*m).fill(99),capc=new Uint8Array(n*m).fill(99);
+function conformTerrain(){strPrep();const CR=[];const n=TG.nx,m=TG.nz,h=TG.h,acc=new Float32Array(n*m),wsum=new Float32Array(n*m),mx=new Float32Array(n*m),cap=new Float32Array(n*m).fill(1e9),flo=new Float32Array(n*m).fill(-1e9),pc=new Uint8Array(n*m).fill(99),capc=new Uint8Array(n*m).fill(99);
   for(const r of WD.roads){const cls=r[0];if(cls>7||cls===8||cls===10)continue;if(r[4]===1||r[4]===3||r[4]===4)continue;let P=[];for(let i=5;i<r.length;i+=2)P.push(r[i]*K,r[i+1]*K);P=densify(P,4);const N=P.length/2;if(N<2)continue;
     const hw=r[1]*K/2+(cls===0?5:cls<=5?2.6:.5);const raw=new Float32Array(N);for(let i=0;i<N;i++)raw[i]=H(P[i*2],P[i*2+1]);// antiguo túnel: la vía va en trinchera, en línea recta entre las dos bocas (sin subir y bajar el cerro)
     if(r.wasT){const a=raw[0],b=raw[N-1];for(let i=0;i<N;i++)raw[i]=Math.min(raw[i],a+(b-a)*i/(N-1))}
     const UND=r.under||[];const lim=i=>{let m=1e9;for(const u of UND)m=Math.min(m,u.y+Math.max(0,Math.hypot(P[i*2]-u.x,P[i*2+1]-u.z)-10)*.075);return m};if(UND.length)for(let i=0;i<N;i++)raw[i]=Math.min(raw[i],lim(i));
-    let cy=raw;const NP=cls<=3?6:2;for(let pass=0;pass<NP;pass++){const o=new Float32Array(N);for(let i=0;i<N;i++){let s=0,c=0;for(let k=-9;k<=9;k++){const q=i+k;if(q<0||q>=N)continue;const w=10-Math.abs(k);s+=cy[q]*w;c+=w}o[i]=s/c}cy=o}if(UND.length)for(let i=0;i<N;i++)cy[i]=Math.min(cy[i],lim(i));r.cy=cy;r.dp=P;
+    let cy=raw;const NP=cls<=3?6:2;for(let pass=0;pass<NP;pass++){const o=new Float32Array(N);for(let i=0;i<N;i++){let s=0,c=0;for(let k=-9;k<=9;k++){const q=i+k;if(q<0||q>=N)continue;const w=10-Math.abs(k);s+=cy[q]*w;c+=w}o[i]=s/c}cy=o}if(UND.length)for(let i=0;i<N;i++)cy[i]=Math.min(cy[i],lim(i));r.cy=cy;r.dp=P;r._hw=hw;r._lim=UND.length?lim:null;r._pin=null;CR.push(r)}
+  junctionFix(CR);
+  for(const r of CR){const cls=r[0],P=r.dp,N=P.length/2,hw=r._hw,cy=r.cy;
     const R=hw+7;for(let i=0;i<N-1;i++){const ax=P[i*2],az=P[i*2+1],bx=P[i*2+2],bz=P[i*2+3];const x0=Math.max(0,Math.floor((Math.min(ax,bx)-R)/GS)),x1=Math.min(n-1,Math.ceil((Math.max(ax,bx)+R)/GS)),z0=Math.max(0,Math.floor((Math.min(az,bz)-R)/GS)),z1=Math.min(m-1,Math.ceil((Math.max(az,bz)+R)/GS));
       const dx=bx-ax,dz=bz-az,L2=dx*dx+dz*dz||1;
       for(let gz=z0;gz<=z1;gz++)for(let gx=x0;gx<=x1;gx++){const k=gz*n+gx;if(h[k]<0)continue;const x=gx*GS,z=gz*GS;let t=((x-ax)*dx+(z-az)*dz)/L2;t=t<0?0:t>1?1:t;const d=Math.hypot(x-ax-dx*t,z-az-dz*t);if(d>R)continue;

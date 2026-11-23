@@ -27,3 +27,15 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Sin sitio en la cola (máx. 25), para el próximo turno: calzada cortada de golpe en Calle Islas Baleares (3650,1939); calzada cortada en diagonal contra la acera (1727,1557).
 - Rendimiento: 674 calls, 503 164 tris, 195 texturas, 1996 geometrías (sube respecto a ayer: +91 calls, +56 000 tris, seguramente por las motos).
 - Pruebas: paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true pero airFr 626, take 3; fútbol (fb2) OK, los partidos avanzan y hay goles; móvil (mobfb.py) OK (30 fps, sin errores). Motos 5-8 arrancan y se inclinan (lean 0,06–0,48).
+
+## 2026-11-23 — Mecánico
+- Arreglados 6 fallos (prioridad 1, en orden): 20261122-1 (3349,1261), -2 (3801,1342), -3 Calle del Mare Nostrum (3833,1761), -4 zona Carmen Pinteño (2004,733), -5 (4316,1277), -13 Carretera de Málaga (4744,1690).
+- Causa común: en `conformTerrain` el perfil de cada calle se calculaba por separado; donde dos calles comparten nodo (cruces, y sobre todo las bocas de los antiguos túneles `wasT`) los perfiles llegaban a alturas distintas (hasta 8,8 m) y el terreno quedaba con escalones.
+- Arreglo (regla general, `f3_world3d.js`): nueva `junctionFix()`. Primero se calculan todos los perfiles; luego en cada extremo de calle que toca otra calle se busca la altura común (media ponderada por categoría; si cae en mitad de otra calle, se ajusta a ella; los extremos que tocan un puente no se mueven) y la corrección se reparte en rampa de hasta 80 m. Después se adapta el terreno como antes.
+- `f13_struct.js`: al comprobar si un puente queda enterrado, en los 8 m junto a cada estribo se tolera 1,5 m (antes 0,6) porque ahí el tablero ya va pegado al suelo; sin esto el puente (4614,1692)-(4697,1689) de la Carretera de Málaga se descartaba con el nuevo terreno.
+- Medida (curvatura del terreno cada 5 m a lo largo de las calles): puntos >1,2 m: 148 → 42; >2,5 m: 28 → 8; >4 m: 4 → 1. En los 6 arreglados la curvatura baja a 0,04–0,64 m. Capturas a ras de suelo: sin escalones ni cortes.
+- También bajan (pendiente de que el Inspector lo confirme, siguen en la cola con nota): 20261122-14 (0,33), -15 (0,13), -16 (1,03), 20261123-1 (0,23), 20261123-2 (0,43), 20261123-3 (0,94).
+- No arreglados: 20261122-6 Calle de Bristol (341,3579): está fuera del mapa (z > 3445, donde acaban MDT y ortofoto); hace falta ampliar datos o recortar las calles que salen del mapa. Siguen mal: 20261122-18 (223,2755; el puente de la Autovía de Roquetas ya se descartaba antes de este cambio), 20261123-4 (4553,1718), 20261123-5 (2065,761), 20261122-17 (3402,1518).
+- Pruebas: dbgload sin errores (nota: `dbgload.py` se ejecuta suelto con `python3 dbgload.py`; con `run.py` falla porque abre su propio navegador); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true, airFr 585, take 1 (antes 626, take 3); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 437 calls, 520 248 tris — igual que sin el cambio (437 calls, 520 126 tris).
+- Nueva herramienta: `fhtest/metric.py` (cuenta baches por curvatura y mide cada punto de la cola) para comparar antes/después.
