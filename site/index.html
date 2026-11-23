@@ -2435,7 +2435,7 @@ function mkBikeModel(ti,ci){const T=CARS[ti],K=T.bike,r=T.r,g=new THREE.Group(),
   FP.push([boxG(.22,.04,.07),0,-.03,0,0,0,0,1,1,1,'#1d1e21'],[boxG(.22,.04,.07),0,-forkLen*.42,0,0,0,0,1,1,1,'#1d1e21']);
   steer.add(new THREE.Mesh(linVC(mergeParts(FP)),stdMat('forkVC',{vertexColors:true,metalness:.9,roughness:.25})));
   // guardabarros delantero (alto en la trail)
-  if(K==='trail')add(rboxG(.14,.025,.62,.01),paint,0,hy-.02-0*.1,.22,-.12,0,0,up);else add(rboxG(.13,.022,.5,.01),K==='scooter'?paint:stdMat('bBlk',{color:0x111214,roughness:.5}),0,r+.08,.02,0,0,0,hub);
+  if(K==='trail')add(rboxG(.14,.025,.62,.01),paint,0,-.13,.22,-.12,0,0,up);// (en el marco del manillar: antes se sumaba hy dos veces y flotaba a 1,6 m)else add(rboxG(.13,.022,.5,.01),K==='scooter'?paint:stdMat('bBlk',{color:0x111214,roughness:.5}),0,r+.08,.02,0,0,0,hub);
   // manillar, puños, retrovisores, maneta y cuadro
   const barY=K==='sport'?-.02:K==='trail'?.2:.13,barZ=K==='sport'?-.02:-.06,bw=K==='sport'?.3:K==='trail'?.44:.36;
   const BP=[tubeG([-bw,barY,barZ],[bw,barY,barZ],.012,'#1a1b1e')];for(const s of [-1,1]){BP.push([cylG(.019,.019,.13,10),s*(bw-.04),barY,barZ,0,0,Math.PI/2,1,1,1,'#0c0c0d']);BP.push(tubeG([s*(bw-.12),barY+.01,barZ+.03],[s*(bw-.02),barY,barZ+.09],.006,'#a8adb3'));
@@ -2513,7 +2513,7 @@ function mkBikeModel(ti,ci){const T=CARS[ti],K=T.bike,r=T.r,g=new THREE.Group(),
   if(S.length){const o=new THREE.Mesh(linVC(mergeParts(S)),stdMat('bkS',{vertexColors:true,roughness:.45,metalness:.25,envMapIntensity:.8,side:THREE.DoubleSide}));o.castShadow=HQ;body.add(o)}
   if(M.length){const o=new THREE.Mesh(linVC(mergeParts(M)),stdMat('bkM',{vertexColors:true,roughness:.3,metalness:.85}));o.castShadow=HQ;body.add(o)}
   const wheels=[{piv:steer,spin:fspin,front:true},{piv:rhold,spin:rspin,front:false}];
-  g.userData={wheels,body,paint,tail:TLm,rev:RVm,head:HLm,int:{bike:true,down:3.4,eye:new THREE.Vector3(0,hel[1]+.03,hel[2]+.06),drv:rider,dCv,dT},glass:null};return g}
+  g.userData={wheels,body,paint,tail:TLm,rev:RVm,head:HLm,int:{bike:true,down:K==='sport'?7.5:6,eye:new THREE.Vector3(0,hel[1]+.03,hel[2]+.06),drv:rider,dCv,dT},glass:null};return g}
 let _bdT=0;function bikeInterior(c,dt,inside){const I=c.m.userData.int;I.drv.visible=!inside;if(!inside)return;_bdT-=dt;if(_bdT>0)return;_bdT=1/12;drawBikeDash(I.dCv,Math.abs(c.vf||0)*3.6,c.rpm||.1,c.gear||1);I.dT.needsUpdate=true}
 
 
@@ -4188,7 +4188,7 @@ function buildPublic(){const vc=new THREE.MeshLambertMaterial({vertexColors:true
 /* ============ «REPORTAR FALLO»: el jugador marca un fallo del mapa y queda en la cola de los bots ============
    se guarda en Firebase (fh/bugs) con la posición exacta, la orientación, una nota y una miniatura de la pantalla;
    el bot Inspector la recoge en su siguiente turno y el Mecánico la arregla */
-const BUILD_ID='20261123-1229';
+const BUILD_ID='20261123-1250';
 function bugShot(){try{renderer.render(scene,camera);const s=renderer.domElement,c=cvs(384,Math.round(384*s.height/s.width)),g=c.getContext('2d');g.drawImage(s,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.62)}catch(e){return''}}
 function bugQueue(r){let q=[];try{q=JSON.parse(localStorage.getItem('fhBugsQ')||'[]')}catch(e){}if(r)q.push(r);q=q.slice(-10);try{localStorage.setItem('fhBugsQ',JSON.stringify(q))}catch(e){}return q}
 /* el informe va en fh/bugs (ligero, lo leen los bots) y la miniatura aparte en fh/bugimg/<id> */

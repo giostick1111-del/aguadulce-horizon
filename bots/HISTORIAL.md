@@ -53,3 +53,12 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Rendimiento (perf2, nr): 437 calls, 518 502 tris (antes 437 / 520 248).
 - Herramientas nuevas en `fhtest/`: `diag.py` (calles cercanas a un punto con perfil cy/H; PTS por entorno), `top.py` (lista de puntos con curvatura >2 m), `shots.py` (capturas a ras de suelo; usar con `run.py ""`), `drop.py` (suelta el coche en puntos de la cola).
 - Publicado: commit 5635fe4; workflow «Publicar juego» terminó en success.
+
+## 2026-11-23 (3ª pasada, lanzada a mano) — Mecánico
+- Arreglado 20261123-6 (motos, vista desde el casco): el «retrovisor enorme flotando» de la trail era su guardabarros alto, colocado en el marco del manillar sumando la altura dos veces (quedaba a ~1,6 m); ahora va bajo el faro. Las manos no se veían porque la cámara del casco miraba demasiado alta: inclinación 3,4 → 6 (deportiva 7,5). Scooter, naked y trail muestran brazos y manos; en la deportiva el carenado aún tapa las manos (anotado).
+- Procesados sin cambio de código: 20261122-10 no reproducible (capturas hacia los 4 lados en (3961,1819) sin nada en el cielo); 20261123-7 no es fallo (el punto está en la isleta de la rotonda bajo el puente; el coche se aparta a la calzada).
+- Diagnosticados, sin arreglar: 20261122-16/-17 (el coche se aparta 10 m porque esas calles de OSM atraviesan bloques de viviendas del Catastro; conflicto de datos), 20261123-3 (cambio de pendiente real del 10 % al 45 %), 20261123-5 (glorieta 2,4 m sobre el margen de un ramal de autovía), 20261122-12 (reproducido: la calzada acaba en tierra; antiguo puente descartado de 11,6 m).
+- No dio tiempo: calzadas cortadas de Calle Islas Baleares (3650,1939) y (1727,1557) (no están en la cola).
+- Pruebas: dbgload sin errores (solo fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 589, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 con goles; motos (car1.py) sin errores.
+- Rendimiento (perf2, nr): 437 calls, 519 002 tris.
+- Nuevo: `fhtest/motos_casco.py` (capturas de la vista desde el casco de las 4 motos).

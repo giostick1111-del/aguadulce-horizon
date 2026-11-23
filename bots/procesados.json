@@ -214,5 +214,50 @@
   "fecha": "2026-11-23",
   "causa": "Calle paralela a la Carretera de Málaga, 4-5 m más baja: el talud y la acera de la carretera (más categoría) mandaban sobre la calzada de la calle y la dejaban en dientes de sierra.",
   "arreglo": "f3_world3d.js: la calzada de cualquier calle manda sobre el talud/margen de otra (salvo el de las autovías, remates finales y antiguas trincheras), también en la plataforma. Curvatura 2,73 → 1,68 m; coche soltado: 0 m."
+ },
+ {
+  "id": "20261122-10",
+  "origen": "visual",
+  "tipo": "objeto_cielo",
+  "x": 3961,
+  "z": 1819,
+  "cam": null,
+  "detalle": "Paseo Marítimo: un rectángulo grande y claro, semitransparente, tapa media pantalla con un corte vertical en el cielo (visto también desde 3349,1261). Parece un plano/caja suelto o un fallo de niebla/cielo.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "no reproducible",
+  "fecha": "2026-11-23",
+  "causa": "Capturas a 2 m de altura en (3961,1819) hacia los 4 lados: no aparece ningún rectángulo ni corte en el cielo.",
+  "arreglo": "—"
+ },
+ {
+  "id": "20261123-6",
+  "origen": "visual",
+  "tipo": "moto_vista_interior",
+  "x": 2805,
+  "z": 2140,
+  "cam": null,
+  "detalle": "Moto tipo 6 (trail), vista interior (camMode 2): un retrovisor gris/azul enorme aparece flotando arriba a la izquierda, separado del manillar. Además en las 4 motos (tipos 5-8) no se ven las manos sobre el manillar en vista interior.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "El «retrovisor flotando» era el guardabarros alto de la trail: se colocaba en el marco del manillar sumando la altura hy dos veces y quedaba a ~1,6 m. Las manos no se veían porque la vista desde el casco miraba demasiado alta (inclinación 3,4/12) y brazos y manos quedaban bajo el borde de la pantalla.",
+  "arreglo": "f4e_bike.js: guardabarros de la trail bajo el faro (y −0,13 en el marco del manillar); vista desde el casco más inclinada (6/12; deportiva 7,5/12). Capturas: scooter, naked y trail muestran brazos y manos en los puños; en la deportiva el carenado sigue tapando las manos (posición agachada)."
+ },
+ {
+  "id": "20261123-7",
+  "origen": "auto",
+  "tipo": "coche_expulsado",
+  "x": 208,
+  "z": 2781,
+  "cam": null,
+  "detalle": "2026-11-23 Mecánico: el punto (208,2781) queda ahora bajo el puente recuperado de la 2ª calzada de la Autovía de Roquetas; el coche soltado ahí (a ras del suelo, bajo el tablero) se desplaza 20 m. Revisar la colisión con estribos/pilas bajo el puente y el aspecto (estribos blancos, montículo de la isleta).",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "no es fallo",
+  "fecha": "2026-11-23",
+  "causa": "El punto (208,2781) está dentro de la isleta de la rotonda, bajo el puente de la 2ª calzada de la Autovía de Roquetas: blockedAt da isleta (islandBlocked) y el coche se aparta a la calzada libre (freeSpot). La vía del puente va por el tablero.",
+  "arreglo": "—"
  }
 ]
