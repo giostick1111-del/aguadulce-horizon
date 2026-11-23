@@ -156,7 +156,7 @@
    82.1,
    1522.0
   ],
-  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada.",
+  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada. | 2026-11-23: el coche soltado en (3397,1489) salió despedido 10 m.",
   "reporte": null,
   "prioridad": 1
  },
@@ -171,7 +171,40 @@
    50.6,
    2760.8
   ],
-  "detalle": "curvatura 2.51 m en calle. Confirmado a ras de suelo: salto de 2.9 m en 5 m (perfil cada 5 m: 48.1, 48.6, 50.5, 51.7, 51.7, 51.6, 51.8, 54.7, 53.6, 51.1, 51.1, 50.9, 50.8); se ve un reborde/corte en la calzada.",
+  "detalle": "curvatura 2.51 m en calle. Confirmado a ras de suelo: salto de 2.9 m en 5 m (perfil cada 5 m: 48.1, 48.6, 50.5, 51.7, 51.7, 51.6, 51.8, 54.7, 53.6, 51.1, 51.1, 50.9, 50.8); se ve un reborde/corte en la calzada. | 2026-11-23: perfil a lo largo (cada 5 m) 52.3→51.2→48.2→52.3 junto a (223,2776): hoyo de ~4 m en la Autovía de Roquetas; en la captura una losa blanca inclinada sobresale junto a la calzada; además el coche soltado en (208,2781) salió despedido 20 m.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261123-1",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 2139,
+  "z": 650,
+  "cam": null,
+  "detalle": "curvatura 2.40 m en calle cls 2 (zona Carmen Pinteño/Julio Visconti). A ras de suelo: la calzada sube de golpe 3.4 m en 5 m (133.8→137.2) pegada a un muro blanco; rampa brusca, el coche salta.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261123-2",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 983,
+  "z": 1158,
+  "cam": null,
+  "detalle": "curvatura 2.37 m en calle cls 2 junto a la Autovía del Mediterráneo. A ras de suelo: escalón de 3.4 m en 5 m (108.9→112.3) y la calle se mete en una ranura oscura entre dos paredes de terreno.",
+  "reporte": null,
+  "prioridad": 1
+ },
+ {
+  "id": "20261123-3",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 3506,
+  "z": 1496,
+  "cam": null,
+  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular.",
   "reporte": null,
   "prioridad": 1
  },
@@ -197,18 +230,7 @@
   "x": null,
   "z": null,
   "cam": null,
-  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0.",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261122-9",
-  "origen": "auto",
-  "tipo": "prueba_rota",
-  "x": null,
-  "z": null,
-  "cam": null,
-  "detalle": "fhtest/mobfb.py falla: FileNotFoundError /tmp/fhtest/mockfb.js (el archivo no está en el repositorio). La prueba de móvil+fútbol no se pudo ejecutar.",
+  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3).",
   "reporte": null,
   "prioridad": 2
  },
@@ -242,6 +264,39 @@
   "z": 2808,
   "cam": null,
   "detalle": "Junto a la rotonda de la autovía (oeste): la calzada termina de golpe en el terreno y los ramales del fondo se ven flotando como cintas con bordes blancos.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261123-4",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 4553,
+  "z": 1718,
+  "cam": null,
+  "detalle": "curvatura 2.40 m en calle cls 3 junto a la Carretera de Málaga. Perfil en dientes de sierra de ±2 m cada 10 m (26.7→24.4→25.8→27.2→24.9) y la calzada muy inclinada de lado sobre el talud.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261123-5",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 2065,
+  "z": 761,
+  "cam": null,
+  "detalle": "curvatura 2.39 m en calle cls 2 (zona Carmen Pinteño). Escalón de 2.4 m en 5 m (132.0→134.4) en la bajada hacia los pasos de cebra.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261123-6",
+  "origen": "visual",
+  "tipo": "moto_vista_interior",
+  "x": 2805,
+  "z": 2140,
+  "cam": null,
+  "detalle": "Moto tipo 6 (trail), vista interior (camMode 2): un retrovisor gris/azul enorme aparece flotando arriba a la izquierda, separado del manillar. Además en las 4 motos (tipos 5-8) no se ven las manos sobre el manillar en vista interior.",
   "reporte": null,
   "prioridad": 2
  },
