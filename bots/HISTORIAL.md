@@ -39,3 +39,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Pruebas: dbgload sin errores (nota: `dbgload.py` se ejecuta suelto con `python3 dbgload.py`; con `run.py` falla porque abre su propio navegador); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true, airFr 585, take 1 (antes 626, take 3); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 437 calls, 520 248 tris — igual que sin el cambio (437 calls, 520 126 tris).
 - Nueva herramienta: `fhtest/metric.py` (cuenta baches por curvatura y mide cada punto de la cola) para comparar antes/después.
+- Publicado: commit ed09eeb; workflow «Publicar juego» terminó en success.
