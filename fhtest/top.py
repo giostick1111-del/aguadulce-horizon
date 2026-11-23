@@ -1,0 +1,2 @@
+r=pg.evaluate("""(()=>{const o=[];for(const r of ROADPATHS){if(r.cls>4||r.st)continue;const P=r.P;let prev=null,pp=null;for(let i=0;i<P.length/2-1;i++){const ax=P[i*2],az=P[i*2+1],bx=P[i*2+2],bz=P[i*2+3],L=Math.hypot(bx-ax,bz-az);for(let t=0;t<L;t+=5){const x=ax+(bx-ax)*t/L,z=az+(bz-az)*t/L,h=H(x,z);if(prev!==null&&pp!==null){const c=Math.abs(pp-2*prev+h);if(c>2)o.push([Math.round(x),Math.round(z),+c.toFixed(2),r.cls,WD.names[r.name]||''])}pp=prev;prev=h}}}return o.sort((a,b)=>b[2]-a[2])})()""")
+for x in r: print(x)

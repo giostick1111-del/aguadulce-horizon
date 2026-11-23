@@ -112,5 +112,107 @@
   "fecha": "2026-11-23",
   "causa": "Carretera de Málaga junto al puente (4614,1692)-(4697,1689): perfiles de los tramos del cruce sin igualar.",
   "arreglo": "junctionFix() en f3_world3d.js: alturas de calles iguales en los nodos compartidos con rampa de hasta 80 m"
+ },
+ {
+  "id": "20261122-14",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 2686,
+  "z": 3138,
+  "cam": [
+   2664.7,
+   11.3,
+   3124.9
+  ],
+  "detalle": "curvatura 2.64 m en Calle del Naranjo. Confirmado a ras de suelo: salto de 2.8 m en 5 m (perfil cada 5 m: 9.4, 9.3, 9.0, 8.8, 8.6, 8.5, 5.7, 4.4, 4.4, 4.1, 3.7, 3.7, 3.9); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.33 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "confirmado",
+  "fecha": "2026-11-23",
+  "causa": "Arreglado el turno anterior (junctionFix).",
+  "arreglo": "Confirmado a ras de suelo: curvatura 0,33 m, captura sin escalón, coche soltado 0 m."
+ },
+ {
+  "id": "20261122-15",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 944,
+  "z": 1143,
+  "cam": [
+   962.0,
+   116.9,
+   1125.7
+  ],
+  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo. Confirmado a ras de suelo: salto de 3.1 m en 5 m (perfil cada 5 m: 115.1, 114.9, 114.8, 114.7, 114.6, 114.5, 111.4, 108.4, 108.4, 108.3, 108.3, 108.2, 108.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.13 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "confirmado",
+  "fecha": "2026-11-23",
+  "causa": "Arreglado el turno anterior (junctionFix).",
+  "arreglo": "Confirmado a ras de suelo: curvatura 0,13 m, captura sin escalón, coche soltado 0 m."
+ },
+ {
+  "id": "20261122-18",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 223,
+  "z": 2755,
+  "cam": [
+   247.3,
+   50.6,
+   2760.8
+  ],
+  "detalle": "curvatura 2.51 m en calle. Confirmado a ras de suelo: salto de 2.9 m en 5 m (perfil cada 5 m: 48.1, 48.6, 50.5, 51.7, 51.7, 51.6, 51.8, 54.7, 53.6, 51.1, 51.1, 50.9, 50.8); se ve un reborde/corte en la calzada. | 2026-11-23: perfil a lo largo (cada 5 m) 52.3→51.2→48.2→52.3 junto a (223,2776): hoyo de ~4 m en la Autovía de Roquetas; en la captura una losa blanca inclinada sobresale junto a la calzada; además el coche soltado en (208,2781) salió despedido 20 m.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Rotonda bajo la Autovía de Roquetas: el remate final de la autovía (más allá del estribo del puente) y la plataforma de la vía paralela más baja (misma categoría: se cogía la altura mínima) se metían en la rotonda; además el puente de la 2ª calzada (202,2747)-(218,2839) se descartaba por un montículo de 1,2 m bajo el tablero y la calzada pasaba a ras por encima de la rotonda.",
+  "arreglo": "f3_world3d.js: los extremos apoyados en un puente no se prolongan más allá del estribo; en la plataforma, a igual categoría manda la vía de eje más cercano. f13_struct.js: si un puente sobre otra vía solo queda enterrado ≤4 m en el centro se rebaja el terreno bajo el tablero (clearUnder) en vez de quitar el puente. Curvatura 3,22 → 0,72 m; perfil de la rotonda liso (45,9–47,7)."
+ },
+ {
+  "id": "20261123-1",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 2139,
+  "z": 650,
+  "cam": null,
+  "detalle": "curvatura 2.40 m en calle cls 2 (zona Carmen Pinteño/Julio Visconti). A ras de suelo: la calzada sube de golpe 3.4 m en 5 m (133.8→137.2) pegada a un muro blanco; rampa brusca, el coche salta. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.23 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "confirmado",
+  "fecha": "2026-11-23",
+  "causa": "Arreglado el turno anterior (junctionFix).",
+  "arreglo": "Confirmado a ras de suelo: curvatura 0,23 m, captura sin escalón, coche soltado 0 m."
+ },
+ {
+  "id": "20261123-2",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 983,
+  "z": 1158,
+  "cam": null,
+  "detalle": "curvatura 2.37 m en calle cls 2 junto a la Autovía del Mediterráneo. A ras de suelo: escalón de 3.4 m en 5 m (108.9→112.3) y la calle se mete en una ranura oscura entre dos paredes de terreno. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.43 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "confirmado",
+  "fecha": "2026-11-23",
+  "causa": "Arreglado el turno anterior (junctionFix).",
+  "arreglo": "Confirmado a ras de suelo: curvatura 0,43 m, captura sin ranura ni escalón, coche soltado 0 m."
+ },
+ {
+  "id": "20261123-4",
+  "origen": "auto",
+  "tipo": "bache",
+  "x": 4553,
+  "z": 1718,
+  "cam": null,
+  "detalle": "curvatura 2.40 m en calle cls 3 junto a la Carretera de Málaga. Perfil en dientes de sierra de ±2 m cada 10 m (26.7→24.4→25.8→27.2→24.9) y la calzada muy inclinada de lado sobre el talud.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "fecha": "2026-11-23",
+  "causa": "Calle paralela a la Carretera de Málaga, 4-5 m más baja: el talud y la acera de la carretera (más categoría) mandaban sobre la calzada de la calle y la dejaban en dientes de sierra.",
+  "arreglo": "f3_world3d.js: la calzada de cualquier calle manda sobre el talud/margen de otra (salvo el de las autovías, remates finales y antiguas trincheras), también en la plataforma. Curvatura 2,73 → 1,68 m; coche soltado: 0 m."
  }
 ]

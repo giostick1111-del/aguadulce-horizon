@@ -34,25 +34,32 @@ function junctionFix(CR){const C=8,G=new Map(),key=(x,z)=>Math.floor(z/C)*100000
       if(r._lim)for(let i=0;i<N;i++)cy[i]=Math.min(cy[i],r._lim(i));r.cy=cy;maxd=Math.max(maxd,Math.abs(d0),Math.abs(d1))})}
   console.log('env juntas',ends.length,'max',maxd.toFixed(2));return ends.length}
 /* las calles reales son planas de lado a lado: se adapta el terreno a su perfil longitudinal suavizado */
-function conformTerrain(){strPrep();const CR=[];const n=TG.nx,m=TG.nz,h=TG.h,acc=new Float32Array(n*m),wsum=new Float32Array(n*m),mx=new Float32Array(n*m),cap=new Float32Array(n*m).fill(1e9),flo=new Float32Array(n*m).fill(-1e9),pc=new Uint8Array(n*m).fill(99),capc=new Uint8Array(n*m).fill(99);
+function conformTerrain(){strPrep();const CR=[];const n=TG.nx,m=TG.nz,h=TG.h,acc=new Float32Array(n*m),wsum=new Float32Array(n*m),mx=new Float32Array(n*m),cap=new Float32Array(n*m).fill(1e9),flo=new Float32Array(n*m).fill(-1e9),pc=new Uint8Array(n*m).fill(99),capc=new Uint8Array(n*m).fill(99);const bd=new Float32Array(n*m).fill(1e9);
   for(const r of WD.roads){const cls=r[0];if(cls>7||cls===8||cls===10)continue;if(r[4]===1||r[4]===3||r[4]===4)continue;let P=[];for(let i=5;i<r.length;i+=2)P.push(r[i]*K,r[i+1]*K);P=densify(P,4);const N=P.length/2;if(N<2)continue;
     const hw=r[1]*K/2+(cls===0?5:cls<=5?2.6:.5);const raw=new Float32Array(N);for(let i=0;i<N;i++)raw[i]=H(P[i*2],P[i*2+1]);// antiguo túnel: la vía va en trinchera, en línea recta entre las dos bocas (sin subir y bajar el cerro)
     if(r.wasT){const a=raw[0],b=raw[N-1];for(let i=0;i<N;i++)raw[i]=Math.min(raw[i],a+(b-a)*i/(N-1))}
     const UND=r.under||[];const lim=i=>{let m=1e9;for(const u of UND)m=Math.min(m,u.y+Math.max(0,Math.hypot(P[i*2]-u.x,P[i*2+1]-u.z)-10)*.075);return m};if(UND.length)for(let i=0;i<N;i++)raw[i]=Math.min(raw[i],lim(i));
     let cy=raw;const NP=cls<=3?6:2;for(let pass=0;pass<NP;pass++){const o=new Float32Array(N);for(let i=0;i<N;i++){let s=0,c=0;for(let k=-9;k<=9;k++){const q=i+k;if(q<0||q>=N)continue;const w=10-Math.abs(k);s+=cy[q]*w;c+=w}o[i]=s/c}cy=o}if(UND.length)for(let i=0;i<N;i++)cy[i]=Math.min(cy[i],lim(i));r.cy=cy;r.dp=P;r._hw=hw;r._lim=UND.length?lim:null;r._pin=null;CR.push(r)}
   junctionFix(CR);
-  for(const r of CR){const cls=r[0],P=r.dp,N=P.length/2,hw=r._hw,cy=r.cy;
+  for(const r of CR){const cls=r[0],P=r.dp,N=P.length/2,hw=r._hw,cy=r.cy,pinA=!!(r._pin&&r._pin.includes(0)),pinB=!!(r._pin&&r._pin.includes(N-1)),hwc=r[1]*K/2+1;
     const R=hw+7;for(let i=0;i<N-1;i++){const ax=P[i*2],az=P[i*2+1],bx=P[i*2+2],bz=P[i*2+3];const x0=Math.max(0,Math.floor((Math.min(ax,bx)-R)/GS)),x1=Math.min(n-1,Math.ceil((Math.max(ax,bx)+R)/GS)),z0=Math.max(0,Math.floor((Math.min(az,bz)-R)/GS)),z1=Math.min(m-1,Math.ceil((Math.max(az,bz)+R)/GS));
       const dx=bx-ax,dz=bz-az,L2=dx*dx+dz*dz||1;
-      for(let gz=z0;gz<=z1;gz++)for(let gx=x0;gx<=x1;gx++){const k=gz*n+gx;if(h[k]<0)continue;const x=gx*GS,z=gz*GS;let t=((x-ax)*dx+(z-az)*dz)/L2;t=t<0?0:t>1?1:t;const d=Math.hypot(x-ax-dx*t,z-az-dz*t);if(d>R)continue;
+      for(let gz=z0;gz<=z1;gz++)for(let gx=x0;gx<=x1;gx++){const k=gz*n+gx;if(h[k]<0)continue;const x=gx*GS,z=gz*GS;let t=((x-ax)*dx+(z-az)*dz)/L2;
+        // un extremo que apoya en un puente no se prolonga más allá del estribo (debajo del tablero pasa otra vía)
+        if((t<0&&i===0&&pinA)||(t>1&&i===N-2&&pinB))continue;const cap0=(t<0&&i===0)||(t>1&&i===N-2);t=t<0?0:t>1?1:t;const d=Math.hypot(x-ax-dx*t,z-az-dz*t);if(d>R)continue;
         const w=d<=hw?1:1-(d-hw)/(R-hw);const ww=w*w*(3-2*w);const ty=cy[i]+(cy[i+1]-cy[i])*t;
-        // jerarquía: donde dos vías se cruzan a distinto nivel manda la más importante (autovía > avenida > calle)
-        if(cls<pc[k]&&ww>.5&&wsum[k]>0&&Math.abs(acc[k]/wsum[k]-ty)>2.5){acc[k]=0;wsum[k]=0;mx[k]=0}
-        if(cls>pc[k]&&wsum[k]>0&&Math.abs(acc[k]/wsum[k]-ty)>2.5)continue;
-        if(ww>.5&&cls<pc[k])pc[k]=cls;
+        // jerarquía: donde dos vías se cruzan a distinto nivel manda la más importante (autovía > avenida > calle);
+        // pero la calzada de cualquier calle manda sobre el talud (margen) de otra: así una calle paralela a una autovía no queda en su talud (el talud de las autovías sí manda; no cuentan como calzada el remate más allá del final de una calle ni las antiguas trincheras)
+        const pr=(d<=hw&&!r.wasT&&!cap0)||cls===0?cls:cls+10;
+        if(pr<pc[k]&&ww>.5&&wsum[k]>0&&Math.abs(acc[k]/wsum[k]-ty)>2.5){acc[k]=0;wsum[k]=0;mx[k]=0}
+        if(pr>pc[k]&&wsum[k]>0&&Math.abs(acc[k]/wsum[k]-ty)>2.5)continue;
+        if(ww>.5&&pr<pc[k])pc[k]=pr;
         if(ww>(mx[k]||0))mx[k]=ww;acc[k]+=ty*ww;wsum[k]+=ww;
-        if(cls<=3&&d<=hw+GS*.5){if(cls<capc[k]){if(capc[k]<99&&Math.abs(cap[k]-(ty-.2))>2.5){cap[k]=ty-.2;flo[k]=ty-.25}capc[k]=cls}
-          else if(cls>capc[k]&&Math.abs(cap[k]-(ty-.2))>2.5)continue;if(ty-.2<cap[k])cap[k]=ty-.2;if(ty-.25>flo[k])flo[k]=ty-.25}}}}
+        // plataforma: a igual categoría y alturas muy distintas (vía paralela más baja) manda la vía cuyo eje está más cerca
+        const cp=d<=hwc?cls:cls+10;// (y la calzada de una calle manda sobre la acera/arcén de otra)
+        if(cls<=3&&d<=hw+GS*.5){if(cp<capc[k]){if(capc[k]<99&&Math.abs(cap[k]-(ty-.2))>2.5){cap[k]=ty-.2;flo[k]=ty-.25}capc[k]=cp;bd[k]=d}
+          else if(cp>capc[k]&&Math.abs(cap[k]-(ty-.2))>2.5)continue;
+          else if(cp===capc[k]&&Math.abs(cap[k]-(ty-.2))>2.5){if(d<bd[k]){cap[k]=ty-.2;flo[k]=ty-.25;bd[k]=d}continue}else if(d<bd[k])bd[k]=d;if(ty-.2<cap[k])cap[k]=ty-.2;if(ty-.25>flo[k])flo[k]=ty-.25}}}}
   for(let k=0;k<n*m;k++)if(wsum[k]>0){const a=mx[k];h[k]=h[k]*(1-a)+(acc[k]/wsum[k])*a}
   // el terreno nunca asoma por encima de la plataforma de las carreteras principales
   if(!window.__nocap)for(let k=0;k<n*m;k++){if(h[k]>cap[k])h[k]=cap[k];if(flo[k]>-1e8&&h[k]<flo[k]&&h[k]>-1)h[k]=Math.min(flo[k],cap[k])}}

@@ -40,3 +40,15 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Rendimiento (perf2, nr): 437 calls, 520 248 tris — igual que sin el cambio (437 calls, 520 126 tris).
 - Nueva herramienta: `fhtest/metric.py` (cuenta baches por curvatura y mide cada punto de la cola) para comparar antes/después.
 - Publicado: commit ed09eeb; workflow «Publicar juego» terminó en success.
+
+## 2026-11-23 (2º turno) — Mecánico
+- Arreglados 2 fallos y confirmados 4 del turno anterior (6 en total pasan a procesados):
+  - 20261122-18 rotonda bajo la Autovía de Roquetas (223,2755): curvatura 3,22 → 0,72 m, perfil liso (45,9–47,7). Causas: el remate final de la autovía más allá del estribo del puente se metía en la rotonda; en la plataforma de dos vías de igual categoría a alturas muy distintas se cogía la más baja; y el puente de la 2ª calzada (202,2747)-(218,2839) se descartaba por un montículo de 1,2 m bajo el tablero, con lo que la calzada pasaba a ras por encima de la rotonda.
+  - 20261123-4 calle paralela a la Carretera de Málaga (4553,1718): 2,73 → 1,68 m. Causa: el talud/acera de la carretera (más categoría) mandaba sobre la calzada de la calle más baja.
+  - Confirmados a ras de suelo (captura + coche soltado 0 m): 20261122-14 (0,33), 20261122-15 (0,13), 20261123-1 (0,23), 20261123-2 (0,43).
+- Arreglos (reglas generales): `f3_world3d.js` `conformTerrain`: (1) la calzada de una calle manda sobre el talud de otra (excepto el talud de las autovías, el remate más allá del final de una calle y las antiguas trincheras `wasT`); (2) un extremo apoyado en un puente no se prolonga más allá del estribo; (3) en la plataforma (cap/flo) a igual categoría manda la vía de eje más cercano y la calzada manda sobre la acera de otra. `f13_struct.js`: nueva `clearUnder()`: si un puente que cruza sobre otra vía solo queda enterrado ≤4 m en el centro, se rebaja el terreno bajo el tablero en vez de quitar el puente (ahora hay 11 puentes, antes 10).
+- Medida global (metric.py/top.py, curvatura cada 5 m): puntos >1,2 m: 42 → 19; >2,5 m: 8 → 0; >4 m: 1 → 0. Probé y descarté otras variantes (desempate por cercanía en la jerarquía general; talud de autovía sin prioridad) porque creaban escalones nuevos en (199,2728) y (379,2206).
+- No arreglados: 20261122-6 (fuera del mapa), 20261123-5 (2065,761; 2,39 m, sin cambios), 20261122-17 y -16 (curvatura 1,5/1,2 m pero el coche soltado se desplaza 10 m), 20261123-3 (aquí bien, pero a 30 m queda (3502,1525) con 2,32 m), 20261122-8 (airFr 585). Nuevo en la cola: 20261123-7, coche soltado bajo el puente recuperado (208,2781) se desplaza 20 m.
+- Pruebas: dbgload sin errores (solo fallos de red de fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 437 calls, 518 502 tris (antes 437 / 520 248).
+- Herramientas nuevas en `fhtest/`: `diag.py` (calles cercanas a un punto con perfil cy/H; PTS por entorno), `top.py` (lista de puntos con curvatura >2 m), `shots.py` (capturas a ras de suelo; usar con `run.py ""`), `drop.py` (suelta el coche en puntos de la cola).

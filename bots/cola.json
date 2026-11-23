@@ -11,36 +11,6 @@
   "prioridad": 1
  },
  {
-  "id": "20261122-14",
-  "origen": "visual",
-  "tipo": "bache",
-  "x": 2686,
-  "z": 3138,
-  "cam": [
-   2664.7,
-   11.3,
-   3124.9
-  ],
-  "detalle": "curvatura 2.64 m en Calle del Naranjo. Confirmado a ras de suelo: salto de 2.8 m en 5 m (perfil cada 5 m: 9.4, 9.3, 9.0, 8.8, 8.6, 8.5, 5.7, 4.4, 4.4, 4.1, 3.7, 3.7, 3.9); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.33 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-15",
-  "origen": "visual",
-  "tipo": "bache",
-  "x": 944,
-  "z": 1143,
-  "cam": [
-   962.0,
-   116.9,
-   1125.7
-  ],
-  "detalle": "curvatura 2.64 m en Autovía del Mediterráneo. Confirmado a ras de suelo: salto de 3.1 m en 5 m (perfil cada 5 m: 115.1, 114.9, 114.8, 114.7, 114.6, 114.5, 111.4, 108.4, 108.4, 108.3, 108.3, 108.2, 108.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.13 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
   "id": "20261122-16",
   "origen": "visual",
   "tipo": "bache",
@@ -51,7 +21,7 @@
    81.6,
    1531.8
   ],
-  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 1.03 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 1.03 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): curvatura 1,24 m; el coche soltado en (3451,1507) se desplaza 10 m (calle muy empinada); sigue pendiente.",
   "reporte": null,
   "prioridad": 1
  },
@@ -66,44 +36,7 @@
    82.1,
    1522.0
   ],
-  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada. | 2026-11-23: el coche soltado en (3397,1489) salió despedido 10 m.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261122-18",
-  "origen": "visual",
-  "tipo": "bache",
-  "x": 223,
-  "z": 2755,
-  "cam": [
-   247.3,
-   50.6,
-   2760.8
-  ],
-  "detalle": "curvatura 2.51 m en calle. Confirmado a ras de suelo: salto de 2.9 m en 5 m (perfil cada 5 m: 48.1, 48.6, 50.5, 51.7, 51.7, 51.6, 51.8, 54.7, 53.6, 51.1, 51.1, 50.9, 50.8); se ve un reborde/corte en la calzada. | 2026-11-23: perfil a lo largo (cada 5 m) 52.3→51.2→48.2→52.3 junto a (223,2776): hoyo de ~4 m en la Autovía de Roquetas; en la captura una losa blanca inclinada sobresale junto a la calzada; además el coche soltado en (208,2781) salió despedido 20 m.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261123-1",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 2139,
-  "z": 650,
-  "cam": null,
-  "detalle": "curvatura 2.40 m en calle cls 2 (zona Carmen Pinteño/Julio Visconti). A ras de suelo: la calzada sube de golpe 3.4 m en 5 m (133.8→137.2) pegada a un muro blanco; rampa brusca, el coche salta. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.23 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261123-2",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 983,
-  "z": 1158,
-  "cam": null,
-  "detalle": "curvatura 2.37 m en calle cls 2 junto a la Autovía del Mediterráneo. A ras de suelo: escalón de 3.4 m en 5 m (108.9→112.3) y la calle se mete en una ranura oscura entre dos paredes de terreno. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.43 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada. | 2026-11-23: el coche soltado en (3397,1489) salió despedido 10 m. | 2026-11-23 Mecánico (2º): curvatura 1,54 m; el coche soltado en (3397,1489) sigue desplazándose 10 m; sin arreglar.",
   "reporte": null,
   "prioridad": 1
  },
@@ -114,7 +47,7 @@
   "x": 3506,
   "z": 1496,
   "cam": null,
-  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.94 m; probablemente resuelto, falta confirmarlo a ras de suelo.",
+  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.94 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): aquí 0,89 m y coche soltado 0 m, pero a 30 m, en (3502,1525), queda un punto de 2,32 m en la misma calle; se deja para revisar.",
   "reporte": null,
   "prioridad": 1
  },
@@ -140,7 +73,7 @@
   "x": null,
   "z": null,
   "cam": null,
-  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3). | 2026-11-23 Mecánico: tras junctionFix airFr 585, take 1 (antes 626, take 3).",
+  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3). | 2026-11-23 Mecánico: tras junctionFix airFr 585, take 1 (antes 626, take 3). | 2026-11-23 Mecánico (2º): sin cambios (airFr 585, take 1).",
   "reporte": null,
   "prioridad": 2
  },
@@ -178,24 +111,13 @@
   "prioridad": 2
  },
  {
-  "id": "20261123-4",
-  "origen": "auto",
-  "tipo": "bache",
-  "x": 4553,
-  "z": 1718,
-  "cam": null,
-  "detalle": "curvatura 2.40 m en calle cls 3 junto a la Carretera de Málaga. Perfil en dientes de sierra de ±2 m cada 10 m (26.7→24.4→25.8→27.2→24.9) y la calzada muy inclinada de lado sobre el talud.",
-  "reporte": null,
-  "prioridad": 2
- },
- {
   "id": "20261123-5",
   "origen": "auto",
   "tipo": "bache",
   "x": 2065,
   "z": 761,
   "cam": null,
-  "detalle": "curvatura 2.39 m en calle cls 2 (zona Carmen Pinteño). Escalón de 2.4 m en 5 m (132.0→134.4) en la bajada hacia los pasos de cebra.",
+  "detalle": "curvatura 2.39 m en calle cls 2 (zona Carmen Pinteño). Escalón de 2.4 m en 5 m (132.0→134.4) en la bajada hacia los pasos de cebra. | 2026-11-23 Mecánico (2º): sin cambios (2,39 m); no arreglado este turno.",
   "reporte": null,
   "prioridad": 2
  },
@@ -231,5 +153,16 @@
   "detalle": "Calle Génova: un montículo de arena del terreno sobresale por encima de la acera junto a las casas (lado derecho).",
   "reporte": null,
   "prioridad": 3
+ },
+ {
+  "id": "20261123-7",
+  "origen": "auto",
+  "tipo": "coche_expulsado",
+  "x": 208,
+  "z": 2781,
+  "cam": null,
+  "detalle": "2026-11-23 Mecánico: el punto (208,2781) queda ahora bajo el puente recuperado de la 2ª calzada de la Autovía de Roquetas; el coche soltado ahí (a ras del suelo, bajo el tablero) se desplaza 20 m. Revisar la colisión con estribos/pilas bajo el puente y el aspecto (estribos blancos, montículo de la isleta).",
+  "reporte": null,
+  "prioridad": 2
  }
 ]

@@ -21,10 +21,15 @@ function strPrep(){if(STR.prepped)return;STR.prepped=true;const conn=new Map();
   STR.list=STR.list.filter(st=>{if(st.kind!=='b')return true;const P=st.P,n=P.length/2;let gap=0;for(let i=0;i<n;i+=3){const y=st.hA+(st.hB-st.hA)*st.S[i]/st.L;gap=Math.max(gap,y-H(P[i*2],P[i*2+1]))}let low=1e9;for(let i=0;i<n;i+=3){const y=st.hA+(st.hB-st.hA)*st.S[i]/st.L;low=Math.min(low,y-H(P[i*2],P[i*2+1]))}
     const ok=st.over?(st.L>=40&&low>-.6):gap>=3;if(!ok){st.r[4]=0;return false}return true});
   const keep=new Set(STR.list);for(const r of WD.roads)if(r.under)r.under=r.under.filter(u=>keep.has(u.st));}
+function clearUnder(st,hA,hB){const P=st.P,n=P.length/2,h=TG.h,nx=TG.nx,nz=TG.nz,R=st.hw+1.5;
+  for(let i=0;i<n-1;i++){const ax=P[i*2],az=P[i*2+1],bx=P[i*2+2],bz=P[i*2+3],dx=bx-ax,dz=bz-az,L2=dx*dx+dz*dz||1;const x0=Math.max(0,Math.floor((Math.min(ax,bx)-R)/GS)),x1=Math.min(nx-1,Math.ceil((Math.max(ax,bx)+R)/GS)),z0=Math.max(0,Math.floor((Math.min(az,bz)-R)/GS)),z1=Math.min(nz-1,Math.ceil((Math.max(az,bz)+R)/GS));
+    for(let gz=z0;gz<=z1;gz++)for(let gx=x0;gx<=x1;gx++){const k=gz*nx+gx;if(h[k]<0)continue;const x=gx*GS,z=gz*GS;let t=((x-ax)*dx+(z-az)*dz)/L2;if(t<0||t>1)continue;const s=st.S[i]+(st.S[i+1]-st.S[i])*t;if(s<8||s>st.L-8)continue;
+      if(Math.hypot(x-ax-dx*t,z-az-dz*t)>R)continue;const y=hA+(hB-hA)*s/st.L-1.2;if(h[k]>y)h[k]=y}}}
 function strFinish(){// tras ajustar el terreno: alturas definitivas de los extremos y rejilla para la física
   // con el terreno ya definitivo, fuera los puentes cuyo tablero quedaría enterrado en algún punto
-  const n0=STR.list.length;STR.list=STR.list.filter(st=>{if(st.kind!=='b')return true;const P=st.P,n=P.length/2,hA=H(P[0],P[1]),hB=H(P[n*2-2],P[n*2-1]);for(let i=0;i<n;i++){const y=hA+(hB-hA)*st.S[i]/st.L;const ab=Math.min(st.S[i],st.L-st.S[i])<8;// junto a los estribos el tablero ya va pegado al suelo: se tolera más
-        if(y-H(P[i*2],P[i*2+1])<(ab?-1.5:-.6)){st.r[4]=0;return false}}return true});
+  // un puente que cruza sobre otra vía y solo queda enterrado por un montículo (hasta 4 m) en el centro: se rebaja el terreno bajo el tablero
+  const n0=STR.list.length;STR.list=STR.list.filter(st=>{if(st.kind!=='b')return true;const P=st.P,n=P.length/2,hA=H(P[0],P[1]),hB=H(P[n*2-2],P[n*2-1]);let clr=false;for(let i=0;i<n;i++){const y=hA+(hB-hA)*st.S[i]/st.L;const ab=Math.min(st.S[i],st.L-st.S[i])<8;// junto a los estribos el tablero ya va pegado al suelo: se tolera más
+        const g=y-H(P[i*2],P[i*2+1]);if(g<(ab?-1.5:-.6)){if(!ab&&st.over&&g>-4){clr=true;continue}st.r[4]=0;return false}}if(clr)clearUnder(st,hA,hB);return true});
   const removed=n0-STR.list.length;if(removed){const keep=new Set(STR.list);for(const r of WD.roads)if(r.under)r.under=r.under.filter(u=>keep.has(u.st));return removed}
   for(const st of STR.list){const P=st.P,n=P.length/2;if(st.kind!=='p'){st.hA=H(P[0],P[1]);st.hB=H(P[n*2-2],P[n*2-1])}else st.hA=H(P[0],P[1]);
     for(let i=0;i<n-1;i++){const x0=Math.min(P[i*2],P[i*2+2])-st.hw-2,x1=Math.max(P[i*2],P[i*2+2])+st.hw+2,z0=Math.min(P[i*2+1],P[i*2+3])-st.hw-2,z1=Math.max(P[i*2+1],P[i*2+3])+st.hw+2;
