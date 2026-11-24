@@ -88,4 +88,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
   - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 437 calls, 526 960 tris (antes 437 / 519 002; +1,5 %).
 - Nueva herramienta: `fhtest/met2.py` (curvatura global y en los puntos de la cola, con la lista de puntos >1,2 m).
-- Publicado: commit 4cea5fb, pero el workflow «Publicar juego» (run 45326185502) falló dos veces en `deploy-pages` («No artifacts named github-pages were found», aunque `upload-pages-artifact` terminó bien). Parece un fallo de GitHub, no del juego. No toco `.github/`. Este commit vuelve a lanzar el workflow.
+- Publicado: commit 4cea5fb, pero el workflow «Publicar juego» (run 45326185502) falló dos veces en `deploy-pages` («No artifacts named github-pages were found», aunque `upload-pages-artifact` terminó bien). Parece un fallo de GitHub, no del juego. No toco `.github/`. El push no relanzó el workflow (solo salta con cambios en site/), así que lo lancé a mano (workflow_dispatch, run 45327249334 sobre 66028d8): terminó en success. Web publicada.
