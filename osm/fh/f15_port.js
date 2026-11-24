@@ -81,9 +81,9 @@ function flattenPort(){if(!PORTD.marina)return;const polys=[PORTD.marina,...PORT
   // agua según la línea de costa detallada de OpenStreetMap (no el contorno grueso del mar)
   PWM={x0,z0,W,H:Hh,m:wm0};
   PMASK={x0,z0,W,H:Hh,m:land};
-  // terreno: todo lo que cae dentro del recinto, al fondo (la losa lo tapa en tierra y el agua en la dársena)
+  // terreno: todo lo que cae dentro del recinto, al fondo (la losa lo tapa en tierra y el agua en la dársena); bajo las calles principales (mainRoad) que no son explanada no se rebaja
   const n=TG.nx,h=TG.h;for(let j=Math.max(0,Math.floor((z0-GS)/GS));j<=Math.min(TG.nz-1,Math.ceil((z0+Hh+GS)/GS));j++)for(let i=Math.max(0,Math.floor((x0-GS)/GS));i<=Math.min(n-1,Math.ceil((x0+W+GS)/GS));i++){const x=i*GS,z=j*GS;
-    if(pmAt(x,z)!==-1&&!(PORTD.beach||[]).some(P=>inPoly(P,x,z))){let nearLand=false,nearSea=false;for(let dz=-GS;dz<=GS;dz+=GS/2)for(let dx=-GS;dx<=GS;dx+=GS/2){const v=pmAt(x+dx,z+dz);if(v===1)nearLand=true;else if(portWater(x+dx,z+dz))nearSea=true}
+    if(pmAt(x,z)!==-1&&!(pmAt(x,z)!==1&&mainRoad(x,z))&&!(PORTD.beach||[]).some(P=>inPoly(P,x,z))){let nearLand=false,nearSea=false;for(let dz=-GS;dz<=GS;dz+=GS/2)for(let dx=-GS;dx<=GS;dx+=GS/2){const v=pmAt(x+dx,z+dz);if(v===1)nearLand=true;else if(portWater(x+dx,z+dz))nearSea=true}
       h[j*n+i]=nearLand?(nearSea?-4:PDECK-.3):nearSea&&portWater(x,z)?-4:h[j*n+i]}}
   // transición suave: el terreno de alrededor baja en rampa hasta la explanada (sin escalones ni cuestas raras)
   const BAND=22;for(let j=Math.max(0,Math.floor((z0-BAND)/GS));j<=Math.min(TG.nz-1,Math.ceil((z0+Hh+BAND)/GS));j++)for(let i=Math.max(0,Math.floor((x0-BAND)/GS));i<=Math.min(n-1,Math.ceil((x0+W+BAND)/GS));i++){const x=i*GS,z=j*GS,k=j*n+i;

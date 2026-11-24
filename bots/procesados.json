@@ -259,5 +259,39 @@
   "fecha": "2026-11-23",
   "causa": "El punto (208,2781) está dentro de la isleta de la rotonda, bajo el puente de la 2ª calzada de la Autovía de Roquetas: blockedAt da isleta (islandBlocked) y el coche se aparta a la calzada libre (freeSpot). La vía del puente va por el tablero.",
   "arreglo": "—"
+ },
+ {
+  "id": "20261124-2",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 4186,
+  "z": 1844,
+  "cam": [
+   4203.9,
+   7.4,
+   1845.5
+  ],
+  "detalle": "Paseo Marítimo de Aguadulce junto al puerto: hundimiento de 1,4 m en 5 m (5.5→4.1, luego sube a 5.8 en 25 m); a ras de suelo se ve una raja negra cruzando la calzada. A 63 m, en (4249,1839), otro punto del Paseo con curvatura 1,37 m.",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "causa": "flattenPort (f15_port.js) bajaba a la cota de la explanada del puerto (PDECK-0,3 = 1,2 m) toda celda de la rejilla del terreno (6 m) que quedaba a menos de 6 m de una celda de explanada, aunque estuviera bajo la calzada del Paseo Marítimo (vía principal, mainRoad). Con la interpolación eso hundía el borde de la calzada 1,4–1,9 m y abría la raja negra.",
+  "arreglo": "Regla general: en flattenPort no se rebajan las celdas bajo una vía principal (mainRoad) que no sean explanada. Curvatura en (4186,1844) 1,89→0,03 m y en (4249,1839) 1,37→0,01 m; captura a ras de suelo limpia (borde con la explanada y muro de contención como antes).",
+  "fecha": "2026-11-24"
+ },
+ {
+  "id": "20261124-5",
+  "origen": "auto",
+  "tipo": "calzada_cortada",
+  "x": 1727,
+  "z": 1557,
+  "cam": null,
+  "detalle": "Calzada cortada en diagonal contra la acera (visto en turno del 2026-11-23, no cabía en la cola; sin reverificar hoy).",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "no reproducible",
+  "causa": "Vista cenital y a ras de suelo en (1727,1557): el cruce de la calle (OSM idx 667) con la calle idx 669 tiene calzada continua y paso de cebra; la franja de acera que se ve en diagonal es la esquina interior del giro.",
+  "arreglo": "—",
+  "fecha": "2026-11-24"
  }
 ]

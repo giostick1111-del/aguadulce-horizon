@@ -62,22 +62,7 @@
    27.2,
    1751.5
   ],
-  "detalle": "Calle sin nombre (cls 3) junto a la costa este: escalón de 2,3 m en 5 m (perfil cada 5 m: 26.3, 25.9, 25.4, 25.5, 25.8, 26.0, 23.7, 23.6, 24.1, 23.5, 22.3, 22.0, 22.3). A ras de suelo la calzada se mete contra una ladera/pared de tierra a la izquierda y el borde del asfalto queda dentado.",
-  "reporte": null,
-  "prioridad": 1
- },
- {
-  "id": "20261124-2",
-  "origen": "visual",
-  "tipo": "escalon",
-  "x": 4186,
-  "z": 1844,
-  "cam": [
-   4203.9,
-   7.4,
-   1845.5
-  ],
-  "detalle": "Paseo Marítimo de Aguadulce junto al puerto: hundimiento de 1,4 m en 5 m (5.5→4.1, luego sube a 5.8 en 25 m); a ras de suelo se ve una raja negra cruzando la calzada. A 63 m, en (4249,1839), otro punto del Paseo con curvatura 1,37 m.",
+  "detalle": "Calle sin nombre (cls 3) junto a la costa este: escalón de 2,3 m en 5 m (perfil cada 5 m: 26.3, 25.9, 25.4, 25.5, 25.8, 26.0, 23.7, 23.6, 24.1, 23.5, 22.3, 22.0, 22.3). A ras de suelo la calzada se mete contra una ladera/pared de tierra a la izquierda y el borde del asfalto queda dentado. | 2026-11-24 Mecánico: diagnosticado, sin arreglar: la calle sin nombre (cls 3, idx 35) va paralela a 7,2 m de eje de otra vía cls 1 (idx 795) que está 3 m más alta (27,5 frente a 24,5 m, según el MDT). La rejilla del terreno es de 6 m y la calzada se dibuja sobre el terreno, así que no puede representar 3 m de desnivel en 1,3 m de separación entre calzadas; probé (a) contar como calzada solo la anchura real y (b) que el talud de otra vía no tire de una calzada ya puesta: no mejora aquí (1,94→1,76) y empeora Puerto de Navacerrada (1,54→2,47); descartado. Haría falta un muro entre las dos calzadas o una rejilla más fina en esa franja.",
   "reporte": null,
   "prioridad": 1
  },
@@ -151,7 +136,7 @@
    138.9,
    686.9
   ],
-  "detalle": "Calle sin nombre (cls 2) en la zona alta junto a la Autovía (a 60 m de 20261123-5): salto de 2,6 m y luego 2,0 m en 10 m (136.9→139.5→141.5); a ras de suelo la calzada sube de golpe hacia un borde con barrera a rayas.",
+  "detalle": "Calle sin nombre (cls 2) en la zona alta junto a la Autovía (a 60 m de 20261123-5): salto de 2,6 m y luego 2,0 m en 10 m (136.9→139.5→141.5); a ras de suelo la calzada sube de golpe hacia un borde con barrera a rayas. | 2026-11-24 Mecánico: diagnosticado, sin arreglar: la calle idx 949 es un antiguo túnel (wasT) que pasa bajo la Autovía del Mediterráneo; su trinchera va a 138,5 m y la autovía (manda) a 142 m, así que la calle sube 3,5 m sobre la autovía y vuelve a bajar. Como los túneles están prohibidos, hay que decidir si se corta esa calle a cada lado de la autovía (quedaría cortada) o se sube su perfil a la autovía; no lo cambio sin más datos.",
   "reporte": null,
   "prioridad": 2
  },
@@ -162,18 +147,7 @@
   "x": 3650,
   "z": 1939,
   "cam": null,
-  "detalle": "Calle Islas Baleares: calzada cortada de golpe (visto en turno del 2026-11-23, no cabía en la cola; sin reverificar hoy).",
-  "reporte": null,
-  "prioridad": 2
- },
- {
-  "id": "20261124-5",
-  "origen": "auto",
-  "tipo": "calzada_cortada",
-  "x": 1727,
-  "z": 1557,
-  "cam": null,
-  "detalle": "Calzada cortada en diagonal contra la acera (visto en turno del 2026-11-23, no cabía en la cola; sin reverificar hoy).",
+  "detalle": "Calle Islas Baleares: calzada cortada de golpe (visto en turno del 2026-11-23, no cabía en la cola; sin reverificar hoy). | 2026-11-24 Mecánico: reproducido en vista cenital: Calle Islas Baleares (idx 792) y Calle de la Escucha (idx 19) van pegadas y paralelas y se juntan; la acera que las separa acaba en cuña cruzando parte del asfalto. Es geometría de OSM (dos vías casi superpuestas); sin arreglar este turno.",
   "reporte": null,
   "prioridad": 2
  },

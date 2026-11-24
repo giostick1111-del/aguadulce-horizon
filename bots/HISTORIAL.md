@@ -72,3 +72,19 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Motos 5–8: arrancan, avanzan y se inclinan (lean 0,02–0,32); vista desde el casco (camMode 2) correcta en las 4; en la deportiva el carenado sigue tapando las manos (ya anotado).
 - Rendimiento (inspector, sin reportes): 369 calls, 250 621 tris, 200 texturas, 2025 geometrías.
 - Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); fútbol (fb2) OK, partidos de 11, 7 y 5 en juego con goles; móvil (mobfb) `ok []`.
+
+## 2026-11-24 — Mecánico
+- Arreglado 20261124-2, el Paseo Marítimo junto al puerto (4186,1844), y de paso el otro punto del Paseo en (4249,1839). Causa: `flattenPort` (`f15_port.js`) bajaba a la cota de la explanada (1,2 m) toda celda del terreno (rejilla de 6 m) a menos de 6 m de la explanada, aunque estuviera bajo la calzada del Paseo. Con la interpolación eso hundía el borde de la calzada 1,4–1,9 m y abría la raja negra. Arreglo (regla general): no se rebajan las celdas bajo una vía principal (`mainRoad`) que no sean explanada. Curvatura: 1,89→0,03 m y 1,37→0,01 m. Captura a ras de suelo limpia.
+- No reproducible: 20261124-5 (1727,1557). En la vista cenital y a ras de suelo el cruce tiene calzada continua y paso de cebra.
+- Diagnosticados, sin arreglar (siguen en la cola con nota):
+  - 20261124-1 (4451,1747): una calle cls 3 va paralela a 7 m de otra cls 1 que está 3 m más alta (es el MDT). La rejilla de 6 m no puede representar ese desnivel. Probé dos cambios de jerarquía en `conformTerrain`: contar como calzada solo la anchura real, y que el talud no tire de una calzada ya puesta. Ninguno mejora aquí (1,94→1,76 como mucho) y el segundo empeora Puerto de Navacerrada (1,54→2,47), así que los descarté. Haría falta un muro entre calzadas o una rejilla más fina.
+  - 20261124-3 (2089,702): antiguo túnel (`wasT`, idx 949) que cruza bajo la Autovía del Mediterráneo; la calle sube 3,5 m sobre la autovía. Falta decidir si se corta o se sube el perfil.
+  - 20261124-4 (3650,1939): dos calles de OSM casi superpuestas (Islas Baleares y Calle de la Escucha) se juntan y la acera entre ambas acaba en cuña.
+- Sin tocar este turno: los de prioridad 1 ya diagnosticados en turnos anteriores (20261122-6 fuera del mapa; 20261122-16/-17 conflicto OSM/Catastro; 20261123-3 cambio de pendiente real).
+- Medida global (`fhtest/met2.py`, curvatura cada 5 m): puntos >1,2 m: 19 → 16; >2,5 m: 0. Ningún punto nuevo.
+- Pruebas:
+  - dbgload sin errores; solo fallan las fuentes externas (ERR_TUNNEL).
+  - paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 587, take 1).
+  - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 437 calls, 526 960 tris (antes 437 / 519 002; +1,5 %).
+- Nueva herramienta: `fhtest/met2.py` (curvatura global y en los puntos de la cola, con la lista de puntos >1,2 m).
