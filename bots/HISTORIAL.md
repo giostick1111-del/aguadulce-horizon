@@ -63,3 +63,12 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Rendimiento (perf2, nr): 437 calls, 519 002 tris.
 - Nuevo: `fhtest/motos_casco.py` (capturas de la vista desde el casco de las 4 motos).
 - Publicado: commit c10e8eb; workflow «Publicar juego» terminó en success.
+
+## 2026-11-24 — Inspector (semilla 328)
+- Avisos de jugadores: no se pudieron leer (WebFetch a `fh/bugs.json` falló: la petición de permiso no se respondió a tiempo). Se siguió sin reportes.
+- 8 fallos nuevos en la cola (19 en total). Los más graves: escalón de 2,3 m con la calzada metida contra una ladera en calle sin nombre de la costa este (4451,1747); hundimiento de 1,4 m con raja negra en el Paseo Marítimo junto al puerto (4186,1844); salto de 2,6 m en calle alta junto a la Autovía (2089,702). Añadidas también las dos calzadas cortadas que el turno anterior dejó fuera (3650,1939) y (1727,1557).
+- Inspección automática: 14 baches >1,2 m (máx. 2,39 m; ninguno >2,5 m), 0 problemas al soltar el coche en 40 puntos. Revisados a ras de suelo los 5 nuevos de mayor curvatura: 3 son fallos reales; Calle de Virginia (2369,1490) y (2297,1394) son cuestas normales.
+- Siguen: 20261122-16 (cámara al azar dentro del bloque en (3454,1488)), 20261123-3 (3502,1525; 2,32 m), 20261123-5 (2,39 m). (4553,1718) baja a 1,21 m.
+- Motos 5–8: arrancan, avanzan y se inclinan (lean 0,02–0,32); vista desde el casco (camMode 2) correcta en las 4; en la deportiva el carenado sigue tapando las manos (ya anotado).
+- Rendimiento (inspector, sin reportes): 369 calls, 250 621 tris, 200 texturas, 2025 geometrías.
+- Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); fútbol (fb2) OK, partidos de 11, 7 y 5 en juego con goles; móvil (mobfb) `ok []`.
