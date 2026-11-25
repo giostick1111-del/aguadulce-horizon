@@ -89,3 +89,12 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Rendimiento (perf2, nr): 437 calls, 526 960 tris (antes 437 / 519 002; +1,5 %).
 - Nueva herramienta: `fhtest/met2.py` (curvatura global y en los puntos de la cola, con la lista de puntos >1,2 m).
 - Publicado: commit 4cea5fb, pero el workflow «Publicar juego» (run 45326185502) falló dos veces en `deploy-pages` («No artifacts named github-pages were found», aunque `upload-pages-artifact` terminó bien). Parece un fallo de GitHub, no del juego. No toco `.github/`. El push no relanzó el workflow (solo salta con cambios en site/), así que lo lancé a mano (workflow_dispatch, run 45327249334 sobre 66028d8): terminó en success. Web publicada.
+
+## 2026-11-25 — Inspector (semilla 329)
+- Avisos de jugadores: no se pudieron leer (WebFetch a `fh/bugs.json` falló otra vez: la petición de permiso no se respondió a tiempo). Se siguió sin reportes.
+- 3 fallos nuevos en la cola (20 en total). Los más graves: escalón de 2,7 m con raja negra junto a un paso de cebra en calle sin nombre al lado de la Autovía de Roquetas (361,2174); calzada que acaba contra una casa y atraviesa un edificio en la zona de Don Juan de Austria / Zaidín (1712,2767); franja vertical rara en el cielo en Calle Chillida (752,1552).
+- Inspección automática: 12 baches >1,2 m (máx. 2,39 m; ninguno >2,5 m); 1 coche «expulsado» en (82,3473), que es fuera del mapa (z>3445): el coche vuelve al borde; se anota en 20261122-6 junto con Calle Briviescas (668,3432), que también sigue sobre suelo blanco.
+- Revisados a ras de suelo: (361,2174) fallo nuevo; (3421,1507), (3502,1525), (2065,761) y (198,2719) siguen (raja negra confirmada en 20261124-6).
+- Motos 5–8 en Avenida de Carlos III con vista desde el casco (camMode 2): manillar, espejos y manos bien en las 4; avanzan y se inclinan (lean 0,02–0,20). La scooter (5) apenas acelera en 2,5 s (0,9 m/s); puede ser solo que es lenta, sin confirmar.
+- Rendimiento (inspector, sin reportes): 354 calls, 183 491 tris, 201 texturas, 2148 geometrías.
+- Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); fútbol (fb2) OK, partidos de 11, 7 y 5 en juego con goles; móvil (mobfb) `ok []`.
