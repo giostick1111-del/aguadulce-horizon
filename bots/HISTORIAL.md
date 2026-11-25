@@ -118,3 +118,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
   - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 436 calls, 525 076 tris (antes 437 / 526 960).
 - Herramientas nuevas en `fhtest/`: `cam.py` (capturas libres por ángulo, distancia y altura, o vista cenital), `sky.py` (capturas del cielo en 6 direcciones).
+- Publicado: commit ea3aba3. El workflow «Publicar juego» lanzado por el push (run 45547093163) falló en `deploy-pages` con «No artifacts named github-pages», el mismo fallo de GitHub del 24-11. Lo lancé a mano (run 45547412536), volvió a fallar y en el reintento terminó en success. Web publicada.
