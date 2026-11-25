@@ -70,10 +70,12 @@ let renderer,scene,camera,sun,envMap,skyMesh,seaMat;
 function paintSky(){const c=cvs(2048,1024),g=c.getContext('2d');
   const gr=g.createLinearGradient(0,0,0,1024);gr.addColorStop(0,'#2a6fc4');gr.addColorStop(.32,'#5b9be0');gr.addColorStop(.47,'#bcd9ef');gr.addColorStop(.5,'#dfe9ee');gr.addColorStop(.52,'#a9a08a');gr.addColorStop(1,'#6e6656');g.fillStyle=gr;g.fillRect(0,0,2048,1024);
   // nubes suaves
-  for(let i=0;i<70;i++){const x=Math.random()*2048,y=120+Math.random()*330,r=30+Math.random()*90;const q=g.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,'rgba(255,255,255,.35)');q.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=q;g.beginPath();g.ellipse(x,y,r*2.2,r*.55,0,0,TAU);g.fill()}
+  // (la textura da la vuelta a la cúpula: lo que se sale por un lado se dibuja también por el otro, si no queda una costura vertical recta en el cielo)
+  for(let i=0;i<70;i++){const x0=Math.random()*2048,y=120+Math.random()*330,r=30+Math.random()*90;for(const x of [x0-2048,x0,x0+2048]){if(x+r*2.2<0||x-r*2.2>2048)continue;const q=g.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,'rgba(255,255,255,.35)');q.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=q;g.beginPath();g.ellipse(x,y,r*2.2,r*.55,0,0,TAU);g.fill()}}
   // sierras: Gádor al norte (u≈0.75), lomas al este/oeste; al sur el mar
-  const ridge=(u0,u1,hmax,col,seed)=>{const R=lcg(seed);g.fillStyle=col;g.beginPath();g.moveTo(u0*2048,512);let y=0;
-    for(let x=u0*2048;x<=u1*2048;x+=6){const t=(x/2048-u0)/(u1-u0),env=Math.sin(t*Math.PI)**.7;y+=(R()-.5)*14;y=clamp(y,-hmax*.35,hmax*.35);g.lineTo(x,512-env*(hmax+y))}g.lineTo(u1*2048,515);g.closePath();g.fill()};
+  const ridge=(u0,u1,hmax,col,seed)=>{const R=lcg(seed),pts=[];let y=0;
+    for(let x=u0*2048;x<=u1*2048;x+=6){const t=(x/2048-u0)/(u1-u0),env=Math.sin(t*Math.PI)**.7;y+=(R()-.5)*14;y=clamp(y,-hmax*.35,hmax*.35);pts.push(x,512-env*(hmax+y))}
+    g.fillStyle=col;for(const o of (u1>1?[0,-2048]:u0<0?[0,2048]:[0])){g.beginPath();g.moveTo(u0*2048+o,512);for(let k=0;k<pts.length;k+=2)g.lineTo(pts[k]+o,pts[k+1]);g.lineTo(u1*2048+o,515);g.closePath();g.fill()}};
   ridge(.5,1.0,150,'rgba(140,155,175,.85)',3);ridge(.55,.98,110,'rgba(118,128,140,.92)',7);ridge(.6,.92,70,'rgba(120,112,95,.95)',11);ridge(.38,.56,40,'rgba(130,140,150,.7)',13);ridge(.94,1.1,45,'rgba(130,140,150,.7)',17);
   g.fillStyle='rgba(223,233,238,.5)';g.fillRect(0,500,2048,14);
   const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t}

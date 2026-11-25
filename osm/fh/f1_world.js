@@ -6,6 +6,33 @@ addEventListener('error',e=>showErr('ERR '+e.message+' @'+(e.lineno||'')));
 const WD=window.AGW,K=1/8,WM=WD.W*K,HM=WD.H*K,TAU=Math.PI*2;
 /* túneles y rampas de aparcamiento retirados: esas vías vuelven a ser calles normales a nivel */
 for(const r of WD.roads){if(r[4]===3)r.wasT=1;if(r[4]===3||r[4]===4||(r[4]===1&&r[0]>=6))r[4]=0}
+/* recorta las vías quitando los puntos que cumplen drop(x,z,r) (coordenadas en metros). Se parte la vía en trozos; los trozos de menos de
+   minL metros se descartan. Los segmentos se muestrean cada 1,5 m solo para encontrar los cortes (no se añaden vértices intermedios). */
+function cutRoads(drop,minL,onPiece){const R=WD.roads,add=[];let nc=0;
+  for(let ri=R.length-1;ri>=0;ri--){const r=R[ri];const n=(r.length-5)/2;if(n<2)continue;let hit=false;
+    for(let i=0;i<n-1&&!hit;i++){const ax=r[5+i*2]*K,az=r[6+i*2]*K,bx=r[7+i*2]*K,bz=r[8+i*2]*K,L=Math.hypot(bx-ax,bz-az),m=Math.max(1,Math.ceil(L/1.5));for(let k=0;k<=m;k++)if(drop(ax+(bx-ax)*k/m,az+(bz-az)*k/m,r)){hit=true;break}}
+    if(!hit)continue;nc++;const pieces=[];let cur=[];const close=()=>{if(cur.length>=4){let L=0;for(let j=2;j<cur.length;j+=2)L+=Math.hypot(cur[j]-cur[j-2],cur[j+1]-cur[j-1])*K;if(L>=minL)pieces.push(cur)}cur=[]};
+    for(let i=0;i<n;i++){const ax=r[5+i*2],az=r[6+i*2];const inA=!drop(ax*K,az*K,r);if(i===0){if(inA)cur.push(ax,az);continue}
+      const px=r[3+i*2],pz=r[4+i*2],L=Math.hypot(ax-px,az-pz)*K,m=Math.max(1,Math.ceil(L/1.5));let prevIn=!drop(px*K,pz*K,r),lx=px,lz=pz;
+      for(let k=1;k<=m;k++){const x=px+(ax-px)*k/m,z=pz+(az-pz)*k/m,inn=k===m?inA:!drop(x*K,z*K,r);
+        if(prevIn&&!inn){if(lx!==cur[cur.length-2]||lz!==cur[cur.length-1])cur.push(lx,lz);close()}else if(!prevIn&&inn&&k<m)cur.push(x,z);prevIn=inn;lx=x;lz=z}
+      if(inA)cur.push(ax,az)}
+    close();R.splice(ri,1);for(const p of pieces){const q=r.slice(0,5).concat(p);for(const key of Object.keys(r))if(isNaN(+key))q[key]=r[key];if(onPiece)onPiece(q,r);add.push(q)}}
+  for(const q of add)R.push(q);return nc}
+/* las vías que salían del mapa (más allá del MDT y la ortofoto) se dibujaban sobre el suelo vacío del borde: se cortan en el borde */
+const _cutEdge=cutRoads((x,z)=>x<0||z<0||x>WM||z>HM,8);
+/* antiguos pasos inferiores (túneles retirados) que cruzan bajo una vía de más categoría sin unirse a ella: la calzada subía por el talud
+   y quedaba como losas encima de la autovía. Se quita el tramo que pasa por debajo (la calle queda cortada a cada lado). */
+const _cutUnder=(()=>{const R=WD.roads,segs=r=>{const s=[];for(let i=5;i<r.length-2;i+=2)s.push([r[i]*K,r[i+1]*K,r[i+2]*K,r[i+3]*K]);return s};
+  const X=(a,b)=>{const d=(a[2]-a[0])*(b[3]-b[1])-(a[3]-a[1])*(b[2]-b[0]);if(Math.abs(d)<1e-9)return false;const t=((b[0]-a[0])*(b[3]-b[1])-(b[1]-a[1])*(b[2]-b[0]))/d,u=((b[0]-a[0])*(a[3]-a[1])-(b[1]-a[1])*(a[2]-a[0]))/d;return t>1e-6&&t<1-1e-6&&u>1e-6&&u<1-1e-6};
+  const over=new Map();for(const r of R){if(!r.wasT)continue;const S=segs(r),Q=[];for(const q of R){if(q===r||q.wasT||q[0]>3||q[0]>=r[0])continue;if(S.some(a=>segs(q).some(b=>X(a,b))))Q.push({q,S:segs(q),m:q[1]*K/2+(q[0]===0?12:10)})}if(Q.length)over.set(r,Q)}
+  // las calles que llegaban a la boca del paso inferior se quedan sin salida dentro del talud: se recortan también (solo cerca de la boca)
+  const nodes=r=>{const o=new Set();for(let i=5;i<r.length;i+=2)o.add(r[i]+','+r[i+1]);return o},nb=new Map();
+  for(const [r,Q] of over){const ends=[[r[5],r[6]],[r[r.length-2],r[r.length-1]]];for(const q of R){if(over.has(q)||Q.some(o=>o.q===q)||q[0]>7)continue;const nq=nodes(q);
+    if(Q.some(o=>{for(const k of nodes(o.q))if(nq.has(k))return true;return false}))continue;for(const [ex,ez] of ends)if(nq.has(ex+','+ez))nb.set(q,{Q,x:ex*K,z:ez*K})}}
+  if(!over.size)return 0;const dseg=(x,z,s)=>{const dx=s[2]-s[0],dz=s[3]-s[1],L2=dx*dx+dz*dz||1;let t=((x-s[0])*dx+(z-s[1])*dz)/L2;t=t<0?0:t>1?1:t;return Math.hypot(x-s[0]-dx*t,z-s[1]-dz*t)};
+  return cutRoads((x,z,r)=>{let Q=over.get(r);if(!Q){const b=nb.get(r);if(!b||Math.hypot(x-b.x,z-b.z)>25)return false;Q=b.Q}for(const q of Q)for(const s of q.S)if(dseg(x,z,s)<q.m)return true;return false},10,q=>{delete q.wasT})})();
+console.log("env cortes borde",_cutEdge,"pasos inferiores",_cutUnder);
 // puente de la Avda. Carlos III entre la glorieta del Supercor y la del antiguo campo de fútbol: suprimido (va a nivel)
 for(const r of WD.roads)if(r[4]===1){let cx=0,cz=0,n=0;for(let i=5;i<r.length;i+=2){cx+=r[i];cz+=r[i+1];n++}cx=cx/n/8;cz=cz/n/8;if(Math.hypot(cx-2510,cz-2245)<40)r[4]=0}// las pasarelas peatonales (como la de madera del puerto) no son puentes de carretera
 // puente de la Avda. Carlos III entre la glorieta del Supercor y la del antiguo campo de fútbol: retirado (calle a nivel)

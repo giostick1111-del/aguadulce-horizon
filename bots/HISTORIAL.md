@@ -98,3 +98,23 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Motos 5–8 en Avenida de Carlos III con vista desde el casco (camMode 2): manillar, espejos y manos bien en las 4; avanzan y se inclinan (lean 0,02–0,20). La scooter (5) apenas acelera en 2,5 s (0,9 m/s); puede ser solo que es lenta, sin confirmar.
 - Rendimiento (inspector, sin reportes): 354 calls, 183 491 tris, 201 texturas, 2148 geometrías.
 - Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 585, take 1); fútbol (fb2) OK, partidos de 11, 7 y 5 en juego con goles; móvil (mobfb) `ok []`.
+
+## 2026-11-25 — Mecánico
+- Arreglados 5 fallos (pasan a procesados):
+  - 20261125-1 escalón con raja junto al paso de cebra al lado de la Autovía de Roquetas (361,2174). Causa: la calle idx 694 era un antiguo túnel (`wasT`) bajo las dos calzadas de la autovía; sin túnel, su calzada subía por el talud y quedaba como losas encima de la autovía.
+  - 20261124-3 calle alta junto a la Autovía del Mediterráneo (2089,702): mismo caso (antiguo túnel idx 949). Decisión: como los túneles están prohibidos, la calle se corta a cada lado de la autovía. Curvatura 1,44 → 0,11 m.
+  - 20261122-6 Calle de Bristol / Calle Briviescas sobre suelo blanco, y 20261122-7 (colisión fantasma en z=3545, misma zona): 70 vías de OSM salían del mapa (z > 3445). Ahora se cortan en el borde del mapa.
+  - 20261125-3 franja recta en el cielo (Calle Chillida): reproducido mirando hacia −X; es la costura de la textura de la cúpula, donde se cortaban las nubes y una loma. Ahora la textura es continua (no cambia la iluminación).
+- Arreglos (reglas generales):
+  - `f1_world.js`: nueva `cutRoads()` (parte vías y descarta trozos cortos).
+    - Corte en el borde del mapa.
+    - Antiguos pasos inferiores (`wasT`) que cruzan, sin unirse, bajo una vía de más categoría: se quita el tramo dentro del talud de esa vía. Las calles que llegaban a la boca se recortan hasta 25 m de ella para no acabar metidas en el talud. Se recortaron 4 pasos inferiores (también Calle Menorca bajo Carlos III y otro bajo la Autovía de Roquetas en (170,3275)) y 8 calles vecinas.
+  - `f3_world3d.js` `paintSky`: nubes y sierras se dibujan también desplazadas una vuelta.
+- Medida global (`met2.py`): puntos >1,2 m: 16 → 15; >2,5 m: 0. Aparece (122,3406) con 1,31 m en la Autovía de Roquetas, a 40 m del borde del mapa (efecto del corte en el suavizado). A ras de suelo no se ve nada raro; queda anotado.
+- No arreglados (siguen en la cola): 20261122-16/-17, 20261123-3, 20261124-1 (ya diagnosticados: conflicto OSM/Catastro, cambio de pendiente real, desnivel que no cabe en la rejilla de 6 m). No dio tiempo a los de prioridad 2 restantes, entre ellos 20261125-2 (calle contra edificio, posible conflicto OSM/Catastro).
+- Pruebas:
+  - dbgload sin errores (solo ERR_TUNNEL de fuentes externas).
+  - paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1; antes 585).
+  - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 436 calls, 525 076 tris (antes 437 / 526 960).
+- Herramientas nuevas en `fhtest/`: `cam.py` (capturas libres por ángulo, distancia y altura, o vista cenital), `sky.py` (capturas del cielo en 6 direcciones).

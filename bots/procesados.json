@@ -293,5 +293,88 @@
   "causa": "Vista cenital y a ras de suelo en (1727,1557): el cruce de la calle (OSM idx 667) con la calle idx 669 tiene calzada continua y paso de cebra; la franja de acera que se ve en diagonal es la esquina interior del giro.",
   "arreglo": "—",
   "fecha": "2026-11-24"
+ },
+ {
+  "id": "20261122-6",
+  "origen": "visual",
+  "tipo": "suelo_vacio",
+  "x": 341,
+  "z": 3579,
+  "cam": null,
+  "detalle": "Calle de Bristol (y alrededores al oeste, z≈3550): la calzada está sobre un suelo blanco liso sin terreno, ortofoto ni edificios; el minimapa también sale gris. Parece que falta el terreno/ortofoto en esta zona del mapa. | 2026-11-23 Mecánico: no arreglado: z=3579 queda fuera del mapa (HM=3445); el MDT y la ortofoto acaban ahí. Habría que ampliar los datos del terreno o recortar las calles que salen del mapa. | 2026-11-25 Inspector: sigue; el mismo borde se ve en Calle Briviescas (668,3432): la calzada sigue hacia el sur sobre suelo blanco vacío. Además el coche soltado en (82,3473) es devuelto 32 m al borde del mapa (z=3441).",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "causa": "70 vías de OSM salían del mapa (más allá del MDT y la ortofoto, x>WM o z>HM=3445) y se dibujaban sobre el suelo liso del borde.",
+  "arreglo": "f1_world.js: las vías se cortan en el borde del mapa (cutRoads). Calle de Bristol y Calle Briviescas terminan ahora en el borde.",
+  "fecha": "2026-11-25"
+ },
+ {
+  "id": "20261125-1",
+  "origen": "visual",
+  "tipo": "escalon",
+  "x": 361,
+  "z": 2174,
+  "cam": null,
+  "detalle": "Calle sin nombre junto a la Autovía de Roquetas, en un cruce con paso de cebra: curvatura 1,24 m. A ras de suelo se ve una losa de calzada levantada con una raja negra delante del paso de cebra. Perfil hacia el este cada 5 m: 69,4 · 69,5 · 70,5 · 73,2 · 73,3 (salto de 2,7 m en 5 m).",
+  "reporte": null,
+  "prioridad": 1,
+  "estado": "arreglado",
+  "causa": "La calle idx 694 era un antiguo túnel (wasT) que pasaba bajo las dos calzadas de la Autovía de Roquetas; al quitar los túneles su calzada subía por el talud y quedaba como losas sobre la autovía, con el escalón y la raja junto al paso de cebra.",
+  "arreglo": "f1_world.js: nueva cutRoads(); los antiguos pasos inferiores (wasT) que cruzan sin unirse bajo una vía de más categoría pierden el tramo dentro del talud de esa vía (eje + media anchura + 12 m autovía / 10 m resto) y las calles que llegaban a su boca se recortan hasta 25 m de ella. 4 pasos inferiores y 8 calles vecinas recortados. La calle queda sin salida antes del talud. Curvatura en (361,2174): 1,24 → <1,2 m (fuera de la lista).",
+  "fecha": "2026-11-25"
+ },
+ {
+  "id": "20261122-7",
+  "origen": "auto",
+  "tipo": "coche_en_edificio",
+  "x": 920,
+  "z": 3545,
+  "cam": [
+   929.3,
+   35.9,
+   3568.2
+  ],
+  "detalle": "Calle aislada sobre suelo blanco vacío (misma zona sin terreno que Calle de Bristol): blockedAt devuelve bloqueado aunque no hay ningún edificio a la vista → colisión fantasma.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "causa": "Misma zona fuera del mapa que 20261122-6: la calle estaba en z=3545 > HM.",
+  "arreglo": "Resuelto con el corte de las vías en el borde del mapa: ya no hay calle ahí.",
+  "fecha": "2026-11-25"
+ },
+ {
+  "id": "20261124-3",
+  "origen": "visual",
+  "tipo": "bache",
+  "x": 2089,
+  "z": 702,
+  "cam": [
+   2098.9,
+   138.9,
+   686.9
+  ],
+  "detalle": "Calle sin nombre (cls 2) en la zona alta junto a la Autovía (a 60 m de 20261123-5): salto de 2,6 m y luego 2,0 m en 10 m (136.9→139.5→141.5); a ras de suelo la calzada sube de golpe hacia un borde con barrera a rayas. | 2026-11-24 Mecánico: diagnosticado, sin arreglar: la calle idx 949 es un antiguo túnel (wasT) que pasa bajo la Autovía del Mediterráneo; su trinchera va a 138,5 m y la autovía (manda) a 142 m, así que la calle sube 3,5 m sobre la autovía y vuelve a bajar. Como los túneles están prohibidos, hay que decidir si se corta esa calle a cada lado de la autovía (quedaría cortada) o se sube su perfil a la autovía; no lo cambio sin más datos. | 2026-11-25 Inspector: sigue: 1,44 m.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "causa": "Antiguo túnel (wasT, idx 949) bajo la Autovía del Mediterráneo: la calle subía 3,5 m sobre la autovía.",
+  "arreglo": "f1_world.js: nueva cutRoads(); los antiguos pasos inferiores (wasT) que cruzan sin unirse bajo una vía de más categoría pierden el tramo dentro del talud de esa vía (eje + media anchura + 12 m autovía / 10 m resto) y las calles que llegaban a su boca se recortan hasta 25 m de ella. 4 pasos inferiores y 8 calles vecinas recortados. Decidido cortar la calle a cada lado de la autovía (los túneles están prohibidos). Curvatura 1,44 → 0,11 m.",
+  "fecha": "2026-11-25"
+ },
+ {
+  "id": "20261125-3",
+  "origen": "visual",
+  "tipo": "cielo",
+  "x": 752,
+  "z": 1552,
+  "cam": null,
+  "detalle": "Calle Chillida: en la captura al azar el cielo tiene una franja vertical más clara, con corte recto, en el tercio izquierdo (de arriba hasta el tejado del edificio). Parece un plano o pared semitransparente muy alta, o una costura de la cúpula del cielo. Hay que comprobar desde otros ángulos.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "causa": "Costura de la cúpula del cielo (mirando hacia -X): las nubes y la loma que pasaban del borde de la textura (u>1) se cortaban en recto.",
+  "arreglo": "f3_world3d.js paintSky: nubes y sierras se dibujan también desplazadas una vuelta (textura continua). No cambia la iluminación.",
+  "fecha": "2026-11-25"
  }
 ]
