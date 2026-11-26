@@ -254,8 +254,35 @@ function segX(a,b,c,d){const d1=(d[0]-c[0])*(a[1]-c[1])-(d[1]-c[1])*(a[0]-c[0]),
 function fixPoly(p){let P=[];for(let i=0;i<p.length;i+=2){const q=P[P.length-1];if(!q||Math.hypot(q[0]-p[i],q[1]-p[i+1])>.05)P.push([p[i],p[i+1]])}if(P.length>3&&Math.hypot(P[0][0]-P[P.length-1][0],P[0][1]-P[P.length-1][1])<.05)P.pop();
   for(let it=0;it<40&&P.length>3;it++){let hit=-1;const n=P.length;for(let i=0;i<n&&hit<0;i++)for(let j=i+2;j<n;j++){if(i===0&&j===n-1)continue;if(segX(P[i],P[(i+1)%n],P[j],P[(j+1)%n])){hit=(j-i<n/2)?(i+1)%n:(j+1)%n;break}}if(hit<0)break;P.splice(hit,1)}
   const o=[];for(const q of P)o.push(q[0],q[1]);return o}
-function loadBlds(){
-  const GR=WD.blds?WD.bgrp||[]:[];WD.blds.forEach((f,fi)=>{const p=fixPoly(dec(f,3));let x0=1e9,z0=1e9,x1=-1e9,z1=-1e9,ar=0;const n=p.length/2;
+/* calles de OSM que atraviesan edificios del Catastro (desajuste entre las dos fuentes): los vértices del edificio que caen
+   dentro de la calzada (cls 0–4) se apartan hasta su borde (+1 m de acera); si aun así la calle sigue pasando por dentro
+   (eje dentro ≥1,5 m, o calzada dentro ≥6 m en invernaderos) el edificio se quita: manda la calle, que es por donde se conduce */
+const BDROP=new Set();let _rbx=null,BCUT=0;
+function roadBldGrid(){const G=new Map(),S=32;for(const r of WD.roads){const cls=r[0];if(cls>4)continue;const n=(r.length-5)/2,hw=r[1]*K/2;
+  for(let i=0;i<n-1;i++){const s={ax:r[5+i*2]*K,az:r[6+i*2]*K,bx:r[7+i*2]*K,bz:r[8+i*2]*K,hw};const a=Math.floor((Math.min(s.ax,s.bx)-hw-2)/S),b=Math.floor((Math.max(s.ax,s.bx)+hw+2)/S),c=Math.floor((Math.min(s.az,s.bz)-hw-2)/S),d=Math.floor((Math.max(s.az,s.bz)+hw+2)/S);
+    for(let gz=c;gz<=d;gz++)for(let gx=a;gx<=b;gx++){const k=gz*4096+gx;(G.get(k)||G.set(k,[]).get(k)).push(s)}}}return {G,S}}
+function roadBldFix(p,kind,x0,z0,x1,z1){if(!_rbx)_rbx=roadBldGrid();const {G,S}=_rbx,segs=new Set();
+  for(let gz=Math.floor((z0-2)/S);gz<=Math.floor((z1+2)/S);gz++)for(let gx=Math.floor((x0-2)/S);gx<=Math.floor((x1+2)/S);gx++){const l=G.get(gz*4096+gx);if(l)for(const s of l)segs.add(s)}
+  if(!segs.size)return [p];const L=[...segs].filter(s=>Math.max(s.ax,s.bx)+s.hw+1>x0&&Math.min(s.ax,s.bx)-s.hw-1<x1&&Math.max(s.az,s.bz)+s.hw+1>z0&&Math.min(s.az,s.bz)-s.hw-1<z1);if(!L.length)return [p];
+  const inside=(q,full)=>{let li=0,lc=0;for(const s of L){const dx=s.bx-s.ax,dz=s.bz-s.az,SL=Math.hypot(dx,dz);if(!SL)continue;const m=Math.ceil(SL),nx=-dz/SL,nz=dx/SL;
+      for(let k=0;k<m;k++){const t=(k+.5)/m,cx=s.ax+dx*t,cz=s.az+dz*t;if(pipf(cx,cz,q))li+=SL/m;if(full)for(const o of [-.8,.8])if(pipf(cx+nx*o*s.hw,cz+nz*o*s.hw,q))lc+=SL/m/2}}return [li,lc]};
+  const [li0,lc0]=inside(p,true);if(li0<1&&lc0<3)return [p];
+  const q=p.slice();for(let i=0;i<q.length;i+=2){let x=q[i],z=q[i+1];for(let it=0;it<3;it++){let moved=false;for(const s of L){const dx=s.bx-s.ax,dz=s.bz-s.az,SL2=dx*dx+dz*dz;if(!SL2)continue;let t=((x-s.ax)*dx+(z-s.az)*dz)/SL2;t=t<0?0:t>1?1:t;
+      const px=s.ax+dx*t,pz=s.az+dz*t,d=Math.hypot(x-px,z-pz),need=s.hw+1;if(d<need&&d>.01){x=px+(x-px)/d*need;z=pz+(z-pz)/d*need;moved=true}}if(!moved)break}q[i]=x;q[i+1]=z}
+  const r=fixPoly(q);if(r.length<6)return [];const bad=g=>{const [li,lc]=inside(g,kind===2);return li>=1.5||(kind===2&&lc>=6)};if(!bad(r))return [r];
+  // la calle cruza el edificio: se parte en dos por la calzada (a cada lado, a media anchura + 1 m del eje del tramo que más lo cruza)
+  let best=null,bl=0;for(const s of L){const dx=s.bx-s.ax,dz=s.bz-s.az,SL=Math.hypot(dx,dz);if(!SL)continue;const m=Math.ceil(SL);let l=0;for(let k=0;k<m;k++){const t=(k+.5)/m;if(pipf(s.ax+dx*t,s.az+dz*t,r))l+=SL/m}if(l>bl){bl=l;best=s}}
+  const area=g=>{let a=0;for(let i=0,j=g.length-2;i<g.length;j=i,i+=2)a+=g[j]*g[i+1]-g[i]*g[j+1];return Math.abs(a)/2},A0=area(r),out=[];
+  if(best){const dx=best.bx-best.ax,dz=best.bz-best.az,SL=Math.hypot(dx,dz),nx=-dz/SL,nz=dx/SL,c=best.hw+1;
+    for(const sg of [1,-1]){const side=(x,z)=>sg*((x-best.ax)*nx+(z-best.az)*nz)-c,g=[];
+      for(let i=0,j=r.length-2;i<r.length;j=i,i+=2){const sa=side(r[j],r[j+1]),sb=side(r[i],r[i+1]);if((sa>=0)!==(sb>=0)){const t=sa/(sa-sb);g.push(r[j]+(r[i]-r[j])*t,r[j+1]+(r[i+1]-r[j+1])*t)}if(sb>=0)g.push(r[i],r[i+1])}
+      const h=g.length>=6?fixPoly(g):[];if(h.length>=6&&area(h)>=25&&!bad(h))out.push(h)}}
+  let ak=0;for(const h of out)ak+=area(h);return ak>=A0*.3?out:[]}
+function loadBlds(){_rbx=null;BCUT=0;
+  const GR=WD.blds?WD.bgrp||[]:[];WD.blds.forEach((f,fi)=>{const p0=fixPoly(dec(f,3));let P=[p0];if(f[0]!==6){let x0=1e9,z0=1e9,x1=-1e9,z1=-1e9;for(let i=0;i<p0.length;i+=2){x0=Math.min(x0,p0[i]);x1=Math.max(x1,p0[i]);z0=Math.min(z0,p0[i+1]);z1=Math.max(z1,p0[i+1])}
+      P=roadBldFix(p0,f[0],x0,z0,x1,z1);if(!P.length){BDROP.add(fi);return}if(P.length>1||P[0]!==p0)BCUT++}
+    for(const p of P)addBld(f,fi,p,GR)})}
+function addBld(f,fi,p,GR){let x0=1e9,z0=1e9,x1=-1e9,z1=-1e9,ar=0;const n=p.length/2;
     for(let i=0;i<n;i++){const x=p[i*2],z=p[i*2+1];if(x<x0)x0=x;if(x>x1)x1=x;if(z<z0)z0=z;if(z>z1)z1=z}
     for(let i=0,j=n-1;i<n;j=i++)ar+=p[j*2]*p[i*2+1]-p[i*2]*p[j*2+1];
     const area=Math.abs(ar)/2,kind=f[0];let lv=f[1]||(area<340?2:4);if(kind===0&&!f[1])lv=area<160?1:2;lv=clamp(lv,1,16);
@@ -263,7 +290,7 @@ function loadBlds(){
     const bi=(WD.binfo&&WD.binfo[fi])||0;// datos del Catastro: uso, año de construcción y nº de viviendas
     const b={p,x0,z0,x1,z1,kind,lv,h,area,solid:kind!==6,use:bi?bi[0]:0,year:bi?bi[1]:0,dw:bi?bi[2]:0,idx:fi,seed:GR[fi]>=0?GR[fi]*7919>>>0:(Math.floor(x0*977)+Math.floor(z0*131))>>>0};BL.push(b);
     if(b.solid){const a=clamp(Math.floor(x0/GC),0,GWc-1),c=clamp(Math.floor(x1/GC),0,GWc-1),d=clamp(Math.floor(z0/GC),0,GHc-1),e=clamp(Math.floor(z1/GC),0,GHc-1);
-      for(let gy=d;gy<=e;gy++)for(let gx=a;gx<=c;gx++)(GBL[gy*GWc+gx]||(GBL[gy*GWc+gx]=[])).push(b)}})
+      for(let gy=d;gy<=e;gy++)for(let gx=a;gx<=c;gx++)(GBL[gy*GWc+gx]||(GBL[gy*GWc+gx]=[])).push(b)}
 }
 /* mar y muelles: máscara a 2 m */
 const SM=2,SW=Math.ceil(WM/SM),SH=Math.ceil(HM/SM);let seaMask=null;
@@ -318,7 +345,7 @@ function paintGround(){
   g.globalAlpha=OR?.55:1;g.fillStyle='#2a79a0';g.beginPath();const s=WD.sea;g.moveTo(s[0],s[1]);for(let i=2;i<s.length;i+=2)g.lineTo(s[i],s[i+1]);g.closePath();g.fill();
   g.save();g.clip();g.strokeStyle='rgba(120,225,215,.22)';g.lineWidth=170;g.beginPath();const c=WD.coast;g.moveTo(c[0],c[1]);for(let i=2;i<c.length;i+=2)g.lineTo(c[i],c[i+1]);g.stroke();g.lineWidth=70;g.stroke();g.restore();g.globalAlpha=1;
   // sombra de contacto (oclusión ambiental) alrededor de cada edificio
-  const BB=WD.blds.filter(b=>b[0]!==2&&b[0]!==6),batch=(L,o,fn)=>{for(let i=0;i<L.length;i+=300){g.beginPath();for(let j=i;j<Math.min(L.length,i+300);j++)path(L[j],o);fn()}};
+  const BB=WD.blds.filter((b,i)=>b[0]!==2&&b[0]!==6&&!BDROP.has(i)),batch=(L,o,fn)=>{for(let i=0;i<L.length;i+=300){g.beginPath();for(let j=i;j<Math.min(L.length,i+300);j++)path(L[j],o);fn()}};
   if(!OR){g.strokeStyle='#bfbab0';g.fillStyle='#bfbab0';g.lineWidth=56;batch(BB,3,()=>{g.stroke()});
   for(const r of WD.roads)if(r[0]>=1&&r[0]<=4){g.beginPath();g.moveTo(r[5],r[6]);for(let i=7;i<r.length;i+=2)g.lineTo(r[i],r[i+1]);g.lineWidth=r[1]+60;g.strokeStyle='#bfbab0';g.stroke()}}
   g.strokeStyle='rgba(50,40,30,.16)';g.lineWidth=44;batch(BB,3,()=>g.stroke());
@@ -4217,7 +4244,7 @@ function buildPublic(){const vc=new THREE.MeshLambertMaterial({vertexColors:true
 /* ============ «REPORTAR FALLO»: el jugador marca un fallo del mapa y queda en la cola de los bots ============
    se guarda en Firebase (fh/bugs) con la posición exacta, la orientación, una nota y una miniatura de la pantalla;
    el bot Inspector la recoge en su siguiente turno y el Mecánico la arregla */
-const BUILD_ID='20261125-0521';
+const BUILD_ID='20261126-0521';
 function bugShot(){try{renderer.render(scene,camera);const s=renderer.domElement,c=cvs(384,Math.round(384*s.height/s.width)),g=c.getContext('2d');g.drawImage(s,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.62)}catch(e){return''}}
 function bugQueue(r){let q=[];try{q=JSON.parse(localStorage.getItem('fhBugsQ')||'[]')}catch(e){}if(r)q.push(r);q=q.slice(-10);try{localStorage.setItem('fhBugsQ',JSON.stringify(q))}catch(e){}return q}
 /* el informe va en fh/bugs (ligero, lo leen los bots) y la miniatura aparte en fh/bugimg/<id> */
@@ -4418,7 +4445,7 @@ function spawnPoint(){const m=WD.markers.start,x=m[0]*K,z=m[1]*K;const rn=roadNe
 let apRev=0,apStuck=0;function autoPilot(){if(apRev>0){apRev-=1/60;return{thr:0,brk:1,str:apRev>.6?-1:0,hb:false,nos:false}}if(Math.abs(ME.vf)<1.5&&RACE.t>2){apStuck+=1/60;if(apStuck>1){apStuck=0;apRev=1.4}}else apStuck=0;const R=RACE,pr=projectOnPath(R.ev.path,ME.x,ME.z,R.hint,80),p=pathAt(R.ev.path,pr.d+7+Math.abs(ME.vf)*.3);let d=Math.atan2(p.x-ME.x,p.z-ME.z)-ME.yaw;d=Math.atan2(Math.sin(d),Math.cos(d));let vt=99;for(let k=8;k<=70;k+=8){const q=pathAt(R.ev.path,pr.d+k);vt=Math.min(vt,Math.sqrt(9*Math.max(5,q.R))+k*.35)}return{thr:ME.vf<vt?1:0,brk:ME.vf>vt+4?1:0,str:clamp(d*2.2,-1,1),hb:false,nos:ME.vf<vt-10}}
 function step(t){$('loadT').textContent=t}
 function boot(){
-  const tasks=[['MAPA',()=>{loadBlds();console.log('env publicos',assignPublic());buildSea();buildRoadIdx();loadDEM();const terr=()=>{buildTerrainGrid();conformTerrain();shoreFix();flattenPitches();flattenPort();return strFinish()};// si al terminar se descarta algún puente, se rehace el terreno sin sus rebajes
+  const tasks=[['MAPA',()=>{loadBlds();console.log('env calles-edificio',BDROP.size,BCUT);console.log('env publicos',assignPublic());buildSea();buildRoadIdx();loadDEM();const terr=()=>{buildTerrainGrid();conformTerrain();shoreFix();flattenPitches();flattenPort();return strFinish()};// si al terminar se descarta algún puente, se rehace el terreno sin sus rebajes
       for(let k=0;k<6&&terr();k++){}}],['TEXTURAS',()=>{makeTextures();makeTextures2();TX.atlas=paintAtlas();initScene()}],['ORTOFOTO PNOA',()=>ORTHO_P],['TERRENO',buildGround],['CALLES',buildRoads],
     ['EDIFICIOS',()=>buildBuildings(renderer.capabilities.isWebGL2)],['RÓTULOS',()=>{console.log('env pub',JSON.stringify(buildPublic()));buildSigns()}],['PALMERAS Y FAROLAS',buildDecor],['RUTAS',()=>{buildGraph();defineEvents();buildEventMarkers();buildTraps();buildTraffic()}],['CALLES Y JARDINES',()=>{const a=buildStreetLife(),b=buildNature(),pl=buildPools(),sd=buildStreetDetail();console.log('env detail',JSON.stringify(sd),JSON.stringify(buildMapillary()));console.log('pools',pl);console.log('env',JSON.stringify(a),JSON.stringify(b))}],['PARQUES',()=>console.log('env parques',JSON.stringify(buildParks()),JSON.stringify(buildPK()))],['PUERTO',()=>console.log('env puerto',JSON.stringify(buildPort()))],['CAMPOS DE FÚTBOL',()=>console.log('env futbol',JSON.stringify(buildFutbol()))],
     ['AJUSTE DEL TERRENO',()=>{console.log('env carve',JSON.stringify(carveGround()));console.log('env frozen',freezeStatic())}],

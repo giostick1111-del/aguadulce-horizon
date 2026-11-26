@@ -130,3 +130,23 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Motos 5–8 en (621,1937), vista desde el casco (camMode 2) y vista de persecución: bien las 4. En la deportiva (8) no se ven las manos porque las tapa el carenado.
 - Rendimiento (inspector, sin reportes): 445 calls, 526 362 tris, 189 texturas, 1923 geometrías.
 - Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 42, take 1); móvil (mobfb) `ok []`; fútbol (fb2) OK, partidos de 11, 7 y 5 en juego, con goles.
+
+## 2026-11-26 — Mecánico
+- Arreglados 3 fallos (pasan a procesados):
+  - 20261122-16 Calle Puerto de Guadarrama (3451,1507) y 20261122-17 Puerto del Manzanal (3397,1489): las calles de OSM atravesaban bloques de viviendas del Catastro (2002); el coche soltado se apartaba 10 m y la cámara quedaba entre bloques. Ahora el coche se queda en su sitio (0 m). La curvatura que queda (1,24–1,56 m) es la pendiente real de la calle.
+  - 20261126-1 (875,3320): calle con aceras y farolas dentro de un invernadero del Catastro (idx 19094). El invernadero queda ahora al lado de la calle.
+- Arreglo (regla general, `f1_world.js` `roadBldFix` en `loadBlds`), para edificios que pisan una calzada cls 0–4:
+  - los vértices que caen en la calzada se apartan a media anchura + 1 m;
+  - si la calle sigue cruzando el edificio, se parte en dos por la calzada;
+  - si no queda al menos el 30 % del edificio, se quita.
+  - Resultado: 99 edificios recortados o partidos (unos 50 son invernaderos) y 5 quitados (3 en Calle Moncabril, 1 en Puerto de Piqueras y una obra de 2024 en Calle Puerto de la Cruz / Calle Cortijo).
+  - Decisión: manda la calle (es por donde se conduce). Primero probé a quitar los edificios enteros, pero vaciaba la urbanización de las calles «Puerto de…» (20 bloques que sí salen en la ortofoto); por eso se parten.
+  - Log nuevo: `env calles-edificio <quitados> <recortados>`.
+- No arreglados:
+  - 20261125-2 (Pasaje Zaidín): ya no hay edificios que pisen la calle; la calzada de OSM acaba sin salida en un patio entre fachadas. Queda en la cola con la nota.
+  - 20261122-16/-17 (curvatura), 20261123-3, 20261124-1, 20261123-5: ya diagnosticados, sin cambios.
+- Pruebas:
+  - dbgload sin errores (solo ERR_TUNNEL); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1).
+  - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+  - met2: puntos >1,2 m: 15; >2,5 m: 0.
+- Rendimiento (perf2, nr): 436 calls, 525 903 tris (antes 436 / 525 076).
