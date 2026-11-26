@@ -10,7 +10,7 @@
    81.6,
    1531.8
   ],
-  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 1.03 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): curvatura 1,24 m; el coche soltado en (3451,1507) se desplaza 10 m (calle muy empinada); sigue pendiente. | 2026-11-23 Mecánico (3º): causa del desplazamiento: la calle de OSM atraviesa un bloque de viviendas del Catastro (año 2002, idx 17499; también 17498 en Puerto de Piqueras): blockedAt es cierto en el eje de la calle y freeSpot aparta el coche. Es un conflicto de datos OSM/Catastro; sin arreglar. | 2026-11-24 Inspector: sigue; la captura al azar en (3454,1488) sale con la cámara dentro del bloque de viviendas. | 2026-11-25 Inspector: sigue (Puerto de Piqueras 3421,1507: 1,56 m); la captura a ras de suelo sale con la cámara metida entre bloques.",
+  "detalle": "curvatura 2.54 m en Calle Puerto de Guadarrama. Confirmado a ras de suelo: salto de 3.5 m en 5 m (perfil cada 5 m: 77.7, 79.6, 81.0, 82.3, 84.3, 87.8, 88.3, 88.9, 89.4, 90.8, 93.3, 95.7, 98.2); se ve un reborde/corte en la calzada. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 1.03 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): curvatura 1,24 m; el coche soltado en (3451,1507) se desplaza 10 m (calle muy empinada); sigue pendiente. | 2026-11-23 Mecánico (3º): causa del desplazamiento: la calle de OSM atraviesa un bloque de viviendas del Catastro (año 2002, idx 17499; también 17498 en Puerto de Piqueras): blockedAt es cierto en el eje de la calle y freeSpot aparta el coche. Es un conflicto de datos OSM/Catastro; sin arreglar. | 2026-11-24 Inspector: sigue; la captura al azar en (3454,1488) sale con la cámara dentro del bloque de viviendas. | 2026-11-25 Inspector: sigue (Puerto de Piqueras 3421,1507: 1,56 m); la captura a ras de suelo sale con la cámara metida entre bloques. | 2026-11-26 Inspector: sigue: 1,56 m en Puerto de Piqueras (3421,1507) y 1,24 m en (3450,1512); a ras de suelo la cámara vuelve a quedar entre bloques.",
   "reporte": null,
   "prioridad": 1
  },
@@ -25,7 +25,7 @@
    82.1,
    1522.0
   ],
-  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada. | 2026-11-23: el coche soltado en (3397,1489) salió despedido 10 m. | 2026-11-23 Mecánico (2º): curvatura 1,54 m; el coche soltado en (3397,1489) sigue desplazándose 10 m; sin arreglar. | 2026-11-23 Mecánico (3º): misma causa que 20261122-16: la calle Puerto del Manzanal (OSM) atraviesa el bloque del Catastro idx 17494; el coche se aparta 10 m. Sin arreglar.",
+  "detalle": "curvatura 2.52 m en Calle Puerto de Navacerrada. Confirmado a ras de suelo: salto de 1.9 m en 5 m (perfil cada 5 m: 78.2, 80.1, 80.5, 79.8, 78.9, 77.6, 79.0, 80.3, 79.2, 77.9, 76.3, 75.4, 76.9); se ve un reborde/corte en la calzada. | 2026-11-23: el coche soltado en (3397,1489) salió despedido 10 m. | 2026-11-23 Mecánico (2º): curvatura 1,54 m; el coche soltado en (3397,1489) sigue desplazándose 10 m; sin arreglar. | 2026-11-23 Mecánico (3º): misma causa que 20261122-16: la calle Puerto del Manzanal (OSM) atraviesa el bloque del Catastro idx 17494; el coche se aparta 10 m. Sin arreglar. | 2026-11-26 Inspector: sigue: 1,54 m en Puerto del Manzanal (3395,1507).",
   "reporte": null,
   "prioridad": 1
  },
@@ -36,7 +36,7 @@
   "x": 3506,
   "z": 1496,
   "cam": null,
-  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.94 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): aquí 0,89 m y coche soltado 0 m, pero a 30 m, en (3502,1525), queda un punto de 2,32 m en la misma calle; se deja para revisar. | 2026-11-23 Mecánico (3º): el punto (3502,1525) es el cambio de pendiente de 10 % a 45 % (calle real muy empinada) en el cruce con Puerto de Navacerrada; no arreglado. | 2026-11-24 Inspector: (3502,1525) sigue con curvatura 2,32 m. | 2026-11-25 Inspector: sigue: 2,32 m en (3502,1525); a ras de suelo la calzada sube en quiebro entre los edificios.",
+  "detalle": "curvatura 2.47 m en Calle Puerto de Bonalgua. A ras de suelo: escalón de 3.2 m en 5 m (90.2→93.4) entre edificios; luego pendiente irregular. | 2026-11-23 Mecánico: tras el arreglo de juntas (junctionFix) la curvatura medida aquí baja a 0.94 m; probablemente resuelto, falta confirmarlo a ras de suelo. | 2026-11-23 Mecánico (2º): aquí 0,89 m y coche soltado 0 m, pero a 30 m, en (3502,1525), queda un punto de 2,32 m en la misma calle; se deja para revisar. | 2026-11-23 Mecánico (3º): el punto (3502,1525) es el cambio de pendiente de 10 % a 45 % (calle real muy empinada) en el cruce con Puerto de Navacerrada; no arreglado. | 2026-11-24 Inspector: (3502,1525) sigue con curvatura 2,32 m. | 2026-11-25 Inspector: sigue: 2,32 m en (3502,1525); a ras de suelo la calzada sube en quiebro entre los edificios. | 2026-11-26 Inspector: sigue: 2,32 m en (3502,1525).",
   "reporte": null,
   "prioridad": 1
  },
@@ -51,20 +51,9 @@
    27.2,
    1751.5
   ],
-  "detalle": "Calle sin nombre (cls 3) junto a la costa este: escalón de 2,3 m en 5 m (perfil cada 5 m: 26.3, 25.9, 25.4, 25.5, 25.8, 26.0, 23.7, 23.6, 24.1, 23.5, 22.3, 22.0, 22.3). A ras de suelo la calzada se mete contra una ladera/pared de tierra a la izquierda y el borde del asfalto queda dentado. | 2026-11-24 Mecánico: diagnosticado, sin arreglar: la calle sin nombre (cls 3, idx 35) va paralela a 7,2 m de eje de otra vía cls 1 (idx 795) que está 3 m más alta (27,5 frente a 24,5 m, según el MDT). La rejilla del terreno es de 6 m y la calzada se dibuja sobre el terreno, así que no puede representar 3 m de desnivel en 1,3 m de separación entre calzadas; probé (a) contar como calzada solo la anchura real y (b) que el talud de otra vía no tire de una calzada ya puesta: no mejora aquí (1,94→1,76) y empeora Puerto de Navacerrada (1,54→2,47); descartado. Haría falta un muro entre las dos calzadas o una rejilla más fina en esa franja. | 2026-11-25 Inspector: sigue: 1,94 m.",
+  "detalle": "Calle sin nombre (cls 3) junto a la costa este: escalón de 2,3 m en 5 m (perfil cada 5 m: 26.3, 25.9, 25.4, 25.5, 25.8, 26.0, 23.7, 23.6, 24.1, 23.5, 22.3, 22.0, 22.3). A ras de suelo la calzada se mete contra una ladera/pared de tierra a la izquierda y el borde del asfalto queda dentado. | 2026-11-24 Mecánico: diagnosticado, sin arreglar: la calle sin nombre (cls 3, idx 35) va paralela a 7,2 m de eje de otra vía cls 1 (idx 795) que está 3 m más alta (27,5 frente a 24,5 m, según el MDT). La rejilla del terreno es de 6 m y la calzada se dibuja sobre el terreno, así que no puede representar 3 m de desnivel en 1,3 m de separación entre calzadas; probé (a) contar como calzada solo la anchura real y (b) que el talud de otra vía no tire de una calzada ya puesta: no mejora aquí (1,94→1,76) y empeora Puerto de Navacerrada (1,54→2,47); descartado. Haría falta un muro entre las dos calzadas o una rejilla más fina en esa franja. | 2026-11-25 Inspector: sigue: 1,94 m. | 2026-11-26 Inspector: sigue: 1,94 m; a ras de suelo se ve el borde de la calzada levantado.",
   "reporte": null,
   "prioridad": 1
- },
- {
-  "id": "20261122-8",
-  "origen": "auto",
-  "tipo": "coche_en_el_aire",
-  "x": null,
-  "z": null,
-  "cam": null,
-  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3). | 2026-11-23 Mecánico: tras junctionFix airFr 585, take 1 (antes 626, take 3). | 2026-11-23 Mecánico (2º): sin cambios (airFr 585, take 1). | 2026-11-24 Inspector: sin cambios (done:true, airFr 585, take 1).",
-  "reporte": null,
-  "prioridad": 2
  },
  {
   "id": "20261122-11",
@@ -95,7 +84,7 @@
   "x": 2065,
   "z": 761,
   "cam": null,
-  "detalle": "curvatura 2.39 m en calle cls 2 (zona Carmen Pinteño). Escalón de 2.4 m en 5 m (132.0→134.4) en la bajada hacia los pasos de cebra. | 2026-11-23 Mecánico (2º): sin cambios (2,39 m); no arreglado este turno. | 2026-11-23 Mecánico (3º): la glorieta (cls 2, cy 134,6) queda 2,4 m por encima de un ramal de autovía (cls 0) a 13 m, cuyo margen manda en el terreno; no arreglado. | 2026-11-24 Inspector: sigue (2,39 m). | 2026-11-25 Inspector: sigue: 2,39 m; a ras de suelo la calzada termina en losa levantada con paso de cebra encima del talud.",
+  "detalle": "curvatura 2.39 m en calle cls 2 (zona Carmen Pinteño). Escalón de 2.4 m en 5 m (132.0→134.4) en la bajada hacia los pasos de cebra. | 2026-11-23 Mecánico (2º): sin cambios (2,39 m); no arreglado este turno. | 2026-11-23 Mecánico (3º): la glorieta (cls 2, cy 134,6) queda 2,4 m por encima de un ramal de autovía (cls 0) a 13 m, cuyo margen manda en el terreno; no arreglado. | 2026-11-24 Inspector: sigue (2,39 m). | 2026-11-25 Inspector: sigue: 2,39 m; a ras de suelo la calzada termina en losa levantada con paso de cebra encima del talud. | 2026-11-26 Inspector: sigue: 2,39 m en (2065,761).",
   "reporte": null,
   "prioridad": 2
  },
@@ -120,6 +109,32 @@
   "detalle": "Zona de Calle de Don Juan de Austria / Calle Zaidín: la calzada termina en seco contra la fachada de una casa (captura al azar) y la cámara a ras de suelo a lo largo de la calle queda dentro de un edificio con escaparates. Parece que una calle de OSM atraviesa un bloque del Catastro (como 20261122-16).",
   "reporte": null,
   "prioridad": 2
+ },
+ {
+  "id": "20261126-1",
+  "origen": "visual",
+  "tipo": "calle_en_edificio",
+  "x": 875,
+  "z": 3320,
+  "cam": [
+   921.2,
+   42,
+   3268.8
+  ],
+  "detalle": "Calle sin nombre al sur de Avenida de Carlos III (zona de invernaderos/naves, cerca de (836,3323)): la calzada con sus aceras y farolas pasa por DENTRO de una gran nave/invernadero gris semitransparente. Desde la calle se ve un muro gris translúcido cortando la calzada (captura al azar sw9) y desde fuera se ven las farolas y la calle a través de la pared. Probable conflicto OSM/Catastro (como 20261125-2). Altura de cámara aproximada.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261122-8",
+  "origen": "auto",
+  "tipo": "coche_en_el_aire",
+  "x": null,
+  "z": null,
+  "cam": null,
+  "detalle": "Prueba autovia-auto-nr: termina (done:true) pero con airFr=698 fotogramas en el aire y take=3; probablemente por los escalones de la autovía (ver 20261122-1). paseo-auto-nr: airFr=0. | 2026-11-23: sigue igual (done:true, airFr=626, take 3). | 2026-11-23 Mecánico: tras junctionFix airFr 585, take 1 (antes 626, take 3). | 2026-11-23 Mecánico (2º): sin cambios (airFr 585, take 1). | 2026-11-24 Inspector: sin cambios (done:true, airFr 585, take 1). | 2026-11-26 Inspector: autovia-auto-nr done:true, airFr 42, take 1 (tras el arreglo del 25-11 baja de 585 a 42); casi resuelto, se deja en vigilancia.",
+  "reporte": null,
+  "prioridad": 3
  },
  {
   "id": "20261122-19",
@@ -150,7 +165,7 @@
   "x": 198,
   "z": 2719,
   "cam": null,
-  "detalle": "Autovía de Roquetas: curvatura 1,31 m. Ojo: el Mecánico ya vio que cambiar la prioridad del talud de autovía crea escalones en (199,2728); revisar a ras de suelo antes de tocar. | 2026-11-25 Inspector: confirmado a ras de suelo: raja negra que cruza la calzada de lado a lado.",
+  "detalle": "Autovía de Roquetas: curvatura 1,31 m. Ojo: el Mecánico ya vio que cambiar la prioridad del talud de autovía crea escalones en (199,2728); revisar a ras de suelo antes de tocar. | 2026-11-25 Inspector: confirmado a ras de suelo: raja negra que cruza la calzada de lado a lado. | 2026-11-26 Inspector: sigue: 1,31 m en (198,2719).",
   "reporte": null,
   "prioridad": 3
  },
@@ -173,6 +188,17 @@
   "z": 3314,
   "cam": null,
   "detalle": "Calle de Nevada (sur-oeste): el paso de cebra de la derecha parece pintado sobre el arcén/acera claro, fuera de la calzada (captura al azar sw4). Detalle menor; confirmar.",
+  "reporte": null,
+  "prioridad": 3
+ },
+ {
+  "id": "20261126-2",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 1544,
+  "z": 2531,
+  "cam": null,
+  "detalle": "Rotonda de Calle Alfaguara con Avenida de Carlos III: junto a la acera de los comercios el terreno de la ortofoto (tierra marrón borrosa) asoma en cuña por encima de la acera, entre la calzada y la fachada. En la vista cenital, al oeste de la rotonda (~1515,2530) hay además un polígono gris semitransparente encima de edificios y acera; sin confirmar qué es.",
   "reporte": null,
   "prioridad": 3
  }

@@ -119,3 +119,14 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Rendimiento (perf2, nr): 436 calls, 525 076 tris (antes 437 / 526 960).
 - Herramientas nuevas en `fhtest/`: `cam.py` (capturas libres por ángulo, distancia y altura, o vista cenital), `sky.py` (capturas del cielo en 6 direcciones).
 - Publicado: commit ea3aba3. El workflow «Publicar juego» lanzado por el push (run 45547093163) falló en `deploy-pages` con «No artifacts named github-pages», el mismo fallo de GitHub del 24-11. Lo lancé a mano (run 45547412536), volvió a fallar y en el reintento terminó en success. Web publicada.
+
+## 2026-11-26 — Inspector (semilla 330)
+- Avisos de jugadores: no se pudieron leer (WebFetch a `fh/bugs.json` falló: la petición de permiso no se respondió a tiempo). Se siguió sin reportes.
+- 2 fallos nuevos en la cola (17 en total):
+  - 20261126-1 (875,3320): calle con aceras y farolas que pasa por dentro de una nave/invernadero gris semitransparente, al sur de Avenida de Carlos III.
+  - 20261126-2 (1544,2531): terreno de la ortofoto asomando sobre la acera de los comercios en la rotonda de Calle Alfaguara / Carlos III; y un polígono gris semitransparente sin identificar al oeste.
+- Inspección automática: 11 baches >1,2 m (máx. 2,39 m; ninguno >2,5 m), todos ya conocidos. A ras de suelo los 5 mayores siguen igual: (2065,761), (3502,1525), (4451,1747) con el borde levantado, (3421,1507) con la cámara entre bloques; Calle de Virginia (2369,1490) sigue siendo cuesta normal (al lado de un campo de fútbol).
+- Revisado y NO es fallo: el cilindro y la pancarta rosa en (4494,1760) son la salida del «Circuito Carlos III»; las 65 papeleras de Mapillary se cuentan en `f11_street.js` pero no se dibujan.
+- Motos 5–8 en (621,1937), vista desde el casco (camMode 2) y vista de persecución: bien las 4. En la deportiva (8) no se ven las manos porque las tapa el carenado.
+- Rendimiento (inspector, sin reportes): 445 calls, 526 362 tris, 189 texturas, 1923 geometrías.
+- Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 42, take 1); móvil (mobfb) `ok []`; fútbol (fb2) OK, partidos de 11, 7 y 5 en juego, con goles.
