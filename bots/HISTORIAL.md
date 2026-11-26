@@ -150,3 +150,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
   - móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
   - met2: puntos >1,2 m: 15; >2,5 m: 0.
 - Rendimiento (perf2, nr): 436 calls, 525 903 tris (antes 436 / 525 076).
+- Publicado: commit 0908d22. El workflow «Publicar juego» (run 45755580272) falló al principio en `deploy` (el mismo fallo intermitente de GitHub de días anteriores). Al relanzarlo terminó en success. Web publicada.
