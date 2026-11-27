@@ -81,6 +81,28 @@
   "prioridad": 2
  },
  {
+  "id": "20261127-1",
+  "origen": "visual",
+  "tipo": "calzada_ladera",
+  "x": 4660,
+  "z": 1633,
+  "cam": null,
+  "detalle": "Calle sin nombre (cls 3, camino en curvas junto a la Autovía, costa este): pegado a la calzada sube un muro de terreno casi vertical y una franja gris de acera trepa por la ladera. El terreno físico pasa de 14,6 a 25,0 m en 10 m (perfil cada 5 m desde -20 m: 16.6,15.8,15.2,15.0,14.8,14.7,14.6,18.3,25.0). Distinto del 20261124-1 (a 230 m).",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
+  "id": "20261127-2",
+  "origen": "visual",
+  "tipo": "terreno_sobre_casas",
+  "x": 3380,
+  "z": 1600,
+  "cam": null,
+  "detalle": "Entre Calle de Fray Leopoldo y Calle Latón (zona Puerto de…): un montículo del terreno con textura de ortofoto, en picos, asoma por encima de las casas de la manzana y tapa el tejado de una casa de una planta vista desde la calle (captura sw5, mirando a lo largo de la calle desde (3392,1606)). A la derecha de la acera hay además una franja azul claro (parece agua/hueco) entre la acera y las casas.",
+  "reporte": null,
+  "prioridad": 2
+ },
+ {
   "id": "20261122-8",
   "origen": "auto",
   "tipo": "coche_en_el_aire",
@@ -154,6 +176,28 @@
   "z": 2531,
   "cam": null,
   "detalle": "Rotonda de Calle Alfaguara con Avenida de Carlos III: junto a la acera de los comercios el terreno de la ortofoto (tierra marrón borrosa) asoma en cuña por encima de la acera, entre la calzada y la fachada. En la vista cenital, al oeste de la rotonda (~1515,2530) hay además un polígono gris semitransparente encima de edificios y acera; sin confirmar qué es.",
+  "reporte": null,
+  "prioridad": 3
+ },
+ {
+  "id": "20261127-3",
+  "origen": "visual",
+  "tipo": "edificio_en_acera",
+  "x": 670,
+  "z": 3395,
+  "cam": null,
+  "detalle": "Calle Ribadelago: la fachada de la derecha está pegada al bordillo; la acera de ese lado queda en unos 0,5 m mientras la de la izquierda es normal. Posible efecto del recorte roadBldFix (vértices a media anchura + 1 m, sin contar la acera).",
+  "reporte": null,
+  "prioridad": 3
+ },
+ {
+  "id": "20261127-4",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 1964,
+  "z": 1251,
+  "cam": null,
+  "detalle": "Calle en cuesta junto a Calle Jesús de Perceval (barrio alto, rotonda al oeste): la arena del terreno cubre la acera de la izquierda y montículos de arena asoman sobre la acera de la derecha junto a las fachadas.",
   "reporte": null,
   "prioridad": 3
  }

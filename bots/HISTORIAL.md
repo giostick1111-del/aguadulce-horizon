@@ -151,3 +151,15 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
   - met2: puntos >1,2 m: 15; >2,5 m: 0.
 - Rendimiento (perf2, nr): 436 calls, 525 903 tris (antes 436 / 525 076).
 - Publicado: commit 0908d22. El workflow «Publicar juego» (run 45755580272) falló al principio en `deploy` (el mismo fallo intermitente de GitHub de días anteriores). Al relanzarlo terminó en success. Web publicada.
+
+## 2026-11-27 — Inspector (semilla 331)
+- Avisos de jugadores: no se pudieron leer (WebFetch a `fh/bugs.json` rechazado: la petición de permiso no se respondió a tiempo; curl también bloqueado por el proxy). Se siguió sin reportes.
+- 4 fallos nuevos en la cola (18 en total):
+  - 20261127-1 (4660,1633): camino sin nombre (cls 3) en la ladera este; muro de terreno casi vertical pegado a la calzada (14,6→25,0 m en 10 m) y franja de acera trepando la ladera.
+  - 20261127-2 (3380,1600): montículo de terreno en picos por encima de las casas entre Calle de Fray Leopoldo y Calle Latón; franja azul junto a la acera.
+  - 20261127-3 (670,3395): Calle Ribadelago, fachada pegada al bordillo (acera derecha ~0,5 m).
+  - 20261127-4 (1964,1251): arena del terreno sobre las aceras en la cuesta junto a Calle Jesús de Perceval.
+- Inspección automática: 11 baches >1,2 m (máx. 2,39 m; ninguno >2,5 m), todos ya conocidos. A ras de suelo: (2065,761) escalón 132,0→134,4; (3502,1525) y (3421,1507) +3 m en 5 m (pendiente real según el Mecánico); (4451,1747) 26,0→23,7; Calle de Virginia (2369,1490) cuesta normal. Coche soltado en 40 puntos: sin coche bajo el suelo, en edificio ni expulsado.
+- Motos 5–8 en Calle Suspiro del Moro (2150,2784), vista interior (camMode 2) y persecución: bien las 4.
+- Rendimiento (inspector, sin reportes): 519 calls, 819 868 tris, 196 texturas, 1970 geometrías. Ojo: es el valor más alto visto en el inspector (antes 183k–526k), aunque depende de dónde queda el coche; vigilar con perf2.
+- Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil (mobfb) `ok []`; fútbol (fb2) OK, partidos de 11, 7 y 5 en juego, con goles.
