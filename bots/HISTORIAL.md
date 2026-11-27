@@ -176,3 +176,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
   - Los de prioridad 1 (20261123-3, 20261124-1) y 20261123-5, 20261122-12, 20261124-4: ya diagnosticados, sin cambios.
 - Pruebas: dbgload sin errores (solo ERR_TUNNEL de fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 436 calls, 521 219 tris (antes 436 / 525 903).
+- Publicado: commit 4bb6a8a. El workflow «Publicar juego» (run 45940633140) terminó en success. Web publicada.
