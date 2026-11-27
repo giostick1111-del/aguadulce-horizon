@@ -163,3 +163,16 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Motos 5–8 en Calle Suspiro del Moro (2150,2784), vista interior (camMode 2) y persecución: bien las 4.
 - Rendimiento (inspector, sin reportes): 519 calls, 819 868 tris, 196 texturas, 1970 geometrías. Ojo: es el valor más alto visto en el inspector (antes 183k–526k), aunque depende de dónde queda el coche; vigilar con perf2.
 - Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil (mobfb) `ok []`; fútbol (fb2) OK, partidos de 11, 7 y 5 en juego, con goles.
+
+## 2026-11-27 — Mecánico
+- Arreglado 1 fallo (pasa a procesados):
+  - 20261127-4 (1964,1251), cuesta junto a Calle Jesús de Perceval: arena del terreno sobre las aceras. Causa general: la rejilla del suelo (6 m) es más gruesa que las aceras; sus vértices bajo la acera ya se bajaban, pero el triángulo del suelo asomaba entre ellos en cuñas y montículos.
+  - Arreglo (regla general, `carveGround` en `f16_parks.js`): 2º paso que recorre cada triángulo de acera, calzada, arcén y parque cada ~1,5 m y, donde el suelo asoma, baja los vértices de esa celda (solo si asoma ≤1,5 m y como mucho 3 m por vértice, para no abrir zanjas en las sendas de monte). En todo el mapa: triángulos con tierra >10 cm por encima pasan de 938 a 38 (los que quedan son sendas cls 5–7 en ladera). Log: `env carve` añade `fixed` y `deep` (vértices bajados >1 m: 363).
+  - A ras de suelo en Jesús de Perceval: las dos aceras se ven enteras con su bordillo.
+- No reproducible: 20261122-20 (787,3017): sin montículo en ninguna dirección; el nombre «Génova» era el de la posición del coche, no de la cámara.
+- No arreglados (con nota en la cola):
+  - 20261127-3 Calle Ribadelago: no es roadBldFix (no se recortó ningún edificio); las fachadas del Catastro están a 4,3–4,7 m del eje de OSM y la calzada mide 7,6 m. Haría falta estrechar la calzada entre fachadas cercanas.
+  - 20261127-2 (3380,1600): es la ladera real (53 → 75–80 m a 40–70 m); los «picos» son surcos cada ~24 m; sin ortofoto no se sabe si son reales.
+  - Los de prioridad 1 (20261123-3, 20261124-1) y 20261123-5, 20261122-12, 20261124-4: ya diagnosticados, sin cambios.
+- Pruebas: dbgload sin errores (solo ERR_TUNNEL de fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 436 calls, 521 219 tris (antes 436 / 525 903).

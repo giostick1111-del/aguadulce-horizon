@@ -82,7 +82,22 @@ const CARVED=[];function carveGround(){const n=TG.nx,m=TG.nz,cap=new Float32Arra
     const i0=Math.max(0,Math.ceil(Math.min(ax,bx,cx)/GS)),i1=Math.min(n-1,Math.floor(Math.max(ax,bx,cx)/GS)),j0=Math.max(0,Math.ceil(Math.min(az,bz,cz)/GS)),j1=Math.min(m-1,Math.floor(Math.max(az,bz,cz)/GS));
     for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){const x=i*GS,z=j*GS;const l1=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/d,l2=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/d,l3=1-l1-l2;if(l1<-1e-4||l2<-1e-4||l3<-1e-4)continue;
       const y=l1*ay+l2*by+l3*cy-.06,k=j*n+i;if(y<cap[k])cap[k]=y}}}
+  /* 2º paso: la rejilla del suelo (6 m) es más gruesa que las aceras y calzadas; aunque sus vértices queden por debajo, el triángulo del
+     suelo puede asomar ENTRE ellos (montículos y cuñas de tierra sobre la acera). Se mira la superficie de cada triángulo cada ~1,5 m y,
+     donde el suelo asoma (hasta 1,5 m; más es una senda de monte sobre ladera, que no se toca), se bajan los vértices de esa celda
+     (como mucho 3 m por vértice, para no abrir zanjas) */
+  const M=new Float32Array(n*m);for(const T of GTILES){const P=T.g.attributes.position.array;for(let j=0;j<T.h;j++)for(let i=0;i<T.w;i++){const k=(T.tj+j)*n+T.ti+i;M[k]=Math.min(P[(j*T.w+i)*3+1],cap[k])}}
+  let fixed=0;const M0=M.slice();
+  for(let pass=0;pass<4;pass++){let nf=0;for(const L of OVL){const p=L.p,I=L.i;for(let t=0;t<I.length;t+=3){const a=I[t]*3,b=I[t+1]*3,c=I[t+2]*3;
+      const e1=Math.hypot(p[a]-p[b],p[a+2]-p[b+2]),e2=Math.hypot(p[b]-p[c],p[b+2]-p[c+2]),e3=Math.hypot(p[c]-p[a],p[c+2]-p[a+2]),N=Math.min(12,Math.max(1,Math.ceil(Math.max(e1,e2,e3)/1.5)));
+      for(let u=0;u<=N;u++)for(let v=0;v<=N-u;v++){const l1=u/N,l2=v/N,l3=1-l1-l2,x=p[a]*l1+p[b]*l2+p[c]*l3,z=p[a+2]*l1+p[b+2]*l2+p[c+2]*l3,ty=p[a+1]*l1+p[b+1]*l2+p[c+1]*l3-.06;
+        const fx=x/GS,fz=z/GS,i=Math.floor(fx),j=Math.floor(fz);if(i<0||j<0||i>=n-1||j>=m-1)continue;const uu=fx-i,ww=fz-j;
+        const V=uu+ww<=1?[[j*n+i,1-uu-ww],[j*n+i+1,uu],[(j+1)*n+i,ww]]:[[(j+1)*n+i+1,uu+ww-1],[(j+1)*n+i,1-uu],[j*n+i+1,1-ww]];
+        let y=0;for(const [k,wt] of V)y+=M[k]*wt;const e=y-ty;if(e<=.02||e>1.5)continue;
+        let ws=0;for(const [k,wt] of V)if(M[k]>ty&&wt>.02)ws+=wt;if(!ws)continue;for(const [k,wt] of V)if(M[k]>ty&&wt>.02)M[k]=Math.max(ty,M0[k]-3,M[k]-e/ws);nf++}}}
+    fixed+=nf;if(!nf)break}
+  let deep=0;for(let k=0;k<n*m;k++)if(M0[k]-M[k]>1)deep++;
   let moved=0,maxd=0;
-  for(const T of GTILES){const P=T.g.attributes.position.array;let ch=false;for(let j=0;j<T.h;j++)for(let i=0;i<T.w;i++){const k=(T.tj+j)*n+T.ti+i,q=(j*T.w+i)*3+1;if(P[q]>cap[k]){maxd=Math.max(maxd,P[q]-cap[k]);if(P[q]-cap[k]>.2)CARVED.push([P[q-1],P[q+1],+(P[q]-cap[k]).toFixed(2)]);P[q]=cap[k];ch=true;moved++}}
+  for(const T of GTILES){const P=T.g.attributes.position.array;let ch=false;for(let j=0;j<T.h;j++)for(let i=0;i<T.w;i++){const k=(T.tj+j)*n+T.ti+i,q=(j*T.w+i)*3+1;if(P[q]>M[k]+1e-4){maxd=Math.max(maxd,P[q]-M[k]);if(P[q]-M[k]>.2)CARVED.push([P[q-1],P[q+1],+(P[q]-M[k]).toFixed(2)]);P[q]=M[k];ch=true;moved++}}
     if(ch){T.g.attributes.position.needsUpdate=true;T.g.computeVertexNormals();T.g.computeBoundingSphere()}}
-  return{tris,moved,maxd:+maxd.toFixed(2)}}
+  return{tris,moved,maxd:+maxd.toFixed(2),fixed,deep}}

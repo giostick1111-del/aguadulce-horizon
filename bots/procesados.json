@@ -433,5 +433,35 @@
   "causa": "La calle sin nombre (cls 4) y su acera pasaban por dentro del invernadero del Catastro idx 19094 (3618 m2).",
   "arreglo": "f1_world.js: nueva regla general roadBldFix en loadBlds: los vértices de un edificio que caen en la calzada (cls 0-4) se apartan a media anchura + 1 m; si la calle sigue cruzándolo se parte en dos por la calzada; si no queda al menos el 30 % se quita. 99 edificios recortados/partidos, 5 quitados. El invernadero se recorta y queda al lado de la calle (lo mismo en ~50 invernaderos que pisaban calzadas).",
   "fecha": "2026-11-26"
+ },
+ {
+  "id": "20261122-20",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 787,
+  "z": 3017,
+  "cam": null,
+  "detalle": "Calle Génova: un montículo de arena del terreno sobresale por encima de la acera junto a las casas (lado derecho).",
+  "reporte": null,
+  "prioridad": 3,
+  "estado": "no reproducible",
+  "causa": "En (787,3017) (Calle Espronceda; el nombre «Génova» era el de la posición del coche, no de la cámara) no se ve ningún montículo sobre la acera en las dos direcciones y no hay tierra por encima de la acera en 40 m.",
+  "arreglo": "Ninguno; además el arreglo general de carveGround de este turno quita la tierra que asoma sobre aceras en todo el mapa.",
+  "fecha": "2026-11-27"
+ },
+ {
+  "id": "20261127-4",
+  "origen": "visual",
+  "tipo": "acera_terreno",
+  "x": 1964,
+  "z": 1251,
+  "cam": null,
+  "detalle": "Calle en cuesta junto a Calle Jesús de Perceval (barrio alto, rotonda al oeste): la arena del terreno cubre la acera de la izquierda y montículos de arena asoman sobre la acera de la derecha junto a las fachadas.",
+  "reporte": null,
+  "prioridad": 3,
+  "estado": "arreglado",
+  "causa": "La rejilla del suelo (6 m) es más gruesa que las aceras: aunque sus vértices bajo la acera se bajaban (carveGround), el triángulo del suelo asomaba entre ellos en cuñas y montículos de arena sobre la acera (938 triángulos de acera/calzada con tierra >10 cm por encima en todo el mapa).",
+  "arreglo": "carveGround() en f16_parks.js: 2º paso que mira cada triángulo de acera/calzada cada ~1,5 m y baja los vértices de la celda del suelo donde asoma (hasta 1,5 m; máx. 3 m por vértice). Quedan 38 (>10 cm), casi todos sendas de monte en ladera, que no se tocan.",
+  "fecha": "2026-11-27"
  }
 ]

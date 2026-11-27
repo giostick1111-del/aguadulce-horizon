@@ -98,7 +98,7 @@
   "x": 3380,
   "z": 1600,
   "cam": null,
-  "detalle": "Entre Calle de Fray Leopoldo y Calle Latón (zona Puerto de…): un montículo del terreno con textura de ortofoto, en picos, asoma por encima de las casas de la manzana y tapa el tejado de una casa de una planta vista desde la calle (captura sw5, mirando a lo largo de la calle desde (3392,1606)). A la derecha de la acera hay además una franja azul claro (parece agua/hueco) entre la acera y las casas.",
+  "detalle": "Entre Calle de Fray Leopoldo y Calle Latón (zona Puerto de…): un montículo del terreno con textura de ortofoto, en picos, asoma por encima de las casas de la manzana y tapa el tejado de una casa de una planta vista desde la calle (captura sw5, mirando a lo largo de la calle desde (3392,1606)). A la derecha de la acera hay además una franja azul claro (parece agua/hueco) entre la acera y las casas. | 2026-11-27 Mecánico: reproducido mirando al este desde (3392,1606). Es la ladera real (MDT: de 53 m en la calle a 75–80 m a 40–70 m al norte/noreste); los «picos» son surcos cada ~24 m en x 3390–3470, z 1548–1572. No arreglado: sin ortofoto no se sabe si los surcos son reales; no se toca.",
   "reporte": null,
   "prioridad": 2
  },
@@ -121,17 +121,6 @@
   "z": 3294,
   "cam": null,
   "detalle": "Calle Hermanos Álvarez Quintero: la esquina de un edificio invade la acera junto al paso de peatones y su planta alta vuela sobre la calle.",
-  "reporte": null,
-  "prioridad": 3
- },
- {
-  "id": "20261122-20",
-  "origen": "visual",
-  "tipo": "acera_terreno",
-  "x": 787,
-  "z": 3017,
-  "cam": null,
-  "detalle": "Calle Génova: un montículo de arena del terreno sobresale por encima de la acera junto a las casas (lado derecho).",
   "reporte": null,
   "prioridad": 3
  },
@@ -186,18 +175,7 @@
   "x": 670,
   "z": 3395,
   "cam": null,
-  "detalle": "Calle Ribadelago: la fachada de la derecha está pegada al bordillo; la acera de ese lado queda en unos 0,5 m mientras la de la izquierda es normal. Posible efecto del recorte roadBldFix (vértices a media anchura + 1 m, sin contar la acera).",
-  "reporte": null,
-  "prioridad": 3
- },
- {
-  "id": "20261127-4",
-  "origen": "visual",
-  "tipo": "acera_terreno",
-  "x": 1964,
-  "z": 1251,
-  "cam": null,
-  "detalle": "Calle en cuesta junto a Calle Jesús de Perceval (barrio alto, rotonda al oeste): la arena del terreno cubre la acera de la izquierda y montículos de arena asoman sobre la acera de la derecha junto a las fachadas.",
+  "detalle": "Calle Ribadelago: la fachada de la derecha está pegada al bordillo; la acera de ese lado queda en unos 0,5 m mientras la de la izquierda es normal. Posible efecto del recorte roadBldFix (vértices a media anchura + 1 m, sin contar la acera). | 2026-11-27 Mecánico: no es el recorte roadBldFix (ningún edificio de Calle Ribadelago se recortó): las fachadas del Catastro están a 4,3–4,7 m del eje de OSM (x 587–628) y la calzada mide 7,6 m, así que entre fachadas solo quedan ~2,4 m para las dos aceras. Haría falta estrechar la calzada donde las fachadas están cerca; sin arreglar.",
   "reporte": null,
   "prioridad": 3
  }
