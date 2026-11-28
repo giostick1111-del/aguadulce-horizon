@@ -199,3 +199,4 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Nota: `dbgload.py` no funciona con `run.py` (abre su propio Playwright); se ejecuta con `python3 dbgload.py`.
 - Pruebas: dbgload sin errores (solo ERR_TUNNEL de recursos externos); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 42, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 437 calls, 527 607 tris (antes 436 / 521 219; +0,2 % / +1,2 %).
+- Publicado: commit b9743b3. El workflow «Publicar juego» (run 46107976775) terminó en success. Web publicada.
