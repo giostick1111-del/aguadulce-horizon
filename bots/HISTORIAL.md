@@ -177,3 +177,14 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Pruebas: dbgload sin errores (solo ERR_TUNNEL de fuentes externas); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
 - Rendimiento (perf2, nr): 436 calls, 521 219 tris (antes 436 / 525 903).
 - Publicado: commit 4bb6a8a. El workflow «Publicar juego» (run 45940633140) terminó en success. Web publicada.
+
+## 2026-11-28 — Inspector (semilla 332)
+- Avisos de jugadores: no se pudieron leer (WebFetch a `fh/bugs.json` rechazado otra vez: «la petición de permiso no se respondió a tiempo»). Se siguió sin reportes.
+- 3 fallos nuevos en la cola (19 en total):
+  - 20261128-1 (932,1179): paso superior de la Autovía del Mediterráneo; terraplén cortado en vertical junto a la pila y tierra por encima de la calzada lateral; punta triangular del tablero solapada con la calzada.
+  - 20261128-2 (2825,1778): calle sin salida junto a Calle Toronto/Sonora que acaba contra un montículo de tierra entre las fachadas.
+  - 20261128-3 (3035,2833): Paseo Marítimo, locales con escaparates ~1,5 m por encima de la acera sobre un zócalo.
+- Inspección automática: 11 baches >1,2 m (máx. 2,39 m; ninguno >2,5 m), todos ya conocidos. A ras de suelo: (2065,761), (3502,1525), (4451,1747) siguen igual; Calle de Virginia (2369,1490) y (3421,1507) cuesta normal entre edificios.
+- Motos 5–8 en (1969,3422), vista normal y vista interior (camMode 2), y la 8 conduciendo en interior: bien las 4 (manillar, espejos y piloto correctos).
+- Rendimiento (inspector, sin reportes): 332 calls, 314 139 tris, 201 texturas, 2081 geometrías.
+- Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil (mobfb) `ok []`; fútbol (fb2): partidos de 11, 7 y 5 en juego (7 y 5 con goles, 3-2; el de 11 iba 0-0 a los 194 s).
