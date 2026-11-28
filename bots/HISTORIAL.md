@@ -188,3 +188,14 @@ Cada turno añade aquí una entrada (fecha, bot, qué encontró o arregló, resu
 - Motos 5–8 en (1969,3422), vista normal y vista interior (camMode 2), y la 8 conduciendo en interior: bien las 4 (manillar, espejos y piloto correctos).
 - Rendimiento (inspector, sin reportes): 332 calls, 314 139 tris, 201 texturas, 2081 geometrías.
 - Pruebas: compilación OK; paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 43, take 1); móvil (mobfb) `ok []`; fútbol (fb2): partidos de 11, 7 y 5 en juego (7 y 5 con goles, 3-2; el de 11 iba 0-0 a los 194 s).
+
+## 2026-11-28 — Mecánico
+- Arreglados 2 fallos (pasan a procesados):
+  - 20261128-2 (2825,1778), fondo de Calle Toronto (junto a Calle Sonora): montículo de arena al fondo de la calle sin salida. Causa: la calle acaba 3 m por debajo del interior de la manzana (MDT 59 → 61,5 m en 10 m) y el talud del terreno quedaba a la vista entre las fachadas.
+    Arreglo (regla general, `buildStreetLife` en `f3b_env.js`): muro de contención blanco con albardilla al fondo de las calles sin salida cls 3–4 entre edificios cuando el terreno sube ≥1,2 m en 12 m; de acera a acera, hasta la cota del terreno (máx. 4 m), con colisión. Sale en 14 calles. Log: `env {..."ends":14}`. Va en una malla propia: la de tapias (`W`, con lista DECO) se oculta entera cuando la cámara está a >360 m del centro de su esfera; ojo, eso puede estar escondiendo las tapias de chalés en parte del mapa (no tocado; para revisar).
+  - 20261128-3 (3035,2833), Paseo Marítimo: escaparates sobre un zócalo. Causa: edificio comercial (uso 42, 1 planta, 4759 m²) con 5,3 m de desnivel en planta; la base iba a cota máx−2,2 m → locales 3 m por encima de la acera.
+    Arreglo (regla general, `buildBuildings` en `f3_world3d.js`): bajos comerciales en ladera (kind 3, ≤3 plantas, locales/uso comercial, desnivel 1–8 m) con el punto bajo junto a una calle → base a la cota baja y altura hasta cota alta +0,3 m (la trasera queda metida en el cerro). 61 edificios. A ras de suelo los escaparates arrancan en la acera.
+- No arreglados: 20261128-1 (932,1179) paso superior: reproducido (terraplén cortado junto a la pila, punta triangular del tablero); es un nudo de varios ramales, se deja con nota. Prioridad 1 (20261123-3, 20261124-1) y el resto: ya diagnosticados, sin cambios.
+- Nota: `dbgload.py` no funciona con `run.py` (abre su propio Playwright); se ejecuta con `python3 dbgload.py`.
+- Pruebas: dbgload sin errores (solo ERR_TUNNEL de recursos externos); paseo-auto-nr done:true (airFr 0); autovia-auto-nr done:true (airFr 42, take 1); móvil `ok []`; fútbol: partidos de 11, 7 y 5 en juego, con goles.
+- Rendimiento (perf2, nr): 437 calls, 527 607 tris (antes 436 / 521 219; +0,2 % / +1,2 %).

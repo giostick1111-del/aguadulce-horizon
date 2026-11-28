@@ -275,6 +275,10 @@ function buildBuildings(webgl2){
   const col=new THREE.Color(),stone=new THREE.Color('#d8cdb8');
   // alturas de todos los edificios antes de levantar paredes: hace falta saber cuánto tapa el vecino
   for(const b of BL){let hx=-1e9,hn=1e9;for(let i=0;i<b.p.length;i+=2){const y=H(b.p[i],b.p[i+1]);if(y>hx)hx=y;if(y<hn)hn=y}b._B=Math.max(hn,hx-2.2);
+    /* bajos comerciales en ladera (locales a pie de calle): el suelo de la tienda va a la cota de la acera baja y la parte de atrás queda metida en el cerro,
+       con la cubierta a la altura de la calle alta (antes el edificio se subía hasta 2,2 m y los escaparates quedaban sobre un zócalo) */
+    if(hx-hn>1&&hx-hn<=8&&b.kind===3&&b.lv<=3&&((b.area<1800&&b.lv<=2)||b.use===42)){let lx=0,lz=0;for(let i=0;i<b.p.length;i+=2)if(H(b.p[i],b.p[i+1])===hn){lx=b.p[i];lz=b.p[i+1]}
+      const rn=roadNear(lx,lz,0,7,false);if(rn&&rn.d<10){b._B=hn+.05;if(b._B+b.h<hx+.3)b.h=hx+.3-b._B;b.slopeShop=1}}
     // edificios del muelle: la planta baja a la cota del muelle aunque por detrás se metan en la ladera (como los reales, adosados al cerro)
     if(PMASK&&hn<=PDECK+.05&&portBld((b.x0+b.x1)/2,(b.z0+b.z1)/2))b._B=PDECK;b._top=b._B+b.h}
   /* tramos de pared compartidos con el edificio de al lado (medianeras): no se dibujan hasta la altura del vecino.

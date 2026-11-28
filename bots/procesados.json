@@ -463,5 +463,43 @@
   "causa": "La rejilla del suelo (6 m) es más gruesa que las aceras: aunque sus vértices bajo la acera se bajaban (carveGround), el triángulo del suelo asomaba entre ellos en cuñas y montículos de arena sobre la acera (938 triángulos de acera/calzada con tierra >10 cm por encima en todo el mapa).",
   "arreglo": "carveGround() en f16_parks.js: 2º paso que mira cada triángulo de acera/calzada cada ~1,5 m y baja los vértices de la celda del suelo donde asoma (hasta 1,5 m; máx. 3 m por vértice). Quedan 38 (>10 cm), casi todos sendas de monte en ladera, que no se tocan.",
   "fecha": "2026-11-27"
+ },
+ {
+  "id": "20261128-2",
+  "origen": "visual",
+  "tipo": "terreno_en_calle",
+  "x": 2825,
+  "z": 1778,
+  "cam": [
+   2825.0,
+   null,
+   1753.0
+  ],
+  "detalle": "Calle sin salida entre bloques (junto a Calle Toronto / Calle Sonora): al fondo de la calle el terreno forma un montículo de arena/tierra más alto que la calzada, metido entre las fachadas; a ras de suelo se ve la calzada acabar contra la tierra y la cámara queda encima del montículo dentro de la manzana.",
+  "reporte": null,
+  "prioridad": 2,
+  "estado": "arreglado",
+  "causa": "Calle Toronto acaba sin salida entre fachadas y 3 m más abajo que el interior de la manzana (MDT 59 → 61,5 m en 10 m): el talud de tierra de conformTerrain quedaba a la vista como un montículo de arena al fondo de la calle.",
+  "arreglo": "Regla general (buildStreetLife, f3b_env.js): al fondo de las calles sin salida (cls 3–4) que acaban entre edificios y cuyo terreno sube ≥1,2 m en los 12 m siguientes se levanta un muro de contención blanco con albardilla, de acera a acera, hasta la cota del terreno (máx. 4 m) y con colisión. Sale en 14 calles del mapa. Va en malla propia sin recorte por distancia.",
+  "fecha": "2026-11-28"
+ },
+ {
+  "id": "20261128-3",
+  "origen": "visual",
+  "tipo": "zocalo_fachada",
+  "x": 3035,
+  "z": 2833,
+  "cam": [
+   3035.0,
+   null,
+   2818.0
+  ],
+  "detalle": "Paseo Marítimo, edificio grande de tejado marrón con locales: los escaparates arrancan ~1,5 m por encima de la acera sobre un zócalo liso de piedra, sin escalones ni puertas a nivel de calle; parece el edificio asentado en la cota alta del terreno en vez de la de la acera.",
+  "reporte": null,
+  "prioridad": 3,
+  "estado": "arreglado",
+  "causa": "Edificio comercial del Catastro (uso 42, 1 planta, 4759 m²) en ladera: 5,3 m de desnivel en su planta; la base se ponía a cota máx−2,2 m, así que los escaparates quedaban 3 m por encima de la acera del Paseo Marítimo.",
+  "arreglo": "Regla general (buildBuildings, f3_world3d.js): bajos comerciales en ladera (kind 3, ≤3 plantas, locales o uso comercial, desnivel 1–8 m) con el punto más bajo junto a una calle: la base va a la cota baja (la de la acera) y, si hace falta, la altura crece hasta la cota alta +0,3 m (la parte de atrás queda metida en el cerro). Afecta a 61 edificios.",
+  "fecha": "2026-11-28"
  }
 ]

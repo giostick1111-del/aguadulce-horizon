@@ -1687,6 +1687,10 @@ function buildBuildings(webgl2){
   const col=new THREE.Color(),stone=new THREE.Color('#d8cdb8');
   // alturas de todos los edificios antes de levantar paredes: hace falta saber cuánto tapa el vecino
   for(const b of BL){let hx=-1e9,hn=1e9;for(let i=0;i<b.p.length;i+=2){const y=H(b.p[i],b.p[i+1]);if(y>hx)hx=y;if(y<hn)hn=y}b._B=Math.max(hn,hx-2.2);
+    /* bajos comerciales en ladera (locales a pie de calle): el suelo de la tienda va a la cota de la acera baja y la parte de atrás queda metida en el cerro,
+       con la cubierta a la altura de la calle alta (antes el edificio se subía hasta 2,2 m y los escaparates quedaban sobre un zócalo) */
+    if(hx-hn>1&&hx-hn<=8&&b.kind===3&&b.lv<=3&&((b.area<1800&&b.lv<=2)||b.use===42)){let lx=0,lz=0;for(let i=0;i<b.p.length;i+=2)if(H(b.p[i],b.p[i+1])===hn){lx=b.p[i];lz=b.p[i+1]}
+      const rn=roadNear(lx,lz,0,7,false);if(rn&&rn.d<10){b._B=hn+.05;if(b._B+b.h<hx+.3)b.h=hx+.3-b._B;b.slopeShop=1}}
     // edificios del muelle: la planta baja a la cota del muelle aunque por detrás se metan en la ladera (como los reales, adosados al cerro)
     if(PMASK&&hn<=PDECK+.05&&portBld((b.x0+b.x1)/2,(b.z0+b.z1)/2))b._B=PDECK;b._top=b._B+b.h}
   /* tramos de pared compartidos con el edificio de al lado (medianeras): no se dibujan hasta la altura del vecino.
@@ -2018,6 +2022,20 @@ function buildStreetLife(){
           if(ok){let hb=null;for(let d=2.5;d<=13&&!hb;d+=2.5){const b=houseAt(x+nx*d,z+nz*d);if(b)hb=b}if(!hb||hb.kind!==0)ok=false}
           if(ok){if(!run)run={pts:[],style:Math.floor(R()*4),gate:4+R()*8};run.pts.push([x,z,nx,nz]);if(run.pts.length>=run.gate){flush();u+=0}}else flush()}}
       flush()}}
+  // muro de contención al fondo de las calles sin salida que acaban contra una ladera entre fachadas (antes el talud de tierra asomaba como un montículo)
+  const ends=[];
+  for(const r of WD.roads){const cls=r[0];if(cls<3||cls>4||r[4]===1||r[4]===3||r[4]===4)continue;const m=(r.length-5)/2;if(m<2)continue;const hw=r[1]*K/2,walkW=2.4;
+    for(const e of [0,1]){const i=e?m-1:0,j=e?m-2:1;if((nodes.get(r[5+i*2]+','+r[6+i*2])||0)>1)continue;
+      const ex=r[5+i*2]*K,ez=r[6+i*2]*K,px=r[5+j*2]*K,pz=r[6+j*2]*K,L=Math.hypot(ex-px,ez-pz);if(L<2)continue;const dx=(ex-px)/L,dz=(ez-pz)/L,nx=-dz,nz=dx;
+      const q=roadNear(ex+dx*4,ez+dz*4,0,7,false);if(q&&q.d<4-hw-.5)continue;// otra calle sigue por delante
+      const y0=H(ex,ez);let up=-1e9;for(let t=2;t<=12;t+=1)for(const o of [-hw,0,hw])up=Math.max(up,H(ex+dx*t+nx*o,ez+dz*t+nz*o));
+      if(up-y0<1.2)continue;
+      let nb=0;for(const s of [-1,1]){let hit=false;for(const a of [1,-2,-5,-8])for(let d=-2;d<=12&&!hit;d+=1)if(houseAt(ex+nx*s*(hw+walkW+d)+dx*a,ez+nz*s*(hw+walkW+d)+dz*a))hit=true;if(hit)nb++}
+      if(nb<2)continue;// solo entre fachadas
+      const t0=.6,o=hw+walkW+.4,ax=ex+dx*t0-nx*o,az=ez+dz*t0-nz*o,bx=ex+dx*t0+nx*o,bz=ez+dz*t0+nz*o;
+      let lo=1e9;for(let k=0;k<=8;k++)lo=Math.min(lo,H(ax+(bx-ax)*k/8,az+(bz-az)*k/8));
+      ends.push([ax,az,bx,bz,lo-.4,Math.min(up+.35,y0+4),dx,dz])}}
+
   // coches
   if(cars.length)instanced(parkedCarGeo(),new THREE.MeshStandardMaterial({vertexColors:true,metalness:.35,roughness:.42,envMap:scene.environment||null}),cars,carC);
   // tapias
@@ -2036,12 +2054,20 @@ function buildStreetLife(){
       if(false){flowers.push([(a[0]+b[0])/2+nx*.25,(ya+yb)/2+hBase+.2,(a[1]+b[1])/2+nz*.25,R()*TAU,.8+R()*.7]);flC.push(new THREE.Color(BUG[Math.floor(R()*BUG.length)]))}}
     // pilares de la cancela al final del tramo
     const e=pts[pts.length-1];const ye=H(e[0],e[1]);hedges.length;sgBox(W,e[0],e[1],1,0,0,1,-.2,.2,-.05,.4,ye-.3,ye+hBase+.45,cap,true)}
+  {const wcol=new THREE.Color('#f2e8d6'),W=SGB();// malla propia sin recorte por distancia (la de tapias se oculta a >360 m de su centro)
+    for(const [ax,az,bx,bz,yb,yt,dx,dz] of ends){
+      sgPlane(W,bx,bz,ax,az,yb,yb,yt-yb,wcol,1,1,0);
+      sgPlane(W,ax+dx*.3,az+dz*.3,bx+dx*.3,bz+dz*.3,yb,yb,yt-yb,wcol,1,1,0);
+      sgQuad(W,[ax-dx*.04,yt+.06,az-dz*.04,bx-dx*.04,yt+.06,bz-dz*.04,bx+dx*.34,yt+.06,bz+dz*.34,ax+dx*.34,yt+.06,az+dz*.34],0,1,0,cap);
+      sgPlane(W,bx-dx*.04,bz-dz*.04,ax-dx*.04,az-dz*.04,yt,yt,.06,cap,1,1,0);
+      obstAdd(ax+dx*.15,az+dz*.15,bx+dx*.15,bz+dz*.15,.2)}
+    sgMesh(W,new THREE.MeshLambertMaterial({vertexColors:true}),false)}
   const ironMat=new THREE.MeshLambertMaterial({map:TX.rail,color:0x2a2a2a,alphaTest:.5,side:THREE.DoubleSide});
   sgMesh(W,new THREE.MeshLambertMaterial({vertexColors:true}),true);sgMesh(T,new THREE.MeshLambertMaterial({map:TX.rail,vertexColors:true,alphaTest:.5,side:THREE.DoubleSide}),true);sgMesh(Bal,new THREE.MeshLambertMaterial({map:TX.balus,vertexColors:true,alphaTest:.5,side:THREE.DoubleSide}),true);
   const hc=hedges.map(()=>new THREE.Color(hedgeC[Math.floor(R()*3)]));
   instanced(mergeParts([[boxG(1.75,.9,.7),0,.45,0,0,0,0,1,1,1,'#ffffff'],[new THREE.IcosahedronGeometry(.5,0),.5,.85,0,0,0,0,1,.6,1,'#ffffff'],[new THREE.IcosahedronGeometry(.45,0),-.45,.85,.05,0,0,0,1,.6,1,'#ffffff']]),new THREE.MeshLambertMaterial({vertexColors:true}),hedges,hc);
   instanced(mergeParts([[new THREE.IcosahedronGeometry(.7,0),0,0,0,0,0,0,1.4,.7,.8,'#ffffff'],[new THREE.IcosahedronGeometry(.5,0),.7,-.35,.2,0,0,0,1,1.2,.8,'#ffffff'],[new THREE.IcosahedronGeometry(.35,0),-.6,-.5,.1,0,0,0,1,1.4,.8,'#3f6b2e']]),new THREE.MeshLambertMaterial({vertexColors:true}),flowers,flC);
-  return{cars:cars.length,walls:walls.length}}
+  return{cars:cars.length,walls:walls.length,ends:ends.length}}
 
 /* ---- vegetación mediterránea: adelfas, pinos carrasco y matorral seco en las lomas ---- */
 function buildNature(){const R=lcg(99);const vc=new THREE.MeshLambertMaterial({vertexColors:true});
@@ -4259,7 +4285,7 @@ function buildPublic(){const vc=new THREE.MeshLambertMaterial({vertexColors:true
 /* ============ «REPORTAR FALLO»: el jugador marca un fallo del mapa y queda en la cola de los bots ============
    se guarda en Firebase (fh/bugs) con la posición exacta, la orientación, una nota y una miniatura de la pantalla;
    el bot Inspector la recoge en su siguiente turno y el Mecánico la arregla */
-const BUILD_ID='20261127-0521';
+const BUILD_ID='20261128-0527';
 function bugShot(){try{renderer.render(scene,camera);const s=renderer.domElement,c=cvs(384,Math.round(384*s.height/s.width)),g=c.getContext('2d');g.drawImage(s,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.62)}catch(e){return''}}
 function bugQueue(r){let q=[];try{q=JSON.parse(localStorage.getItem('fhBugsQ')||'[]')}catch(e){}if(r)q.push(r);q=q.slice(-10);try{localStorage.setItem('fhBugsQ',JSON.stringify(q))}catch(e){}return q}
 /* el informe va en fh/bugs (ligero, lo leen los bots) y la miniatura aparte en fh/bugimg/<id> */
